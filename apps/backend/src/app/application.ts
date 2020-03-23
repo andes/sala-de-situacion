@@ -14,7 +14,7 @@ const host = environment.host;
 const key = environment.key;
 
 export const application = new ApiBootstrap(info, { port, host, key });
-application.add(apiOptionsMiddleware);
+application.add(apiOptionsMiddleware as any);
 
 export const authenticate = () => {
   if (environment.key) {
