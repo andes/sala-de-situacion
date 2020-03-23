@@ -46,7 +46,7 @@
     "@nrwl/angular": "^8.12.10",
     "@nrwl/cypress": "8.12.10",
     "@nrwl/jest": "9.1.2",
-    "@nrwl/node": "^9.1.2",
+    "@nrwl/node": "9.1.2",
     "@nrwl/workspace": "9.1.2",
     "@types/jest": "24.9.1",
     "@types/node": "~8.9.4",

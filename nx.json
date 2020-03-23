@@ -16,7 +16,12 @@
     },
     "frontend-e2e": {
       "tags": [],
-      "implicitDependencies": ["frontend"]
+      "implicitDependencies": [
+        "frontend"
+      ]
+    },
+    "backend": {
+      "tags": []
     }
   }
 }
