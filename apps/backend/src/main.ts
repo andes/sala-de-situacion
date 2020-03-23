@@ -1,12 +1,16 @@
 require('dotenv').config();
 
+const { Connections } = require('./app/connection');
+
 const { application } = require('./app/application');
 
-// const snomed = require('./app/routes/snomed').router;
+Connections.initialize();
+
+const UsersRouter = require('./app/users/user.controller').UsersRouter;
 // const andes = require('./app/routes/andes').router;
 // const auth = require('./app/routes/auth').router;
 
-// application.add({ path: '/api/snomed', router: snomed });
+application.add({ path: '/api', router: UsersRouter });
 // application.add({ path: '/api/andes', router: andes });
 // application.add({ path: '/api/auth', router: auth });
 

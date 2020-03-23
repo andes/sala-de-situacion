@@ -1,0 +1,7 @@
+version: '2'
+services:
+  situacion_db:
+    image: mongo:4.0
+    container_name: situacion_db
+    ports:
+      - '27017:27017'

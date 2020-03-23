@@ -1,5 +1,6 @@
 import { ApiBootstrap } from '@andes/api-tool/build/bootstrap';
 import { environment } from '../environments/environment';
+import { apiOptionsMiddleware } from '@andes/api-tool';
 
 const shiroTrie = require('shiro-trie');
 
@@ -13,6 +14,7 @@ const host = environment.host;
 const key = environment.key;
 
 export const application = new ApiBootstrap(info, { port, host, key });
+application.add(apiOptionsMiddleware);
 
 export const authenticate = () => {
   if (environment.key) {
