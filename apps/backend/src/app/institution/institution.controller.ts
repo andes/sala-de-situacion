@@ -1,3 +1,4 @@
+
 import { MongoQuery, ResourceBase } from '@andes/core';
 import { Institution } from './institution.schema';
 import { authenticate } from '../application';
@@ -12,8 +13,9 @@ class InstitutionResource extends ResourceBase {
         provincia: MongoQuery.partialString,
         localidad: MongoQuery.partialString,
         tipoInstitutcion: MongoQuery.partialString,
+        zona: MongoQuery.partialString,
         activo: MongoQuery.equalMatch,
-        search: ['nombre', 'direccion', 'tipoInstitucion', 'provincia', 'localidad']
+        search: ['nombre', 'direccion', 'zona', 'tipoInstitucion', 'provincia', 'localidad']
     };
 }
 
