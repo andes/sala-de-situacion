@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
+import { environment } from '../../environments/environment';
 import { AuditPlugin } from '@andes/mongoose-plugin-audit';
-import { environment } from '../../environments/environment.prod';
 const bcrypt = require('bcrypt');
 
 const EMAILRegexp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -26,7 +26,7 @@ if (environment.key) {
   UsersSchema.plugin(AuditPlugin);
 }
 
-UsersSchema.pre('save', async function(next) {
+UsersSchema.pre('save', async function (next) {
   const user: any = this;
   const SALT_FACTOR = 5;
 
@@ -43,7 +43,7 @@ UsersSchema.pre('save', async function(next) {
   }
 });
 
-UsersSchema.methods.comparePassword = async function(passwordAttempt) {
+UsersSchema.methods.comparePassword = async function (passwordAttempt) {
   return await bcrypt.compare(passwordAttempt, this.password);
 };
 
