@@ -13,6 +13,7 @@ export const InstitutionsSchema = new mongoose.Schema({
     },
     direccion: String,
     provincia: String,
+    zona: String,
     localidad: String,
     tipoInstitutcion: String
 });
