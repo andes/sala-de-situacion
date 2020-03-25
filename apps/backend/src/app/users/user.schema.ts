@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 const EMAILRegexp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export const UsersSchema = new mongoose.Schema({
-  activo: Boolean,
+  active: { type: Boolean, default: false },
   nombre: String,
   apellido: String,
   documento: String,
@@ -19,16 +19,21 @@ export const UsersSchema = new mongoose.Schema({
   },
   telefono: String,
   password: String,
-  permisos: [String]
+  permisos: [String],
+  validationToken: String
 });
 
-if (environment.key) {
-  UsersSchema.plugin(AuditPlugin);
-}
+// if (environment.key) {
+//   UsersSchema.plugin(AuditPlugin);
+// }
 
 UsersSchema.pre('save', async function (next) {
   const user: any = this;
   const SALT_FACTOR = 5;
+
+  if (user.isNew) {
+    user.validationToken = new mongoose.Types.ObjectId().toHexString();
+  }
 
   if (!user.isModified('password')) {
     return next();
