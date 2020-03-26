@@ -8,6 +8,8 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
 
 let mongoServer: any;
 let app;
+const { application } = require('../application');
+
 beforeAll(async () => {
     mongoServer = new MongoMemoryServer();
     const mongoUri = await mongoServer.getConnectionString();
@@ -27,6 +29,7 @@ beforeAll(async () => {
 afterAll(async () => {
     await mongoose.disconnect();
     await mongoServer.stop();
+    await application.stop();
 });
 
 describe('AUTH - Test', () => {
