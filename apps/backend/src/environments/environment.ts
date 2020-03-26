@@ -9,8 +9,8 @@ export const environment = {
         port: 587,
         secure: false,
         auth: {
-            user: process.env.MAIL_USER || 'mail@mail.gob.ar',
-            pass: process.env.MAIL_PASSWORD || 'somePass'
+            user: process.env.MAIL_USER || 'xxx@xxx.xx.ar',
+            pass: process.env.MAIL_PASSWORD || 'somePassword'
         }
     }
 };
