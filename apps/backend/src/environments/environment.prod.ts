@@ -4,4 +4,14 @@ export const environment = {
   host: process.env.HOST || '0.0.0.0',
   key: process.env.JWT_KEY || null,
   mongo_host: process.env.MONGO_HOST || 'mongodb://localhost:27017/sala-situacion',
+  mail: {
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.MAIL_USER || 'mail@mail.gob.ar',
+      pass: process.env.MAIL_PASSWORD || 'somePass'
+    }
+  }
+
 };
