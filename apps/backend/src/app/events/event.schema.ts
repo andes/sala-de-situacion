@@ -18,7 +18,7 @@ export const indicatorsSchema = new mongoose.Schema({
 });
 
 export const EventsSchema = new mongoose.Schema({
-  activo: { type: Boolean, default: false },
+  activo: { type: Boolean, default: true },
   nombre: String,
   categoria: {
     type: String,

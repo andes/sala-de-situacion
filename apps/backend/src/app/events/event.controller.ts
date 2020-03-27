@@ -11,11 +11,9 @@ class EventsResource extends ResourceBase {
         categoria: MongoQuery.partialString,
         activo: MongoQuery.equalMatch,
         search: ['nombre', 'categoria', 'activo'],
-        'indicadores': {
-            field: 'key',
-            fn: (value) => {
-                return { $eq: value };
-            }
+        indicadores: {
+            field: 'indicadores.key',
+            fn: (value) => value
         }
     }
 }
