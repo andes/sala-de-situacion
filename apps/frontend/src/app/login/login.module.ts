@@ -6,7 +6,7 @@ import { PlexModule } from '@andes/plex';
 
 import { LoginComponent } from './components/login/login.component';
 import { LogoutComponent } from './components/logout/logout.component';
-import { CreateUserComponent } from './components/create/create-user.component';
+import { CreateUserComponent } from './components/user/create-user.component';
 
 import { LoginRoutingModule } from './login-routing.module';
 
@@ -15,4 +15,4 @@ import { LoginRoutingModule } from './login-routing.module';
     declarations: [LoginComponent, LogoutComponent, CreateUserComponent],
     providers: []
 })
-export class LoginModule {}
+export class LoginModule { }

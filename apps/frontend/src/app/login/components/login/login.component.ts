@@ -34,18 +34,7 @@ export class LoginComponent implements OnInit {
         }
     }
 
-    create(event) {
-        this.router.navigate(['/create-user']);
-
-        // if (event.formValid) {
-        //   this.loading = true;
-        //   this.auth.create(this.usuario.toString(), this.password).subscribe(
-        //     data => {},
-        //     err => {
-        //       this.plex.info('danger', 'Usuario o contraseña incorrectos');
-        //       this.loading = false;
-        //     }
-        //   );
-        // }
+    create() {
+        this.router.navigate(['login/create-user']);
     }
 }
