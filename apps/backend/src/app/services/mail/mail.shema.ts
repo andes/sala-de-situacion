@@ -29,4 +29,4 @@ export let mailSchema = new mongoose.Schema({
     }
 });
 
-export let Email = mongoose.model('mail', mailSchema, 'mail');
+export let Email = mongoose.model('email', mailSchema, 'email');

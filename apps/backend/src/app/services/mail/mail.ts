@@ -1,5 +1,4 @@
 import { environment } from '../../../environments/environment';
-import { Email } from '../mail/mail.shema';
 const nodemailer = require('nodemailer');
 
 export interface MailOptions {
@@ -10,6 +9,14 @@ export interface MailOptions {
 }
 
 export async function sendMail(options: MailOptions) {
+
+    const mailOptions = {
+        from: options.from,
+        to: options.to,
+        subject: options.subject,
+        text: options.text
+    };
+
     try {
         const transporter = await nodemailer.createTransport({
             host: environment.mail.host,
@@ -18,31 +25,9 @@ export async function sendMail(options: MailOptions) {
             auth: environment.mail.auth,
         });
 
-        const mailOptions = {
-            from: options.from,
-            to: options.to,
-            subject: options.subject,
-            text: options.text
-        };
-        let mailObject = new Email({
-            email: mailOptions.to,
-            subject: mailOptions.subject,
-            from: mailOptions.from,
-            createdAt: new Date(),
-            updatedAt: new Date()
-        });
-        await transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                mailObject['status'] = 'error';
-                mailObject['message'] = error;
-                mailObject.save();
-                return error
-            }
-            mailObject['message'] = 'Mail enviado correctamente';
-            mailObject['status'] = 'success';
-            mailObject.save();
-            return info
-        });
+        return await transporter.sendMail(mailOptions);
+
+
     } catch (err) {
         return err
     }
