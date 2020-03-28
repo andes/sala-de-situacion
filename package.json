@@ -28,6 +28,7 @@
   "private": true,
   "dependencies": {
     "@andes/api-tool": "^1.3.0",
+    "@andes/auth": "^6.0.3",
     "@andes/core": "^1.5.0",
     "@andes/mongoose-plugin-audit": "^1.1.0",
     "@andes/plex": "^5.11.1",
