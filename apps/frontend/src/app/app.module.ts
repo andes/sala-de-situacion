@@ -9,14 +9,14 @@ import { AppHomeComponent } from './home/home.component';
 import { PlexModule, Plex } from '@andes/plex';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from './login/auth.services';
+import { AuthService } from './login/components/login/auth.services';
+import { Auth } from '@andes/auth';
 import { RoutingNavBar, RoutingGuard } from './login/routing-guard';
-import { EventsModule } from './events/events-module';
 
 @NgModule({
     declarations: [AppComponent, AppHomeComponent],
-    imports: [BrowserModule, PlexModule, FormsModule, HttpClientModule, routing, EventsModule],
-    providers: [Plex, Server, AuthService, RoutingNavBar, RoutingGuard],
+    imports: [BrowserModule, PlexModule, FormsModule, HttpClientModule, routing],
+    providers: [Plex, Server, Auth, AuthService, RoutingNavBar, RoutingGuard],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

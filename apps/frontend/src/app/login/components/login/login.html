@@ -8,10 +8,10 @@
       </div>
       <div class="row login-content">
         <div class="col">
-          <plex-int label="Usuario" [autoFocus]="true" prefix="<i class='mdi mdi-account-key icon'></i>"
-                    [(ngModel)]="usuario" name="usuario" [required]="true">
-          </plex-int>
-          <plex-text label="Contraseña" [(ngModel)]="password" name="password" [password]="true" [required]="true"
+          <plex-text label="Usuario" [autoFocus]="true" prefix="<i class='mdi mdi-account-key icon'></i>"
+                     [(ngModel)]="usuario" name="usuario" [required]="true">
+          </plex-text>
+          <plex-text label="Contraseña" [(ngModel)]="password" name="password" [password]="true"
                      prefix="<i class='mdi mdi-dialpad'></i>">
 
           </plex-text>
@@ -19,6 +19,10 @@
           <plex-button type="success" [validateForm]="formulario" [disabled]="!formulario.form.valid"
                        (click)="login($event)" size='block'>
             Iniciar sesión
+          </plex-button>
+          <div class="row">&nbsp;</div>
+          <plex-button type="info" [validateForm]="formulario" (click)="create($event)" size='block'>
+            Crear Cuenta
           </plex-button>
           <plex-loader *ngIf="loading" type="ball-pulse-sync"></plex-loader>
         </div>
