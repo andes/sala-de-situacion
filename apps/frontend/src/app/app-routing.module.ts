@@ -5,13 +5,8 @@ import { RoutingGuard, RoutingNavBar } from './login/routing-guard';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
-    {
-        path: 'home',
-        component: AppHomeComponent,
-        canActivate: [RoutingNavBar]
-    },
+    { path: 'home', component: AppHomeComponent, canActivate: [RoutingNavBar, RoutingGuard] },
     { path: 'login', loadChildren: './login/login.module#LoginModule' },
-
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 

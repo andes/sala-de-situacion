@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Plex } from '@andes/plex';
-import { AuthService } from '../../auth.services';
-import { Router } from '@angular/router';
+import { Auth } from '@andes/auth';
+
 @Component({
     selector: 'app-login',
     templateUrl: 'login.html',
@@ -9,15 +9,11 @@ import { Router } from '@angular/router';
     encapsulation: ViewEncapsulation.None // Use to disable CSS Encapsulation for this component
 })
 export class LoginComponent implements OnInit {
-    public usuario: string;
-    public password = '';
+    public usuario: number;
+    public password: string;
     public loading = false;
 
-    constructor(
-        private plex: Plex,
-        private auth: AuthService,
-        private router: Router
-    ) { }
+    constructor(private plex: Plex, private auth: Auth) {}
 
     ngOnInit() {
         this.auth.logout();
@@ -27,18 +23,12 @@ export class LoginComponent implements OnInit {
         if (event.formValid) {
             this.loading = true;
             this.auth.login(this.usuario.toString(), this.password).subscribe(
-                data => {
-                    this.router.navigate(['/home']);
-                },
+                data => {},
                 err => {
                     this.plex.info('danger', 'Usuario o contraseña incorrectos');
                     this.loading = false;
                 }
             );
         }
-    }
-
-    create() {
-        this.router.navigate(['login/register-user']);
     }
 }
