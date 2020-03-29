@@ -10,17 +10,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppHomeComponent } from './home/home.component';
 
 @NgModule({
-  declarations: [AppComponent, AppHomeComponent],
-  imports: [
-    BrowserModule,
-    PlexModule,
-    FormsModule,
-    HttpClientModule,
-    RouterModule.forRoot([{ path: 'home', component: AppHomeComponent }], {
-      initialNavigation: 'enabled'
-    })
-  ],
-  providers: [Plex],
-  bootstrap: [AppComponent]
+    declarations: [AppComponent, AppHomeComponent],
+    imports: [
+        BrowserModule,
+        PlexModule,
+        FormsModule,
+        HttpClientModule,
+        RouterModule.forRoot([{ path: 'home', component: AppHomeComponent }], {
+            initialNavigation: 'enabled'
+        })
+    ],
+    providers: [Plex],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}
