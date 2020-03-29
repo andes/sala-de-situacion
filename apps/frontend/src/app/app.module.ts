@@ -11,23 +11,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './login/auth.services';
 import { RoutingNavBar, RoutingGuard } from './login/routing-guard';
+import { EventsModule } from './events/events-module';
 
 @NgModule({
-  declarations: [AppComponent, AppHomeComponent],
-  imports: [
-    BrowserModule,
-    PlexModule,
-    FormsModule,
-    HttpClientModule,
-    routing
-  ],
-  providers: [
-    Plex,
-    Server,
-    AuthService,
-    RoutingNavBar,
-    RoutingGuard
-  ],
-  bootstrap: [AppComponent]
+    declarations: [AppComponent, AppHomeComponent],
+    imports: [BrowserModule, PlexModule, FormsModule, HttpClientModule, routing, EventsModule],
+    providers: [Plex, Server, AuthService, RoutingNavBar, RoutingGuard],
+    bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

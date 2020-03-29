@@ -1,10 +1,10 @@
 import { MongoQuery, ResourceBase } from '@andes/core';
-import { EventTypes } from './event-types.schema';
+import { OcurrenceEvent } from './occurrence-events.schema';
 import { authenticate } from '../application';
 
-class EventTypesResource extends ResourceBase {
-    Model = EventTypes;
-    resourceName = 'event-types';
+class OcurrenceEventResource extends ResourceBase {
+    Model = OcurrenceEvent;
+    resourceName = 'ocurrence-event';
     middlewares = [authenticate()];
     searchFileds = {
         nombre: MongoQuery.partialString,
@@ -14,5 +14,5 @@ class EventTypesResource extends ResourceBase {
     };
 }
 
-export const EventTypesCtr = new EventTypesResource();
-export const EventTypesRoutes = EventTypesCtr.makeRoutes();
+export const OcurrenceEventCtr = new OcurrenceEventResource();
+export const OcurrenceEventRoutes = OcurrenceEventCtr.makeRoutes();
