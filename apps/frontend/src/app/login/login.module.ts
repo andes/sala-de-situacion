@@ -6,13 +6,14 @@ import { PlexModule } from '@andes/plex';
 
 import { LoginComponent } from './components/login/login.component';
 import { LogoutComponent } from './components/logout/logout.component';
-import { CreateUserComponent } from './components/user/create-user.component';
+import { RegisterUserComponent } from './components/user/register-user.component';
+import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 
 import { LoginRoutingModule } from './login-routing.module';
 
 @NgModule({
     imports: [CommonModule, FormsModule, HttpClientModule, PlexModule, LoginRoutingModule],
-    declarations: [LoginComponent, LogoutComponent, CreateUserComponent],
+    declarations: [LoginComponent, LogoutComponent, RegisterUserComponent, VerifyEmailComponent],
     providers: []
 })
-export class LoginModule { }
+export class LoginModule {}

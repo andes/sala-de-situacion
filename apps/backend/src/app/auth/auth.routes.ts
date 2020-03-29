@@ -29,13 +29,14 @@ AuthRouter.post('/auth/login', async (req: Request, res, next) => {
 });
 
 AuthRouter.post('/auth/create', async (req: Request, res, next) => {
-    try {
-        const user = req.body;
-        await UsersCtr.create(user, req);
-        return res.json({ status: 'ok' });
-    } catch (err) {
-        return next(403);
-    }
+  try {
+    const user = req.body;
+    await UsersCtr.create(user, req);
+    return res.json({ status: 'ok' });
+  } catch (err) {
+    console.log(err);
+    return next(403);
+  }
 });
 
 AuthRouter.post('/auth/validate/:token', async (req: Request, res, next) => {
