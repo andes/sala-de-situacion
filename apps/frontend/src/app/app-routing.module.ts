@@ -4,15 +4,15 @@ import { AppHomeComponent } from './home/home.component';
 import { RoutingGuard, RoutingNavBar } from './login/routing-guard';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  {
-    path: 'home',
-    component: AppHomeComponent,
-    canActivate: [RoutingNavBar]
-  },
-  { path: 'login', loadChildren: './login/login.module#LoginModule' },
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    {
+        path: 'home',
+        component: AppHomeComponent,
+        canActivate: [RoutingNavBar]
+    },
+    { path: 'login', loadChildren: './login/login.module#LoginModule' },
 
-  { path: '**', redirectTo: '/home', pathMatch: 'full' }
+    { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 
 export const appRoutingProviders: any[] = [];

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { environment } from './../environments/environment';
 import { Server } from '@andes/shared';
 import { Plex } from '@andes/plex';
-import { Auth } from '@andes/auth';
 
 @Component({
   selector: 'sala-de-situacion-root',
@@ -13,16 +12,12 @@ export class AppComponent {
 
   private menuList = [];
 
-  constructor(public server: Server, public plex: Plex, public auth: Auth) {
+  constructor(public server: Server, public plex: Plex) {
     server.setBaseURL(environment.API);
 
     this.plex.updateTitle('SALA DE SITUACIÓN');
-    const token = this.auth.getToken();
-    if (token) {
-      this.auth.session().subscribe(() => {
-        this.crearMenu();
-      });
-    }
+    this.crearMenu();
+
   }
 
   public crearMenu() {

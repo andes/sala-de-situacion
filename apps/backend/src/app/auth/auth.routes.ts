@@ -33,6 +33,7 @@ AuthRouter.post('/auth/create', async (req: Request, res, next) => {
     await UsersCtr.create(user, req);
     return res.json({ status: 'ok' });
   } catch (err) {
+    console.log(err);
     return next(403);
   }
 });

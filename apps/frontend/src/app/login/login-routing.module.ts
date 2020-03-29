@@ -3,12 +3,15 @@ import { NgModule } from '@angular/core';
 import { RoutingGuard } from './routing-guard';
 import { LoginComponent } from './components/login/login.component';
 import { LogoutComponent } from './components/logout/logout.component';
-import { CreateUserComponent } from './components/user/create-user.component';
+import { RegisterUserComponent } from './components/user/register-user.component';
+import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 
 const routes = [
     { path: '', component: LoginComponent },
     { path: 'logout', component: LogoutComponent, canActivate: [RoutingGuard] },
-    { path: 'create-user', component: CreateUserComponent }
+    { path: 'register-user', component: RegisterUserComponent },
+    { path: 'verify-email/:email', component: VerifyEmailComponent }
+
 ];
 
 @NgModule({

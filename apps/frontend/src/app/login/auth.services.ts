@@ -22,18 +22,27 @@ export class AuthService {
     }
 
     login(usuario: string, password: string): Observable<any> {
-        return this.server
-            .post(
-                this.authUrl + '/login',
-                { email: usuario, password: password ? password : '' },
-                { params: null, showError: false }
-            )
+        return this.server.post(this.authUrl + '/login',
+            { email: usuario, password: password ? password : '' },
+            { params: null, showError: false }
+        )
             .pipe(
                 tap(data => {
                     //Setear el token
+                    this.setToken(data.token);
                 })
             );
     }
 
-    logout() { }
+    getToken() {
+        return window.sessionStorage.getItem('jwt');
+    }
+
+    setToken(token: string) {
+        window.sessionStorage.setItem('jwt', token);
+    }
+
+    logout() {
+        localStorage.removeItem('JWT');
+    }
 }

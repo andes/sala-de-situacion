@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Plex } from '@andes/plex';
-import { AuthService } from './auth.services';
+import { AuthService } from '../../auth.services';
 import { Router } from '@angular/router';
 @Component({
     selector: 'app-login',
@@ -39,6 +39,6 @@ export class LoginComponent implements OnInit {
     }
 
     create() {
-        this.router.navigate(['login/create-user']);
+        this.router.navigate(['login/register-user']);
     }
 }
