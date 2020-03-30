@@ -16,7 +16,6 @@ export class AuthService {
             )
             .pipe(
                 tap(data => {
-                    //Setear el token
                 })
             );
     }
@@ -30,6 +29,18 @@ export class AuthService {
                 tap(data => {
                     //Setear el token
                     this.setToken(data.token);
+                })
+            );
+    }
+
+    activarCuenta(email): Observable<any> {
+        return this.server.post(this.authUrl + '/activate',
+            { email: email },
+            { params: null, showError: false }
+        )
+            .pipe(
+                tap(data => {
+                    //Setear el token
                 })
             );
     }

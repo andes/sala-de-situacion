@@ -5,12 +5,14 @@ import { LoginComponent } from './components/login/login.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { RegisterUserComponent } from './components/user/register-user.component';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
+import { ActivacionCuentaComponent } from './components/activacion-cuenta/activacion-cuenta.component';
 
 const routes = [
     { path: '', component: LoginComponent },
     { path: 'logout', component: LogoutComponent, canActivate: [RoutingGuard] },
     { path: 'register-user', component: RegisterUserComponent },
-    { path: 'verify-email/:email', component: VerifyEmailComponent }
+    { path: 'verify-email/:email', component: VerifyEmailComponent },
+    { path: 'activacion-cuenta/:email', component: ActivacionCuentaComponent }
 
 ];
 

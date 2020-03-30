@@ -27,8 +27,19 @@ export async function sendMail(options: MailOptions) {
 
         return await transporter.sendMail(mailOptions);
 
-
     } catch (err) {
         return err
     }
 };
+
+export async function sendEmailValidacion(email: string, nombre: string) {
+    //Se realiza el envio del mail de verificación de la cuenta ;
+    const url = 'http://localhost:4200/login/activacion/' + email;
+    const mail: MailOptions = {
+        from: environment.mail.auth.user,
+        to: email,
+        subject: 'SALA DE SITUACIÓN :: Verificación de cuenta',
+        text: nombre + ', gracias por registrar tu cuenta.' + 'Para activarla copia y pega la siguiente dirección ' + url,
+    };
+    return sendMail(mail);
+}
