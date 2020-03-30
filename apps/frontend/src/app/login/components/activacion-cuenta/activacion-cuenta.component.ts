@@ -8,33 +8,24 @@ import { IUsuario } from '../user/IUsuario.interfaces';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'activacion-cuenta',
-  templateUrl: './activacion-cuenta.html'
+    selector: 'activacion-cuenta',
+    templateUrl: './activacion-cuenta.html'
 })
 export class ActivacionCuentaComponent implements OnInit {
-  public email = ''; // Lo dejo por si se quiere mostrar en el html el email (usuario) como feedback
-  public token = '';
-  user$: Observable<IUsuario>;
-  constructor(
-    public plex: Plex,
-    private route: ActivatedRoute,
-    private router: Router,
-    private auth: AuthService
-  ) { }
+    public email = '';
+    user$: Observable<IUsuario>;
+    constructor(public plex: Plex, private route: ActivatedRoute, private router: Router, private auth: AuthService) {}
 
-  ngOnInit() {
-    //Activar la cuenta
-    this.token = this.route.snapshot.paramMap.get('token');
-    //Busca el token y activa la cuenta
-    this.user$ = this.route.paramMap.pipe(
-      switchMap((params: ParamMap) =>
-        this.auth.activarCuenta(params.get('token')))
-    )
-  }
+    ngOnInit() {
+        //Activar la cuenta
+        this.email = this.route.snapshot.paramMap.get('email');
+        //Busca el email y activa la cuenta
+        this.user$ = this.route.paramMap.pipe(
+            switchMap((params: ParamMap) => this.auth.activarCuenta(params.get('email')))
+        );
+    }
 
-  volver() {
-    this.router.navigate(['login'])
-  }
-
-
+    volver() {
+        this.router.navigate(['login']);
+    }
 }

@@ -28,15 +28,10 @@ export class RegisterUserComponent implements OnInit {
         this.disableEnviar = true;
         this.auth.create(this.usuario).subscribe(
             data => {
-                this.sendEmailVerification();
+                this.router.navigate(['login/verify-email/' + this.usuario.email]);
             },
             err => {}
         );
-    }
-
-    sendEmailVerification() {
-        // se envia email al usuario
-        this.router.navigate(['login/verify-email/' + this.usuario.email]);
     }
 
     cancelar() {

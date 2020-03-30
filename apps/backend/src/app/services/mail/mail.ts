@@ -5,11 +5,10 @@ export interface MailOptions {
     from: string;
     to: string;
     subject: string;
-    text: string
+    text: string;
 }
 
 export async function sendMail(options: MailOptions) {
-
     const mailOptions = {
         from: options.from,
         to: options.to,
@@ -22,24 +21,24 @@ export async function sendMail(options: MailOptions) {
             host: environment.mail.host,
             port: environment.mail.port,
             secure: environment.mail.secure,
-            auth: environment.mail.auth,
+            auth: environment.mail.auth
         });
 
         return await transporter.sendMail(mailOptions);
-
     } catch (err) {
-        return err
+        return err;
     }
-};
+}
 
-export async function sendEmailValidacion(email: string, nombre: string, validationToken: string) {
+export async function sendEmailValidacion(email: string, nombre: string) {
     //Se realiza el envio del mail de verificación de la cuenta ;
-    const url = `${environment.host}/login/activacion-cuenta/${validationToken}`;
+    const url = 'http://localhost:4200/login/activacion/' + email;
     const mail: MailOptions = {
         from: environment.mail.auth.user,
         to: email,
         subject: 'SALA DE SITUACIÓN :: Verificación de cuenta',
-        text: `${nombre}, gracias por registrar tu cuenta. Para activarla haz click aquí ${url}`,
+        text:
+            nombre + ', gracias por registrar tu cuenta.' + 'Para activarla copia y pega la siguiente dirección ' + url
     };
     return sendMail(mail);
 }
