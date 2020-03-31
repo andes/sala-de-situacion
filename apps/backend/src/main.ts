@@ -16,6 +16,5 @@ application.add({ path: '/api', router: UsersRouter });
 application.add({ path: '/api', router: AuthRouter });
 application.add({ path: '/api', router: InstitutionsRouter });
 application.add({ path: '/api', router: EventsRouter });
-// application.add({ path: '/api/mail', router: MailRouter });
 
 application.start();
