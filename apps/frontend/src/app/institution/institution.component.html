@@ -23,10 +23,6 @@
                     placeholder="Ej: 2990000000">
         </plex-phone>
       </div>
-      <div class="col-md">
-        <plex-text label="Dirección" [(ngModel)]="institution.direccion" name="direccion" [required]="true">
-        </plex-text>
-      </div>
     </div>
     <div class="row">
       <div class="col-md">
@@ -59,5 +55,11 @@
         </plex-text>
       </div>
     </div>
+    <!-- <div class="row">
+      <div class="col-md">
+        <plex-button [disabled]="disableGeolocalizar" label="Geolocalizar" type="success" (click)="actualizarMapa()">
+        </plex-button>
+      </div>
+    </div> -->
   </plex-layout-main>
 </plex-layout>

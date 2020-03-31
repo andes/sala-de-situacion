@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { LocationService } from '../shared/location.services';
+import { InstitutionService } from './institution.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'institution',
@@ -16,11 +18,12 @@ export class AppInstitutionComponent implements OnInit {
         nombre: '',
         email: '',
         telefono: '',
-        direccion: '',
         location: {
             provincia: this.provNeuquen,
             localidad: null,
-            barrio: null
+            barrio: null,
+            direccion: '',
+            coordenadas: []
         }
     };
     neuquen = true;
@@ -28,7 +31,16 @@ export class AppInstitutionComponent implements OnInit {
     localidades = [];
     barrios = [];
 
-    constructor(public plex: Plex, private locationService: LocationService) {}
+    // Georref-map
+    geoReferenciaAux = []; // Coordenadas para la vista del mapa.
+    infoMarcador: String = null;
+
+    constructor(
+        public plex: Plex,
+        private locationService: LocationService,
+        private institutionService: InstitutionService,
+        private router: Router
+    ) {}
 
     ngOnInit() {
         // Cargamos todas las provincias
@@ -63,6 +75,23 @@ export class AppInstitutionComponent implements OnInit {
         this.institution.location.barrio = {};
         this.locationService.getBarrios({ localidad: this.institution.location.localidad.id }).subscribe(rta => {
             this.barrios = rta;
+        });
+    }
+
+    guardar() {
+        let dto = {
+            nombre: this.institution.nombre,
+            email: this.institution.email,
+            telefono: this.institution.telefono,
+            direccion: this.institution.location.direccion,
+            barrio: this.institution.location.barrio.nombre,
+            localidad: this.institution.location.localidad.nombre,
+            provincia: this.institution.location.provincia.nombre
+        };
+
+        this.institutionService.save(dto).subscribe(rta => {
+            this.plex.toast('success', `La institución ${rta.nombre} se guardó correctamente`);
+            this.router.navigate(['/home']);
         });
     }
 }

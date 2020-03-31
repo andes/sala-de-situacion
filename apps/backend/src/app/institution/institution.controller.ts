@@ -1,11 +1,10 @@
-
 import { MongoQuery, ResourceBase } from '@andes/core';
 import { Institution } from './institution.schema';
 import { authenticate } from '../application';
 
 class InstitutionResource extends ResourceBase {
     Model = Institution;
-    resourceName = 'institutions';
+    resourceName = 'institution';
     middlewares = [authenticate()];
     searchFileds = {
         nombre: MongoQuery.partialString,

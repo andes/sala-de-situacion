@@ -7,7 +7,7 @@ import { authenticate } from '../application';
 class LocalidadResource extends ResourceBase {
     Model = Localidad;
     resourceName = 'localidad';
-    // middlewares = [authenticate()];
+    middlewares = [authenticate()];
     searchFileds = {
         nombre: MongoQuery.partialString,
         provincia: {
