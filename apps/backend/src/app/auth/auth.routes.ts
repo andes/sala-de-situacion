@@ -31,9 +31,9 @@ AuthRouter.post('/auth/login', async (req: Request, res, next) => {
 AuthRouter.post('/auth/create', async (req: Request, res, next) => {
   try {
     const user = req.body;
-    await UsersCtr.create(user, req);
-    //Se realiza el envio del mail de verificación de la cuenta
-    await sendEmailValidacion(user.email, user.nombre);
+    const createdUser = await UsersCtr.create(user, req);
+    //Se realiza el envio del mail de verificación de la cuenta junto con el token de validación
+    await sendEmailValidacion(user.email, user.nombre, createdUser.validationToken);
     return res.json({ status: 'ok' });
   } catch (err) {
     return next(403);
@@ -50,22 +50,5 @@ AuthRouter.post('/auth/validate/:token', async (req: Request, res, next) => {
     }
 });
 
-
-AuthRouter.post('/auth/activate', async (req: Request, res, next) => {
-  try {
-    const email = req.body.email;
-    const users = await UsersCtr.search({ email: email }, {}, req);
-    if (users && users[0]) {
-      const user = users[0];
-      await UsersCtr.update(user.id, { active: true }, req);
-      return res.json({ status: 'ok' });
-    } else {
-      return next(403);
-    }
-
-  } catch (err) {
-    return next(403);
-  }
-});
 
 
