@@ -33,9 +33,8 @@ export class AuthService {
             );
     }
 
-    activarCuenta(email): Observable<any> {
-        return this.server.post(this.authUrl + '/activate',
-            { email: email },
+    activarCuenta(token): Observable<any> {
+        return this.server.post(`/auth/validate/${token}`,
             { params: null, showError: false }
         )
             .pipe(
