@@ -1,0 +1,22 @@
+<plex-layout>
+  <plex-layout-main>
+    <plex-title titulo="Gracias por Registrarse!">
+      <ng-container>
+        <plex-button label="Reenviar verificación de email" type="info" (click)="reenviar()"></plex-button>
+        <plex-button label="Login" type="success" (click)="login()">
+        </plex-button>
+      </ng-container>
+    </plex-title>
+    <div class="row">
+      <div class="col-md">
+        <span>Hemos enviado una confirmación a su cuenta</span>
+        <label>{{email}} </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md">
+        <span>Por favor, revise su correo electrónico y haga click en verificar cuenta</span>
+      </div>
+    </div>
+  </plex-layout-main>
+</plex-layout>

@@ -1,0 +1,16 @@
+<plex-layout>
+  <plex-layout-main>
+    <plex-title titulo="Activación de cuenta!">
+      <ng-container>
+        <plex-button label="Volver" type="info" (click)="volver()"></plex-button>
+      </ng-container>
+    </plex-title>
+    <div *ngIf="user$ | async as user">
+      <div class="row">
+        <div class="col-md">
+          <span>Tu cuenta está activa! Podes Loguearte con tu usuario {{email}} y tu contraseña registrada</span>
+        </div>
+      </div>
+    </div>
+  </plex-layout-main>
+</plex-layout>

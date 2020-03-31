@@ -2,25 +2,32 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { RouterModule } from '@angular/router';
+import { Server } from '@andes/shared';
+import { routing } from './app-routing.module';
+import { AppHomeComponent } from './home/home.component';
 
 import { PlexModule, Plex } from '@andes/plex';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AppHomeComponent } from './home/home.component';
+import { AuthService } from './login/auth.services';
+import { RoutingNavBar, RoutingGuard } from './login/routing-guard';
 
 @NgModule({
-    declarations: [AppComponent, AppHomeComponent],
-    imports: [
-        BrowserModule,
-        PlexModule,
-        FormsModule,
-        HttpClientModule,
-        RouterModule.forRoot([{ path: 'home', component: AppHomeComponent }], {
-            initialNavigation: 'enabled'
-        })
-    ],
-    providers: [Plex],
-    bootstrap: [AppComponent]
+  declarations: [AppComponent, AppHomeComponent],
+  imports: [
+    BrowserModule,
+    PlexModule,
+    FormsModule,
+    HttpClientModule,
+    routing
+  ],
+  providers: [
+    Plex,
+    Server,
+    AuthService,
+    RoutingNavBar,
+    RoutingGuard
+  ],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
