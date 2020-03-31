@@ -12,7 +12,7 @@ const routes = [
     { path: 'logout', component: LogoutComponent, canActivate: [RoutingGuard] },
     { path: 'register-user', component: RegisterUserComponent },
     { path: 'verify-email/:email', component: VerifyEmailComponent },
-    { path: 'activacion-cuenta/:email', component: ActivacionCuentaComponent }
+    { path: 'activacion-cuenta/:token', component: ActivacionCuentaComponent }
 
 ];
 

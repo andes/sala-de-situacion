@@ -14,8 +14,20 @@ import { RoutingNavBar, RoutingGuard } from './login/routing-guard';
 
 @NgModule({
   declarations: [AppComponent, AppHomeComponent],
-  imports: [BrowserModule, PlexModule, FormsModule, HttpClientModule, routing],
-  providers: [Plex, Server, AuthService, RoutingNavBar, RoutingGuard],
+  imports: [
+    BrowserModule,
+    PlexModule,
+    FormsModule,
+    HttpClientModule,
+    routing
+  ],
+  providers: [
+    Plex,
+    Server,
+    AuthService,
+    RoutingNavBar,
+    RoutingGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
