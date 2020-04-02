@@ -17,7 +17,7 @@ export interface Event {
 
 @Injectable()
 export class EventsService extends ResourceBaseHttp<Event> {
-    protected url = '/api/events';
+    protected url = '/events';
 
     constructor(protected server: Server) {
         super(server);

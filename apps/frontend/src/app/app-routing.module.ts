@@ -16,6 +16,11 @@ const appRoutes: Routes = [
         loadChildren: './institution/institution.module#InstitutionModule',
         canActivate: [RoutingNavBar, RoutingGuard]
     },
+    {
+        path: 'events',
+        loadChildren: './events/events.module#EventsModule',
+        canActivate: [RoutingNavBar, RoutingGuard]
+    },
 
     { path: '**', redirectTo: '/' }
 ];
