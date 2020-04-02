@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { CanActivate } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { Plex } from '@andes/plex';
+import { AuthService } from './auth.services';
 
 @Injectable()
 export class RoutingGuard implements CanActivate {
-    constructor(private router: Router, private plex: Plex) {}
+    constructor(private auth: AuthService, private router: Router) {}
 
     canActivate() {
-        // this.router.navigate(['/login']);
+        debugger;
+        const token = this.auth.getToken();
+        if (!token) {
+            return this.router.navigate(['auth', 'login']);
+        }
         return true;
     }
 }
