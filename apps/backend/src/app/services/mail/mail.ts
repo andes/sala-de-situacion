@@ -32,7 +32,7 @@ export async function sendMail(options: MailOptions) {
 
 export async function sendEmailValidacion(email: string, nombre: string, validationToken: string) {
     //Se realiza el envio del mail de verificación de la cuenta ;
-    const url = `${environment.host}/login/activacion-cuenta/${validationToken}`;
+    const url = `${environment.host}/auth/login/activacion-cuenta/${validationToken}`;
     const mail: MailOptions = {
         from: environment.mail.auth.user,
         to: email,

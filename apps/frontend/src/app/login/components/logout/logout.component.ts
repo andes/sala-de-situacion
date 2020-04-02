@@ -8,7 +8,7 @@ export class LogoutComponent implements OnInit {
     constructor(private router: Router) {}
 
     ngOnInit() {
-        this.router.navigate(['login']).then(() => {
+        this.router.navigate(['auth', 'login']).then(() => {
             window.location.reload();
         });
     }

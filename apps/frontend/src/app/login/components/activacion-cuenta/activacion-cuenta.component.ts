@@ -13,13 +13,10 @@ import { switchMap } from 'rxjs/operators';
 })
 export class ActivacionCuentaComponent implements OnInit {
     public email = ''; // Lo dejo por si se quiere mostrar en el html el email (usuario) como feedback
-    public token = '';
-    user$: Observable<IUsuario>;
+    public user$: Observable<IUsuario>;
     constructor(public plex: Plex, private route: ActivatedRoute, private router: Router, private auth: AuthService) {}
 
     ngOnInit() {
-        //Activar la cuenta
-        this.token = this.route.snapshot.paramMap.get('token');
         //Busca el token y activa la cuenta
         this.user$ = this.route.paramMap.pipe(
             switchMap((params: ParamMap) => this.auth.activarCuenta(params.get('token')))
@@ -27,6 +24,6 @@ export class ActivacionCuentaComponent implements OnInit {
     }
 
     volver() {
-        this.router.navigate(['login']);
+        this.router.navigate(['auth', 'login']);
     }
 }

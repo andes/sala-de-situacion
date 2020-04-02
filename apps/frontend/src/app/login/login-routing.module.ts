@@ -8,16 +8,15 @@ import { VerifyEmailComponent } from './components/verify-email/verify-email.com
 import { ActivacionCuentaComponent } from './components/activacion-cuenta/activacion-cuenta.component';
 
 const routes = [
-    { path: '', component: LoginComponent },
+    { path: 'login', component: LoginComponent },
     { path: 'logout', component: LogoutComponent, canActivate: [RoutingGuard] },
     { path: 'register-user', component: RegisterUserComponent },
     { path: 'verify-email/:email', component: VerifyEmailComponent },
     { path: 'activacion-cuenta/:token', component: ActivacionCuentaComponent }
-
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     providers: []
 })
-export class LoginRoutingModule { }
+export class LoginRoutingModule {}
