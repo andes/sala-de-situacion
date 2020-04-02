@@ -5,9 +5,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { PlexModule } from '@andes/plex';
 
 import { AppInstitutionComponent } from './institution.component';
+import { InstitutionRouting } from './institution.routing';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, HttpClientModule, PlexModule],
+    imports: [CommonModule, FormsModule, HttpClientModule, PlexModule, InstitutionRouting],
     declarations: [AppInstitutionComponent],
     providers: []
 })

@@ -6,7 +6,8 @@ import { AppInstitutionComponent } from './institution.component';
 const routes: Routes = [
     {
         path: 'institution',
-        component: AppInstitutionComponent
+        component: AppInstitutionComponent,
+        pathMatch: 'full'
     }
 ];
 
