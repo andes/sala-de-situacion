@@ -5,45 +5,36 @@ import { Router } from '@angular/router';
 import { IUsuario } from './IUsuario.interfaces';
 
 @Component({
-  selector: 'register-user',
-  templateUrl: './register-user.html'
+    selector: 'register-user',
+    templateUrl: './register-user.html'
 })
 export class RegisterUserComponent implements OnInit {
-  public email = '';
-  public disableEnviar = false;
-  usuario = {
-    documento: '',
-    nombre: '',
-    apellido: '',
-    email: '',
-    telefono: '',
-    password: ''
-  };
+    public email = '';
+    public disableEnviar = false;
+    usuario = {
+        documento: '',
+        nombre: '',
+        apellido: '',
+        email: '',
+        telefono: '',
+        password: ''
+    };
 
+    constructor(public plex: Plex, private auth: AuthService, private router: Router) {}
 
-  constructor(
-    public plex: Plex,
-    private auth: AuthService,
-    private router: Router
-  ) { }
+    ngOnInit() {}
 
-  ngOnInit() {
-  }
+    enviar() {
+        this.disableEnviar = true;
+        this.auth.create(this.usuario).subscribe(
+            data => {
+                this.router.navigate(['login/verify-email/' + this.usuario.email]);
+            },
+            err => {}
+        );
+    }
 
-  enviar() {
-    this.disableEnviar = true;
-    this.auth.create(this.usuario).subscribe(
-      data => {
-        this.router.navigate(['login/verify-email/' + this.usuario.email]);
-      },
-      err => {
-      }
-    );
-  }
-
-  cancelar() {
-    this.router.navigate(['login']);
-  }
-
-
+    cancelar() {
+        this.router.navigate(['login']);
+    }
 }

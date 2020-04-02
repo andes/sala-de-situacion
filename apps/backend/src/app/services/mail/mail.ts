@@ -5,11 +5,10 @@ export interface MailOptions {
     from: string;
     to: string;
     subject: string;
-    text: string
+    text: string;
 }
 
 export async function sendMail(options: MailOptions) {
-
     const mailOptions = {
         from: options.from,
         to: options.to,
@@ -22,15 +21,14 @@ export async function sendMail(options: MailOptions) {
             host: environment.mail.host,
             port: environment.mail.port,
             secure: environment.mail.secure,
-            auth: environment.mail.auth,
+            auth: environment.mail.auth
         });
 
         return await transporter.sendMail(mailOptions);
-
     } catch (err) {
-        return err
+        return err;
     }
-};
+}
 
 export async function sendEmailValidacion(email: string, nombre: string, validationToken: string) {
     //Se realiza el envio del mail de verificación de la cuenta ;
@@ -39,7 +37,7 @@ export async function sendEmailValidacion(email: string, nombre: string, validat
         from: environment.mail.auth.user,
         to: email,
         subject: 'SALA DE SITUACIÓN :: Verificación de cuenta',
-        text: `${nombre}, gracias por registrar tu cuenta. Para activarla haz click aquí ${url}`,
+        text: `${nombre}, gracias por registrar tu cuenta. Para activarla haz click aquí ${url}`
     };
     return sendMail(mail);
 }

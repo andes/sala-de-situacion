@@ -13,14 +13,14 @@ import { LoginRoutingModule } from './login-routing.module';
 import { ActivacionCuentaComponent } from './components/activacion-cuenta/activacion-cuenta.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    HttpClientModule,
-    PlexModule,
-    LoginRoutingModule
-  ],
-  declarations: [LoginComponent, LogoutComponent, RegisterUserComponent, VerifyEmailComponent, ActivacionCuentaComponent],
-  providers: []
+    imports: [CommonModule, FormsModule, HttpClientModule, PlexModule, LoginRoutingModule],
+    declarations: [
+        LoginComponent,
+        LogoutComponent,
+        RegisterUserComponent,
+        VerifyEmailComponent,
+        ActivacionCuentaComponent
+    ],
+    providers: []
 })
-export class LoginModule { }
+export class LoginModule {}

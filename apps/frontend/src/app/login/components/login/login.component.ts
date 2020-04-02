@@ -13,11 +13,7 @@ export class LoginComponent implements OnInit {
     public password = '';
     public loading = false;
 
-    constructor(
-        private plex: Plex,
-        private auth: AuthService,
-        private router: Router
-    ) { }
+    constructor(private plex: Plex, private auth: AuthService, private router: Router) {}
 
     ngOnInit() {
         this.auth.logout();

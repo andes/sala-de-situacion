@@ -5,7 +5,7 @@ import { Plex } from '@andes/plex';
 
 @Injectable()
 export class RoutingGuard implements CanActivate {
-    constructor(private router: Router, private plex: Plex) { }
+    constructor(private router: Router, private plex: Plex) {}
 
     canActivate() {
         // this.router.navigate(['/login']);
@@ -15,7 +15,7 @@ export class RoutingGuard implements CanActivate {
 
 @Injectable()
 export class RoutingNavBar implements CanActivate {
-    constructor(private plex: Plex) { }
+    constructor(private plex: Plex) {}
 
     canActivate() {
         this.plex.clearNavbar();
@@ -23,4 +23,3 @@ export class RoutingNavBar implements CanActivate {
         return true;
     }
 }
-

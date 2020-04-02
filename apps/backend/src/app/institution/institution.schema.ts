@@ -3,7 +3,7 @@ import { environment } from '../../environments/environment';
 import { AuditPlugin } from '@andes/mongoose-plugin-audit';
 
 export const InstitutionsSchema = new mongoose.Schema({
-    activo: Boolean,
+    activo: { type: Boolean, default: false },
     nombre: String,
     email: String,
     telefono: String,
@@ -12,9 +12,10 @@ export const InstitutionsSchema = new mongoose.Schema({
         index: '2d'
     },
     direccion: String,
+    barrio: String,
+    localidad: String,
     provincia: String,
     zona: String,
-    localidad: String,
     tipoInstitutcion: String
 });
 
