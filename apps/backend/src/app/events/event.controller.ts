@@ -1,4 +1,4 @@
-import { MongoQuery, ResourceBase, ResourceNotFound } from '@andes/core';
+import { MongoQuery, ResourceBase } from '@andes/core';
 import { Event } from './event.schema';
 import { authenticate } from '../application';
 
@@ -13,9 +13,9 @@ class EventsResource extends ResourceBase {
         search: ['nombre', 'categoria', 'activo'],
         indicadores: {
             field: 'indicadores.key',
-            fn: (value) => value
+            fn: value => value
         }
-    }
+    };
 }
 
 export const EventsCtr = new EventsResource();
