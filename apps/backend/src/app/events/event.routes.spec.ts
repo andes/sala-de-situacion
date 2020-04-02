@@ -4,7 +4,6 @@ import { environment } from '../../environments/environment';
 const request = require('supertest');
 import { EventsCtr, EventsRouter } from './event.controller';
 
-
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
 
 let mongoServer: any;
@@ -20,7 +19,6 @@ beforeAll(async () => {
     application.add({ path: '/api', router: EventsRouter });
     application.start();
     app = application.expressApp;
-
 });
 
 afterAll(async () => {
@@ -30,29 +28,27 @@ afterAll(async () => {
 });
 
 describe('Event - Test', () => {
-    let eventoNew;
-
     it('create evento', () => {
         const evento = {
-            'activo': false,
-            'nombre': 'Registro de cama',
-            'categoria': 'Cama',
-            'indicadores': [
+            activo: false,
+            nombre: 'Registro de cama',
+            categoria: 'Cama',
+            indicadores: [
                 {
-                    'key': 'camas_disponibles',
-                    'label': 'cantidad de camas disponibles',
-                    'type': 'number',
-                    'min': 0,
-                    'max': 200,
-                    'required': true
+                    key: 'camas_disponibles',
+                    label: 'cantidad de camas disponibles',
+                    type: 'number',
+                    min: 0,
+                    max: 200,
+                    required: true
                 },
                 {
-                    'key': 'camas_ocupadas',
-                    'label': 'cantidad de camas ocupadas',
-                    'type': 'number',
-                    'min': 0,
-                    'max': 200,
-                    'required': true
+                    key: 'camas_ocupadas',
+                    label: 'cantidad de camas ocupadas',
+                    type: 'number',
+                    min: 0,
+                    max: 200,
+                    required: true
                 }
             ]
         };
@@ -61,10 +57,9 @@ describe('Event - Test', () => {
             .send(evento)
             .set('Accept', 'application/json')
             .expect(200)
-            .then(async (response: any) => {
+            .then(async () => {
                 const eventos = await EventsCtr.search({ categoria: evento.categoria }, {}, null);
                 expect(eventos.length).toBe(1);
             });
     });
-
 });

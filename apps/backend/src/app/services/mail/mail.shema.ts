@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-export let mailSchema = new mongoose.Schema({
+export const EmailSchema = new mongoose.Schema({
     subject: String,
     email: String,
     // Template name and extra data to render HTML emails (view handlebars)
@@ -29,4 +29,4 @@ export let mailSchema = new mongoose.Schema({
     }
 });
 
-export let Email = mongoose.model('email', mailSchema, 'email');
+export const Email = mongoose.model('email', EmailSchema, 'email');
