@@ -8,7 +8,6 @@ export class RoutingGuard implements CanActivate {
     constructor(private auth: AuthService, private router: Router) {}
 
     canActivate() {
-        debugger;
         const token = this.auth.getToken();
         if (!token) {
             return this.router.navigate(['auth', 'login']);
