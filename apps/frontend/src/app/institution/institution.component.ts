@@ -40,7 +40,7 @@ export class AppInstitutionComponent implements OnInit {
         private locationService: LocationService,
         private institutionService: InstitutionService,
         private router: Router
-    ) {}
+    ) { }
 
     ngOnInit() {
         // Cargamos todas las provincias
@@ -91,7 +91,15 @@ export class AppInstitutionComponent implements OnInit {
 
         this.institutionService.save(dto).subscribe(rta => {
             this.plex.toast('success', `La institución ${rta.nombre} se guardó correctamente`);
-            this.router.navigate(['/home']);
+            this.mainInsitutions();
         });
+    }
+
+    cancelar() {
+        this.mainInsitutions();
+    }
+
+    mainInsitutions() {
+        this.router.navigate(['/institution/institution-list']);
     }
 }
