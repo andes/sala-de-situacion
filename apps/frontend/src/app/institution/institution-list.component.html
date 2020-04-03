@@ -1,0 +1,31 @@
+<plex-layout>
+    <plex-layout-main>
+        <plex-title titulo="Listado de instituciones">
+            <div class="col d-flex justify-content-end">
+                <plex-button label="Nueva Institución" type="info" (click)="create()"></plex-button>
+                <plex-button label="Menú principal" type="danger" (click)="mainMenu()"></plex-button>
+            </div>
+        </plex-title>
+
+        <plex-list height="60%" (scrolled)="onScroll()">
+            <plex-heading>
+                <b label>Nombre</b>
+                <b label>Email</b>
+                <b label>Teléfono</b>
+                <b label>Dirección</b>
+                <b label></b>
+            </plex-heading>
+            <ng-container *ngFor="let institution of institutions">
+                <plex-item class="hover" [botonera]="true" [selected]="institution.selected">
+                    <plex-label>{{ institution.nombre }}</plex-label>
+                    <plex-label>{{ institution.email }}</plex-label>
+                    <plex-label>{{ institution.telefono }}</plex-label>
+                    <plex-label>{{ institution.direccion }}</plex-label>
+                    <plex-badge *ngIf="institution.activo" type="success">Habilitado</plex-badge>
+                    <plex-badge *ngIf="!institution.activo" type="danger">deshabilitado</plex-badge>
+                    <plex-button type="info" size="sm" icon="pencil" (click)="edit(institution)"></plex-button>
+                </plex-item>
+            </ng-container>
+        </plex-list>
+    </plex-layout-main>
+</plex-layout>
