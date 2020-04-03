@@ -1,16 +1,16 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
-import { AppInstitutionComponent } from './institution.component';
+import { AppInstitutionCrudComponent } from './institution-crud.component';
 import { AppInstitutionListComponent } from './institution-list.component';
 
 const routes: Routes = [
     {
-        path: 'institution',
-        component: AppInstitutionComponent
+        path: 'crud',
+        component: AppInstitutionCrudComponent
     },
     {
-        path: 'institution-list',
+        path: 'list',
         component: AppInstitutionListComponent
     }
 ];
@@ -19,4 +19,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     providers: []
 })
-export class InstitutionRouting { }
+export class InstitutionRouting {}

@@ -20,12 +20,14 @@ export class AppInstitutionListComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.institutionService.search({}).subscribe(rta => { this.institutions = rta });
+        this.institutionService.search({}).subscribe(rta => {
+            this.institutions = rta;
+        });
     }
 
     edit(institution) {
         this.institucion = institution;
-        this.activateInstitution = true
+        this.router.navigate(['/institution/crud', institution]);
     }
 
     onClose() {
@@ -38,11 +40,14 @@ export class AppInstitutionListComponent implements OnInit {
             this.plex.toast('success', `La institución ${rta.nombre} ha sido actualizada correctamente`);
             this.institucion = null;
             this.activateInstitution = false;
-        })
+        });
     }
 
     create() {
-        this.router.navigate(['/institution/institution']);
+        this.router.navigate(['/institution/crud']);
     }
 
+    mainMenu() {
+        this.router.navigate(['/']);
+    }
 }
