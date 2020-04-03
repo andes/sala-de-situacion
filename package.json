@@ -4,7 +4,7 @@
     "license": "MIT",
     "scripts": {
         "nx": "nx",
-        "start": "nx serve",
+        "start": "concurrently \"npx nx serve backend\" \"nx serve\"",
         "build": "nx build",
         "test": "nx test",
         "lint": "nx workspace-lint && nx lint",
@@ -43,6 +43,7 @@
         "@angular/platform-browser-dynamic": "^8.2.0",
         "@angular/router": "^8.2.0",
         "bcrypt": "^4.0.1",
+        "concurrently": "^5.1.0",
         "core-js": "^2.5.4",
         "debug": "^4.1.1",
         "jquery": "^3.4.1",
