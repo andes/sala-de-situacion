@@ -29,7 +29,6 @@ export class AppInstitutionCrudComponent implements OnInit {
         activo: false
     };
     neuquen = true;
-    update = false;
     provincias = [];
     localidades = [];
     barrios = [];
@@ -49,7 +48,6 @@ export class AppInstitutionCrudComponent implements OnInit {
     ngOnInit() {
         this.institutionParam = this.route.snapshot.params; // Si viene un objeto es un update
         if (this.institutionParam.id) {
-            this.update = true;
             this.loadInstitution(this.institutionParam);
             this.neuquen = this.institutionParam.provincia === 'Neuquén' ? true : false;
         } else {
@@ -72,17 +70,17 @@ export class AppInstitutionCrudComponent implements OnInit {
         this.institution.telefono = institucion.telefono;
         this.institution.location.direccion = institucion.direccion ? institucion.direccion : null;
         this.institution.location.barrio = institucion.barrio
-            ? this.locationService.getBarrio(institucion.barrio).subscribe(barrios => {
+            ? this.locationService.getBarrios({ nombre: institucion.barrio }).subscribe(barrios => {
                 this.institution.location.barrio = barrios[0];
             })
             : '';
         this.institution.location.localidad = institucion.localidad
-            ? this.locationService.getLocalidad(institucion.localidad).subscribe(localidades => {
+            ? this.locationService.getLocalidades({ nombre: institucion.localidad }).subscribe(localidades => {
                 this.institution.location.localidad = localidades[0];
             })
             : '';
         this.institution.location.provincia = institucion.provincia
-            ? this.locationService.getProvincia(institucion.provincia).subscribe(provincias => {
+            ? this.locationService.getProvincias({ nombre: institucion.provincia }).subscribe(provincias => {
                 this.institution.location.provincia = provincias[0];
             })
             : '';
@@ -128,19 +126,12 @@ export class AppInstitutionCrudComponent implements OnInit {
             activo: this.institution.activo
         };
 
-        if (this.update) {
-            this.institutionService.update(this.institution.id, dto).subscribe(rta => {
-                this.plex.toast('success', `La institución ${rta.nombre} ha sido actualizada correctamente`);
-                this.mainInsitutions();
-            });
-        } else {
-            delete dto['id'];
 
-            this.institutionService.save(dto).subscribe(rta => {
-                this.plex.toast('success', `La institución ${rta.nombre} se guardó correctamente`);
-                this.mainInsitutions();
-            });
-        }
+
+        this.institutionService.save(dto).subscribe(rta => {
+            this.plex.toast('success', `La institución ${rta.nombre} se guardó correctamente`);
+            this.mainInsitutions();
+        });
     }
 
     cancelar() {
