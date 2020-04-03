@@ -21,7 +21,7 @@ export class AppComponent {
     public crearMenu() {
         this.menuList = [];
         this.menuList.push({ label: 'Página Principal', icon: 'home', route: '/home' });
-        this.menuList.push({ label: 'Alta de institución', icon: 'hospital-building', route: '/institution' });
+        this.menuList.push({ label: 'Instituciones', icon: 'hospital-building', route: '/institution/institution-list' });
         this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/login/logout' });
         this.plex.updateMenu(this.menuList);
     }
