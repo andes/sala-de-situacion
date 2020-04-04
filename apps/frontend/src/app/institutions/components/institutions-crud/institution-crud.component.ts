@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Plex } from '@andes/plex';
-import { LocationService } from '../shared/location.services';
-import { InstitutionService } from './institution.service';
+import { LocationService } from '../../../shared/location.services';
+import { InstitutionService } from '../../service/institution.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({

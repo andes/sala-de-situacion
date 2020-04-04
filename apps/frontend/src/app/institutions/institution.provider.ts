@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { InstitutionService } from './institution.service';
+import { InstitutionService } from './service/institution.service';
 
 @NgModule({
     providers: [InstitutionService]
