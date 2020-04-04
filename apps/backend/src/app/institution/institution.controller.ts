@@ -11,7 +11,7 @@ class InstitutionResource extends ResourceBase {
         direccion: MongoQuery.partialString,
         provincia: MongoQuery.partialString,
         localidad: MongoQuery.partialString,
-        tipoInstitutcion: MongoQuery.partialString,
+        tipoInstitucion: MongoQuery.partialString,
         zona: MongoQuery.partialString,
         activo: MongoQuery.equalMatch,
         search: ['nombre', 'direccion', 'zona', 'tipoInstitucion', 'provincia', 'localidad']

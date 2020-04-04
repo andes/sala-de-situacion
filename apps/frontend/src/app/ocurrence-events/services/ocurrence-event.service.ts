@@ -17,7 +17,7 @@ export interface OcurrenceEvent {
 
 @Injectable()
 export class OcurrenceEventsService extends ResourceBaseHttp<OcurrenceEvent> {
-    protected url = '/api/ocurrence-events';
+    protected url = '/ocurrence-events';
 
     constructor(protected server: Server) {
         super(server);

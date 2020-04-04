@@ -21,6 +21,11 @@ const appRoutes: Routes = [
         loadChildren: './events/events.module#EventsModule',
         canActivate: [RoutingNavBar, RoutingGuard]
     },
+    {
+        path: 'ocurrence-events',
+        loadChildren: './ocurrence-events/ocurrence-events.module#OcurrenceEventsModule',
+        canActivate: [RoutingNavBar, RoutingGuard]
+    },
 
     { path: '**', redirectTo: '/' }
 ];

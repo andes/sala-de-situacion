@@ -15,7 +15,7 @@ export interface Event {
     }[];
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class EventsService extends ResourceBaseHttp<Event> {
     protected url = '/events';
 

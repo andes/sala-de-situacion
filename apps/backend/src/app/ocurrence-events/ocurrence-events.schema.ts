@@ -29,6 +29,7 @@ export const OcurrenceEventSchema = new mongoose.Schema({
     fecha: Date,
     indicadores: [
         {
+            _id: false,
             key: String,
             valor: mongoose.SchemaTypes.Mixed
         }
