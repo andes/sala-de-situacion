@@ -10,6 +10,7 @@ import { EventsService } from './service/events.service';
 import { AppEventsCrudComponent } from './components/events-crud/events-crud.component';
 import { EventsListComponent } from './components/events-list/events-list.component';
 import { RouterModule } from '@angular/router';
+import { EventsResolver } from './resolver/events.resolver';
 
 @NgModule({
     // prettier-ignore
@@ -30,7 +31,8 @@ import { RouterModule } from '@angular/router';
     // prettier-ignore
     providers: [
         OcurrenceEventsService, 
-        EventsService
+        EventsService,
+        EventsResolver
     ],
     bootstrap: []
 })

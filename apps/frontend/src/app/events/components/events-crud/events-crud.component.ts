@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Event, EventsService } from '../../service/events.service';
 import { Plex } from '@andes/plex';
 import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-events-crud',
     templateUrl: './events-crud.component.html'
 })
-export class AppEventsCrudComponent {
+export class AppEventsCrudComponent implements OnInit {
     public tiposList = [
         { id: 'string', nombre: 'Texto' },
         { id: 'int', nombre: 'Numerico' }
@@ -28,7 +29,22 @@ export class AppEventsCrudComponent {
         ]
     };
 
-    constructor(private plex: Plex, private eventsService: EventsService, private location: Location) {}
+    constructor(
+        private plex: Plex,
+        private eventsService: EventsService,
+        private location: Location,
+        private route: ActivatedRoute
+    ) {}
+
+    ngOnInit() {
+        const event = this.route.snapshot.data.event;
+        if (event) {
+            this.event = event;
+            this.event.indicadores.forEach(indicador => {
+                indicador.type = this.tiposList.find(t => t.id === indicador.type) as any;
+            });
+        }
+    }
 
     onAdd() {
         this.event.indicadores.push({
