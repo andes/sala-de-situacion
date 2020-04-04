@@ -16,8 +16,8 @@
                     <plex-label [titulo]="event.nombre"></plex-label>
                     <plex-label [titulo]="event.categoria"></plex-label>
                     <plex-label> {{ event.indicadores.length }} </plex-label>
-                    <plex-badge [type]="event.active ? 'success' : 'danger'">
-                        {{ event.active ? 'HABILITADO' : 'DESHABILITADO' }}
+                    <plex-badge [type]="event.activo ? 'success' : 'danger'">
+                        {{ event.activo ? 'HABILITADO' : 'DESHABILITADO' }}
                     </plex-badge>
                     <plex-button size="sm" icon="pencil" type="info" [routerLink]="[event.id]"></plex-button>
                 </plex-item>
