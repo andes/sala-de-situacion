@@ -10,7 +10,7 @@ class EventsResource extends ResourceBase {
         nombre: MongoQuery.partialString,
         categoria: MongoQuery.partialString,
         activo: MongoQuery.equalMatch,
-        search: ['nombre', 'categoria', 'activo'],
+        search: ['nombre', 'categoria'],
         indicadores: {
             field: 'indicadores.key',
             fn: value => value

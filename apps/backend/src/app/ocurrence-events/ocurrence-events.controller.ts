@@ -1,10 +1,10 @@
 import { MongoQuery, ResourceBase } from '@andes/core';
-import { OcurrenceEvent } from './occurrence-events.schema';
+import { OcurrenceEvent } from './ocurrence-events.schema';
 import { authenticate } from '../application';
 
 class OcurrenceEventResource extends ResourceBase {
     Model = OcurrenceEvent;
-    resourceName = 'ocurrence-event';
+    resourceName = 'ocurrence-events';
     middlewares = [authenticate()];
     searchFileds = {
         nombre: MongoQuery.partialString,

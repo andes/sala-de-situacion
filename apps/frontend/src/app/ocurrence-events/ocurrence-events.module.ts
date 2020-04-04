@@ -4,17 +4,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PlexModule } from '@andes/plex';
-import { EventsRouting } from './events.routing';
-import { AppEventsCrudComponent } from './components/events-crud/events-crud.component';
-import { EventsListComponent } from './components/events-list/events-list.component';
+import { OcurrenceEventsRouting } from './ocurrence-events.routing';
+import { OcurrenceEventsService } from './services/ocurrence-event.service';
 import { RouterModule } from '@angular/router';
-import { EventsResolver } from './resolver/events.resolver';
+import { OccurrenceEventsCrudComponent } from './components/ocurrence-events-crud/ocurrecen-events-crud.component';
 
 @NgModule({
     // prettier-ignore
     declarations: [
-        AppEventsCrudComponent,
-        EventsListComponent
+        OccurrenceEventsCrudComponent 
     ],
     // prettier-ignore
     imports: [
@@ -23,13 +21,13 @@ import { EventsResolver } from './resolver/events.resolver';
         HttpClientModule, 
         RouterModule,
         PlexModule,
-        NgxObserveModule, 
-        EventsRouting
+        NgxObserveModule,  
+        OcurrenceEventsRouting
     ],
     // prettier-ignore
     providers: [
-        EventsResolver
+        OcurrenceEventsService
     ],
     bootstrap: []
 })
-export class EventsModule {}
+export class OcurrenceEventsModule {}
