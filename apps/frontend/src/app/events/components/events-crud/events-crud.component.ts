@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Event, EventsService } from '../../service/events.service';
 import { Plex } from '@andes/plex';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
     selector: 'app-events-crud',
@@ -28,7 +28,7 @@ export class AppEventsCrudComponent {
         ]
     };
 
-    constructor(private plex: Plex, private eventsService: EventsService, private router: Router) {}
+    constructor(private plex: Plex, private eventsService: EventsService, private location: Location) {}
 
     onAdd() {
         this.event.indicadores.push({
@@ -61,8 +61,7 @@ export class AppEventsCrudComponent {
                 })
             };
             this.eventsService.save(dataSaved).subscribe(() => {
-                // Nos vamos al home por ahora
-                this.router.navigate(['/']);
+                this.location.back();
             });
         }
     }

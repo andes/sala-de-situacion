@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { environment } from './../environments/environment';
 import { Server } from '@andes/shared';
 import { Plex } from '@andes/plex';
+import { Location } from '@angular/common';
 
 @Component({
     selector: 'sala-de-situacion-root',
@@ -11,8 +12,8 @@ import { Plex } from '@andes/plex';
 export class AppComponent {
     private menuList = [];
 
-    constructor(public server: Server, public plex: Plex) {
-        server.setBaseURL(environment.API);
+    constructor(private server: Server, private plex: Plex, private location: Location) {
+        this.server.setBaseURL(environment.API);
 
         this.plex.updateTitle('SALA DE SITUACIÓN');
         this.crearMenu();
@@ -24,5 +25,9 @@ export class AppComponent {
         this.menuList.push({ label: 'Instituciones', icon: 'hospital-building', route: '/institution/list' });
         this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/login/logout' });
         this.plex.updateMenu(this.menuList);
+    }
+
+    back() {
+        this.location.back();
     }
 }

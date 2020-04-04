@@ -1,2 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import '../../../node_modules/@andes/plex/src/lib/styles.scss';
+
+.logo-nav {
+    --nav-bar-icon-color: #002738;
+    float: left;
+    background-color: var(--nav-bar-icon-color);
+    width: 48px;
+    height: 50px;
+    padding: 2px;
+}
