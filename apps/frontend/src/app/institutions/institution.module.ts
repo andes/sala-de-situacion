@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PlexModule } from '@andes/plex';
 
-import { AppInstitutionCrudComponent } from './institution-crud.component';
-import { AppInstitutionListComponent } from './institution-list.component';
+import { AppInstitutionCrudComponent } from './components/institutions-crud/institution-crud.component';
+import { AppInstitutionListComponent } from './components/institutions-list/institution-list.component';
 
 import { InstitutionRouting } from './institution.routing';
 

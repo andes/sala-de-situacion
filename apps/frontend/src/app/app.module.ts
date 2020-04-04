@@ -13,7 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RoutingNavBar, RoutingGuard } from './login/routing-guard';
 import { AuthService } from './login/auth.services';
 import { LocationService } from './shared/location.services';
-import { InstitutionProvidersModule } from './institution/institution.provider';
+import { InstitutionProvidersModule } from './institutions/institution.provider';
 
 @NgModule({
     declarations: [AppComponent, AppHomeComponent],

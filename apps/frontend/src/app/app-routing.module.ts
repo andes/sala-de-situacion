@@ -13,7 +13,7 @@ const appRoutes: Routes = [
     { path: 'auth', loadChildren: './login/login.module#LoginModule', canActivate: [RoutingNavBar] },
     {
         path: 'institution',
-        loadChildren: './institution/institution.module#InstitutionModule',
+        loadChildren: './institutions/institution.module#InstitutionModule',
         canActivate: [RoutingNavBar, RoutingGuard]
     },
     {
