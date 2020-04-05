@@ -1,28 +1,51 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EventsService, Event } from '../../../events/service/events.service';
 import { InstitutionService } from '../../../institutions/service/institution.service';
 import { Unsubscribe } from '@andes/shared';
-import { OcurrenceEvent, OcurrenceEventsService } from '../../services/ocurrence-event.service';
+import { OcurrenceEvent, OcurrenceEventsService } from '../../services/ocurrence-events.service';
 import { Plex } from '@andes/plex';
 import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'occurrence-events-crud',
-    templateUrl: './ocurrecen-events-crud.component.html'
+    templateUrl: './ocurrence-events-crud.component.html'
 })
-export class OccurrenceEventsCrudComponent {
+export class OccurrenceEventsCrudComponent implements OnInit {
     public institutionSelected: any;
     public eventSelected: Event;
+    public tiposList;
     public eventDate: Date;
     public indicadores = {};
+    public ocurrenceEvent: OcurrenceEvent;
 
     constructor(
         private ocurrenceEventsService: OcurrenceEventsService,
         private eventsService: EventsService,
         private institutionService: InstitutionService,
         private plex: Plex,
-        private location: Location
+        private location: Location,
+        private route: ActivatedRoute
     ) {}
+
+    ngOnInit() {
+        const ocurrenceEvent: OcurrenceEvent = this.route.snapshot.data.ocurrenceEvent;
+        if (ocurrenceEvent) {
+            this.ocurrenceEvent = ocurrenceEvent;
+            console.log('ocurrenceEvents ', this.ocurrenceEvent);
+            this.institutionSelected = ocurrenceEvent.institucion;
+            this.eventDate = ocurrenceEvent.fecha;
+            this.eventsService.search({ categoria: ocurrenceEvent.eventKey }).subscribe(evento => {
+                // debugger;
+                this.eventSelected = evento[0];
+                this.indicadores = this.ocurrenceEvent.indicadores;
+                console.log(this.eventSelected);
+            });
+            // this.ocurrenceEvent.indicadores.forEach(indicador => {
+            //     this.eventSelected['type'] = this.tiposList.find(t => t.id === indicador.type) as any;
+            // });
+        }
+    }
 
     @Unsubscribe()
     onInstitutionSearch($event) {
