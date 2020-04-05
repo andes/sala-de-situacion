@@ -32,18 +32,14 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         const ocurrenceEvent: OcurrenceEvent = this.route.snapshot.data.ocurrenceEvent;
         if (ocurrenceEvent) {
             this.ocurrenceEvent = ocurrenceEvent;
-            console.log('ocurrenceEvents ', this.ocurrenceEvent);
             this.institutionSelected = ocurrenceEvent.institucion;
             this.eventDate = ocurrenceEvent.fecha;
             this.eventsService.search({ categoria: ocurrenceEvent.eventKey }).subscribe(evento => {
-                // debugger;
                 this.eventSelected = evento[0];
-                this.indicadores = this.ocurrenceEvent.indicadores;
-                console.log(this.eventSelected);
             });
-            // this.ocurrenceEvent.indicadores.forEach(indicador => {
-            //     this.eventSelected['type'] = this.tiposList.find(t => t.id === indicador.type) as any;
-            // });
+            this.ocurrenceEvent.indicadores.forEach(indicador => {
+                this.indicadores[indicador.key] = indicador.valor;
+            });
         }
     }
 
@@ -75,7 +71,8 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         for (const key in this.indicadores) {
             indicadores.push({ key, valor: this.indicadores[key] });
         }
-        const occurrenceEvent: OcurrenceEvent = {
+        const event: OcurrenceEvent = {
+            id: this.ocurrenceEvent.id,
             institucion: {
                 id: this.institutionSelected.id,
                 nombre: this.institutionSelected.nombre
@@ -85,7 +82,7 @@ export class OccurrenceEventsCrudComponent implements OnInit {
             indicadores,
             activo: true
         };
-        this.ocurrenceEventsService.save(occurrenceEvent).subscribe(() => {
+        this.ocurrenceEventsService.save(event).subscribe(() => {
             this.plex.toast('success', 'Indicadores registrados con exito! ');
             this.location.back();
         });

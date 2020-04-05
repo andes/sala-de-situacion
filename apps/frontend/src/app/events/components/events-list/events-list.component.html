@@ -1,34 +1,34 @@
 <plex-layout>
-    <plex-layout-main>
-        <plex-title titulo="Listado de eventos">
-            <plex-button type="info" [routerLink]="['create']"> NUEVO </plex-button>
-        </plex-title>
+  <plex-layout-main>
+    <plex-title titulo="Listado de indicadores">
+      <plex-button type="info" [routerLink]="['create']"> NUEVO </plex-button>
+    </plex-title>
 
-        <div *ngxObserve="events$ as events; before: loadingTemplate; error: errorTemplate">
-            <plex-list>
-                <plex-heading>
-                    <b label>Nombre</b>
-                    <b label>Categoría/Key</b>
-                    <b label>Cant. Variables</b>
-                    <b button></b>
-                </plex-heading>
-                <plex-item *ngFor="let event of events">
-                    <plex-label [titulo]="event.nombre"></plex-label>
-                    <plex-label [titulo]="event.categoria"></plex-label>
-                    <plex-label> {{ event.indicadores.length }} </plex-label>
-                    <plex-badge [type]="event.activo ? 'success' : 'danger'">
-                        {{ event.activo ? 'HABILITADO' : 'DESHABILITADO' }}
-                    </plex-badge>
-                    <plex-button size="sm" icon="pencil" type="info" [routerLink]="[event.id]"></plex-button>
-                </plex-item>
-            </plex-list>
-        </div>
+    <div *ngxObserve="events$ as events; before: loadingTemplate; error: errorTemplate">
+      <plex-list>
+        <plex-heading>
+          <b label>Nombre</b>
+          <b label>Categoría/Key</b>
+          <b label>Cant. Variables</b>
+          <b button></b>
+        </plex-heading>
+        <plex-item *ngFor="let event of events">
+          <plex-label [titulo]="event.nombre"></plex-label>
+          <plex-label [titulo]="event.categoria"></plex-label>
+          <plex-label> {{ event.indicadores.length }} </plex-label>
+          <plex-badge [type]="event.activo ? 'success' : 'danger'">
+            {{ event.activo ? 'HABILITADO' : 'DESHABILITADO' }}
+          </plex-badge>
+          <plex-button size="sm" icon="pencil" type="info" [routerLink]="[event.id]"></plex-button>
+        </plex-item>
+      </plex-list>
+    </div>
 
-        <ng-template #loadingTemplate>
-            <p>Loading ...</p>
-        </ng-template>
-        <ng-template #errorTemplate let-error>
-            <p>{{ error }}</p>
-        </ng-template>
-    </plex-layout-main>
+    <ng-template #loadingTemplate>
+      <p>Loading ...</p>
+    </ng-template>
+    <ng-template #errorTemplate let-error>
+      <p>{{ error }}</p>
+    </ng-template>
+  </plex-layout-main>
 </plex-layout>

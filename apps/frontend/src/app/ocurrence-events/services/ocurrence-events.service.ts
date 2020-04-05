@@ -3,6 +3,7 @@ import { ResourceBaseHttp, Server } from '@andes/shared';
 import { Injectable } from '@angular/core';
 
 export interface OcurrenceEvent {
+    id: string;
     eventKey: string;
     activo: boolean;
     fecha: Date;
