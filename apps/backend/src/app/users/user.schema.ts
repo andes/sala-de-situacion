@@ -18,14 +18,19 @@ export const UsersSchema = new mongoose.Schema({
     },
     telefono: String,
     password: String,
-    permisos: [String],
+    permisos: [
+        {
+            institucion: { _id: mongoose.Types.ObjectId, nombre: String },
+            accesos: [String]
+        }
+    ],
     validationToken: String
 });
 
 // if (environment.key) {
 //   UsersSchema.plugin(AuditPlugin);
 // }
-UsersSchema.pre('save', async function(this: any, next) {
+UsersSchema.pre('save', async function (this: any, next) {
     const SALT_FACTOR = 5;
 
     if (this.isNew) {
@@ -45,7 +50,7 @@ UsersSchema.pre('save', async function(this: any, next) {
     }
 });
 
-UsersSchema.methods.comparePassword = async function(passwordAttempt) {
+UsersSchema.methods.comparePassword = async function (passwordAttempt) {
     return await bcrypt.compare(passwordAttempt, this.password);
 };
 

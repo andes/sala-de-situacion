@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { LocationService } from '../../../shared/location.services';
 import { InstitutionService } from '../../service/institution.service';
+import { AuthService } from '../../../login/auth.services';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -40,6 +41,7 @@ export class AppInstitutionCrudComponent implements OnInit {
     constructor(
         public route: ActivatedRoute, // Permite obtener objetos o datos por parámetro.
         public plex: Plex,
+        private auth: AuthService,
         private locationService: LocationService,
         private institutionService: InstitutionService,
         private router: Router
@@ -125,12 +127,24 @@ export class AppInstitutionCrudComponent implements OnInit {
             provincia: this.institution.location.provincia.nombre,
             activo: this.institution.activo
         };
-
-
-
         this.institutionService.save(dto).subscribe(rta => {
-            this.plex.toast('success', `La institución ${rta.nombre} se guardó correctamente`);
-            this.mainInsitutions();
+            if (!this.institution.id) {
+                // cargamos el permiso inicial para el usuario
+                const permisos = {
+                    institucion: { _id: rta.id, nombre: rta.nombre },
+                    accesos: ['instituciones:*', 'permisos:*', 'eventos:*']
+                }
+                this.auth.user.permisos.push(permisos);
+                this.auth.update(this.auth.user).subscribe(ususario => {
+                    this.plex.toast('success', `La institución ${rta.nombre} se guardó correctamente`);
+                    this.mainInsitutions();
+                });
+            } else {
+                this.plex.toast('success', `La institución ${rta.nombre} se guardó correctamente`);
+                this.mainInsitutions();
+            }
+
+
         });
     }
 

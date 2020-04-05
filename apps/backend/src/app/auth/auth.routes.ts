@@ -2,7 +2,9 @@ import { application } from '../application';
 import { UsersCtr } from '../users/user.controller';
 import { Request } from '@andes/api-tool';
 import { sendEmailValidacion } from '../services/mail/mail';
+import * as jwt from 'jsonwebtoken';
 import { Types } from 'mongoose';
+import { environment } from '../../environments/environment';
 
 export const AuthRouter = application.router();
 
@@ -47,6 +49,17 @@ AuthRouter.post('/auth/validate/:token', async (req: Request, res, next) => {
         const token = req.params.token;
         await UsersCtr.validateUser(token, req);
         return res.json({ status: 'ok' });
+    } catch (err) {
+        return next(403);
+    }
+});
+
+AuthRouter.get('/auth/usuario/:token', async (req: Request, res, next) => {
+    try {
+        const token = req.params.token;
+        const tokenData: any = jwt.verify(token, environment.key);
+        const user = await UsersCtr.findById(tokenData.user_id, {});
+        return res.json(user);
     } catch (err) {
         return next(403);
     }
