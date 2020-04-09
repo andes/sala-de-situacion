@@ -72,7 +72,7 @@ export class OccurrenceEventsCrudComponent implements OnInit {
             indicadores.push({ key, valor: this.indicadores[key] });
         }
         const event: OcurrenceEvent = {
-            id: this.ocurrenceEvent.id,
+            id: this.ocurrenceEvent ? this.ocurrenceEvent.id : null,
             institucion: {
                 id: this.institutionSelected.id,
                 nombre: this.institutionSelected.nombre
