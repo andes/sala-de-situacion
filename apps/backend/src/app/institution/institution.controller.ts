@@ -1,6 +1,7 @@
 import { MongoQuery, ResourceBase } from '@andes/core';
 import { Institution } from './institution.schema';
 import { authenticate } from '../application';
+import * as mongoose from 'mongoose';
 
 class InstitutionResource extends ResourceBase {
     Model = Institution;
@@ -14,6 +15,10 @@ class InstitutionResource extends ResourceBase {
         tipoInstitucion: MongoQuery.partialString,
         zona: MongoQuery.partialString,
         activo: MongoQuery.equalMatch,
+        user: {
+            field: 'users.id',
+            fn: value => mongoose.Types.ObjectId(value)
+        },
         search: ['nombre', 'direccion', 'zona', 'tipoInstitucion', 'provincia', 'localidad']
     };
 }

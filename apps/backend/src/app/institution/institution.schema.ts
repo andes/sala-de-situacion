@@ -16,7 +16,23 @@ export const InstitutionsSchema = new mongoose.Schema({
     localidad: String,
     provincia: String,
     zona: String,
-    tipoInstitutcion: String
+    tipoInstitutcion: String,
+    users: [
+        {
+            id: String,
+            nombre: String,
+            apellido: String,
+            documento: String
+        }
+    ],
+    admins: [
+        {
+            id: String,
+            nombre: String,
+            apellido: String,
+            documento: String
+        }
+    ]
 });
 
 if (environment.key) {

@@ -32,6 +32,7 @@ export const loadUserMiddleware = async function(req: Request, res: Response, ne
     });
     if (user) {
         req.user = user;
+        req.user['usuario'] = { 'email': user.email, 'nombre': user.nombre, 'apellido': user.apellido, 'documento': user.documento };
         return next();
     } else {
         return next(403);
