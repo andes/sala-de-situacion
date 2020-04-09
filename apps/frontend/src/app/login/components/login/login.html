@@ -2,17 +2,17 @@
   <div class="login-form">
     <form #formulario="ngForm">
       <div class="row login-header">
-        <div class="col">
+        <div class="col" justify="center">
           <div class="andes"></div>
         </div>
       </div>
       <div class="row login-content">
         <div class="col">
           <plex-text label="Usuario" [autoFocus]="true" prefix="<i class='mdi mdi-account-key icon'></i>"
-                     [(ngModel)]="usuario" name="usuario" [required]="true">
+                     [(ngModel)]="usuario" name="usuario" [required]="true" placeholder="ejemplo@dominio.com">
           </plex-text>
           <plex-text label="Contraseña" [(ngModel)]="password" name="password" [password]="true"
-                     prefix="<i class='mdi mdi-dialpad'></i>">
+                     prefix="<i class='mdi mdi-textbox-password icon'></i>" [required]="true">
 
           </plex-text>
           <div class="row">&nbsp;</div>
@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="row login-footer">
-        <div class="col">
+        <div class="col" justify>
           <div class="redTICS"></div>
 
           <div class="ministerio"></div>
