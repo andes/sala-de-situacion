@@ -50,5 +50,7 @@ export class LoginComponent implements OnInit {
             this.passwordTooltip = 'ocultar contraseña';
         }
     }
-
+    forgot() {
+        this.router.navigate(['auth/reset-password']);
+    }
 }

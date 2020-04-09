@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
 export class AuthService {
     private authUrl = '/auth'; // URL to web api
 
-    constructor(private server: Server) {}
+    constructor(private server: Server) { }
 
     create(body): Observable<any> {
         return this.server.post(this.authUrl + '/create', body);
@@ -29,9 +29,22 @@ export class AuthService {
     }
 
     activarCuenta(token): Observable<any> {
-        return this.server.post(`/auth/validate/${token}`, { params: null, showError: false }).pipe(
+        return this.server.post(`${this.authUrl}/validate/${token}`, { params: null, showError: false }).pipe(
             tap(data => {
                 //Setear el token
+            })
+        );
+    }
+
+
+    resetPassword(body): Observable<any> {
+        return this.server.post(`${this.authUrl}/resetPassword`, body)
+    }
+
+    setNewValidationToken(email): Observable<any> {
+        return this.server.post(`${this.authUrl}/regenerate/${email}`, { params: null, showError: false }).pipe(
+            tap(data => {
+                // ver
             })
         );
     }

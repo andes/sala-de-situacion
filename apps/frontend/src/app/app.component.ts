@@ -24,7 +24,7 @@ export class AppComponent {
         this.menuList.push({ label: 'Página Principal', icon: 'home', route: '/home' });
         this.menuList.push({ label: 'Instituciones', icon: 'hospital-building', route: '/institution/list' });
         this.menuList.push({ label: 'Eventos', icon: 'application', route: '/events' });
-        this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/login/logout' });
+        this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/auth/logout' });
         this.plex.updateMenu(this.menuList);
     }
 
