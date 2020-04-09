@@ -8,6 +8,7 @@ export class AuthService {
     private authUrl = '/auth'; // URL to web api
     private session$: Observable<any>;
     public usuario;
+    private permisos;
 
     constructor(private server: Server) { }
 
@@ -26,6 +27,8 @@ export class AuthService {
                 tap(data => {
                     //Setear el token
                     this.setToken(data.token);
+                    this.session().subscribe(() => {
+                    });
                 })
             );
     }
@@ -68,7 +71,7 @@ export class AuthService {
             this.session$ = this.server.get('/auth/sesion').pipe(
                 tap(payload => {
                     this.usuario = payload.usuario;
-                    // this.permisos = payload.permisos;
+                    this.permisos = payload.permisos;
                 }),
                 publishReplay(1),
                 refCount()
