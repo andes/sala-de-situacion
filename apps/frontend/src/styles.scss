@@ -7,6 +7,10 @@
     --nav-bar-color: #4d7998;
 }
 
+body {
+    background-color: white !important;
+}
+
 .bg-inverse {
     background-color: var(--nav-bar-color) !important;
 }
@@ -20,5 +24,4 @@
     background-color: var(--nav-bar-icon-color);
     width: 48px;
     height: 50px;
-    padding: 2px;
 }
