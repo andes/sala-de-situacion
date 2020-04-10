@@ -1,11 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
 @import '../../../node_modules/@andes/plex/src/lib/styles.scss';
 
+// Overrides
+:root {
+    // --nav-bar-color: #7a3e7b;
+    --nav-bar-color: #4d7998;
+}
+
+body {
+    background-color: white !important;
+}
+
+.bg-inverse {
+    background-color: var(--nav-bar-color) !important;
+}
+// Fin Overrides 
+
 .logo-nav {
     --nav-bar-icon-color: #002738;
-    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: var(--nav-bar-icon-color);
     width: 48px;
     height: 50px;
-    padding: 2px;
 }

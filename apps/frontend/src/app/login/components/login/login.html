@@ -1,39 +1,40 @@
-<div class="login-container">
-  <div class="login-form">
+<div class="login">
     <form #formulario="ngForm">
-      <div class="row login-header">
-        <div class="col">
-          <div class="andes"></div>
+        <div class="row">
+            <div class="col flex-column" justify="center">
+                <div class="andes"></div>
+            </div>
         </div>
-      </div>
-      <div class="row login-content">
-        <div class="col">
-          <plex-text label="Usuario" [autoFocus]="true" prefix="<i class='mdi mdi-account-key icon'></i>"
-                     [(ngModel)]="usuario" name="usuario" [required]="true">
-          </plex-text>
-          <plex-text label="Contraseña" [(ngModel)]="password" name="password" [password]="true"
-                     prefix="<i class='mdi mdi-dialpad'></i>">
+        <div class="row">
+            <div class="col">
+                <div class="usuario mb-2">
+                    <plex-text [autoFocus]="true" [(ngModel)]="usuario" name="usuario" [required]="true"
+                               placeholder="usuario (e-mail)">
+                    </plex-text>
+                    <plex-icon class="hover" name="account-key" type="default" size="24" title="e-mail registrado">
+                    </plex-icon>
+                </div>
+                <div class="password mb-3">
+                    <plex-text [(ngModel)]="password" name="password" [password]="showPassword" [required]="true"
+                               placeholder="contraseña">
+                    </plex-text>
+                    <plex-icon class="hover" [name]="eye" type="info" size="24" (click)="toggleEye()"
+                               [title]="passwordTooltip"></plex-icon>
+                </div>
+                <div class="ingresar mb-3">
+                    <plex-button type="success" [validateForm]="formulario" [disabled]="!formulario.form.valid"
+                                 (click)="login($event)" size="block">
+                        Iniciar sesión
+                    </plex-button>
+                </div>
 
-          </plex-text>
-          <div class="row">&nbsp;</div>
-          <plex-button type="success" [validateForm]="formulario" [disabled]="!formulario.form.valid"
-                       (click)="login($event)" size='block'>
-            Iniciar sesión
-          </plex-button>
-          <div class="row">&nbsp;</div>
-          <plex-button type="info" [validateForm]="formulario" (click)="create($event)" size='block'>
-            Crear Cuenta
-          </plex-button>
-          <plex-loader *ngIf="loading" type="ball-pulse-sync"></plex-loader>
+                <div class="usuario-nuevo border border-info" justify="center">
+                    ¿No tenés usuario?
+                    <plex-button type="link" [validateForm]="formulario" (click)="create($event)" size="sm">
+                        Solicitá una Cuenta <plex-icon name=""></plex-icon>
+                    </plex-button>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="row login-footer">
-        <div class="col">
-          <div class="redTICS"></div>
-
-          <div class="ministerio"></div>
-        </div>
-      </div>
     </form>
-  </div>
 </div>

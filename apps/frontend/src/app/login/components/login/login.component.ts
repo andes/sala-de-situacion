@@ -6,14 +6,16 @@ import { Router } from '@angular/router';
     selector: 'app-login',
     templateUrl: 'login.html',
     styleUrls: ['login.scss'],
-    encapsulation: ViewEncapsulation.None // Use to disable CSS Encapsulation for this component
 })
 export class LoginComponent implements OnInit {
     public usuario: string;
     public password = '';
+    public showPassword = true;
+    public passwordTooltip: 'mostrar contraseña' | 'ocultar contraseña' = 'mostrar contraseña';
     public loading = false;
+    public eye: 'eye' | 'eye-off' = 'eye'; // mostrar/ocultar password
 
-    constructor(private plex: Plex, private auth: AuthService, private router: Router) {}
+    constructor(private plex: Plex, private auth: AuthService, private router: Router) { }
 
     ngOnInit() {
         this.auth.logout();
@@ -37,4 +39,16 @@ export class LoginComponent implements OnInit {
     create() {
         this.router.navigate(['auth/register-user']);
     }
+
+    toggleEye() {
+        this.showPassword = !this.showPassword;
+        if (this.showPassword) {
+            this.eye = 'eye';
+            this.passwordTooltip = 'mostrar contraseña';
+        } else {
+            this.eye = 'eye-off';
+            this.passwordTooltip = 'ocultar contraseña';
+        }
+    }
+
 }
