@@ -12,10 +12,6 @@ export class RoutingGuard implements CanActivate {
         const token = this.auth.getToken();
         if (!token) {
             return this.router.navigate(['auth', 'login']);
-        } else {
-            this.auth.session().pipe(map(() => {
-                return true;
-            }));
         }
         return true;
     }

@@ -79,6 +79,6 @@ AuthRouter.post('/auth/resetPassword', async (req: Request, res, next) => {
     }
 });
 
-AuthRouter.get('/sesion', (req, res) => {
+AuthRouter.get('/auth/sesion', (req, res) => {
     res.json((req as any).user);
 });

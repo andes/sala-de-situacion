@@ -27,8 +27,6 @@ export class AuthService {
                 tap(data => {
                     //Setear el token
                     this.setToken(data.token);
-                    this.session().subscribe(() => {
-                    });
                 })
             );
     }
