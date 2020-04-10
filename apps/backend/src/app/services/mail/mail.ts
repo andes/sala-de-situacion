@@ -30,14 +30,12 @@ export async function sendMail(options: MailOptions) {
     }
 }
 
-export async function sendEmailValidacion(email: string, nombre: string, validationToken: string) {
-    //Se realiza el envio del mail de verificación de la cuenta ;
-    const url = `${environment.host}/auth/login/activacion-cuenta/${validationToken}`;
+export async function sendEmailNotification(email: string, nombre: string, subject, text) {
     const mail: MailOptions = {
         from: environment.mail.auth.user,
         to: email,
-        subject: 'SALA DE SITUACIÓN :: Verificación de cuenta',
-        text: `${nombre}, gracias por registrar tu cuenta. Para activarla haz click aquí ${url}`
+        subject: subject,
+        text: text
     };
     return sendMail(mail);
 }

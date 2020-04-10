@@ -27,11 +27,16 @@
                         Iniciar sesión
                     </plex-button>
                 </div>
-
                 <div class="usuario-nuevo border border-info" justify="center">
                     ¿No tenés usuario?
                     <plex-button type="link" [validateForm]="formulario" (click)="create($event)" size="sm">
                         Solicitá una Cuenta <plex-icon name=""></plex-icon>
+                    </plex-button>
+                </div>
+                <div class="usuario-nuevo border border-info" justify="center">
+                    ¿olvidaste tu contraseña?
+                    <plex-button type="link" [validateForm]="formulario" (click)="forgot()" size="sm">
+                        Recuperala acá <plex-icon name=""></plex-icon>
                     </plex-button>
                 </div>
             </div>

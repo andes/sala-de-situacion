@@ -1,8 +1,9 @@
 import { application } from '../application';
 import { UsersCtr } from '../users/user.controller';
 import { Request } from '@andes/api-tool';
-import { sendEmailValidacion } from '../services/mail/mail';
+import { sendEmailNotification } from '../services/mail/mail';
 import { Types } from 'mongoose';
+import { environment } from '../../environments/environment';
 
 export const AuthRouter = application.router();
 
@@ -10,7 +11,6 @@ AuthRouter.post('/auth/login', async (req: Request, res, next) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
-
         const users = await UsersCtr.search({ email: email, active: true }, {}, req);
         if (users.length > 0) {
             const user = users[0];
@@ -34,8 +34,20 @@ AuthRouter.post('/auth/create', async (req: Request, res, next) => {
     try {
         const user = req.body;
         const createdUser = await UsersCtr.create(user, req);
-        //Se realiza el envio del mail de verificación de la cuenta junto con el token de validación
-        await sendEmailValidacion(user.email, user.nombre, createdUser.validationToken);
+        const url = `${environment.host}/auth/activacion-cuenta/${createdUser.validationToken}`;
+        await sendEmailNotification(user.email, user.nombre, 'SALA DE SITUACIÓN :: Verificación de cuenta', `${user.nombre}, gracias por registrar tu cuenta. Para activarla haz click aquí ${url}`);
+        return res.json({ status: 'ok' });
+    } catch (err) {
+        return next(403);
+    }
+});
+
+AuthRouter.post('/auth/regenerate/:email', async (req: Request, res, next) => {
+    try {
+        const email = req.params.email;
+        const updatedUser = await UsersCtr.setNewToken(email, req);
+        const url = `${environment.host}/auth/regenerate-password/${updatedUser.validationToken}`;
+        await sendEmailNotification(email, updatedUser.nombre, 'SALA DE SITUACIÓN :: Regenerar contraseña', `Hola ${updatedUser.nombre}, para regenerar la contraseña de tu cuenta por favor hacer clic aquí: ${url}`);
         return res.json({ status: 'ok' });
     } catch (err) {
         return next(403);
@@ -51,3 +63,19 @@ AuthRouter.post('/auth/validate/:token', async (req: Request, res, next) => {
         return next(403);
     }
 });
+
+AuthRouter.post('/auth/resetPassword', async (req: Request, res, next) => {
+    try {
+        const { password, validationToken } = req.body;
+        const users = await UsersCtr.search({ token: validationToken, active: true }, {}, req);
+        if (users.length > 0) {
+            await UsersCtr.update(users[0].id, { password, validationToken: null }, req);
+            return res.json({ status: 'ok' });
+        } else {
+            return res.json({ status: 404 });
+        }
+    } catch (err) {
+        return next(403);
+    }
+});
+
