@@ -22,15 +22,8 @@ export const InstitutionsSchema = new mongoose.Schema({
             id: String,
             nombre: String,
             apellido: String,
-            documento: String
-        }
-    ],
-    admins: [
-        {
-            id: String,
-            nombre: String,
-            apellido: String,
-            documento: String
+            documento: String,
+            permisos: [String]
         }
     ]
 });

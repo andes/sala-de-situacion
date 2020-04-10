@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Server } from '@andes/shared';
-import { tap, publishReplay, refCount } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
     private authUrl = '/auth'; // URL to web api
-    private session$: Observable<any>;
-    public usuario;
-    private permisos;
 
     constructor(private server: Server) { }
 
@@ -39,7 +36,6 @@ export class AuthService {
         );
     }
 
-
     resetPassword(body): Observable<any> {
         return this.server.post(`${this.authUrl}/resetPassword`, body)
     }
@@ -64,17 +60,4 @@ export class AuthService {
         localStorage.removeItem('JWT');
     }
 
-    session(force = false) {
-        if (!this.session$ || force) {
-            this.session$ = this.server.get('/auth/sesion').pipe(
-                tap(payload => {
-                    this.usuario = payload.usuario;
-                    this.permisos = payload.permisos;
-                }),
-                publishReplay(1),
-                refCount()
-            );
-        }
-        return this.session$;
-    }
 }

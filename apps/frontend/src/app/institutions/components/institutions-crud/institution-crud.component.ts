@@ -117,14 +117,6 @@ export class AppInstitutionCrudComponent implements OnInit {
     }
 
     guardar() {
-        // const user = {
-        //     id: String,
-        //     nombre: String,
-        //     apellido: String,
-        //     documento: String
-        // };
-        this.auth.usuario;
-        console.log('session', this.auth.usuario);
         let dto = {
             id: this.institution.id,
             nombre: this.institution.nombre,
@@ -135,7 +127,6 @@ export class AppInstitutionCrudComponent implements OnInit {
             localidad: this.institution.location.localidad.nombre,
             provincia: this.institution.location.provincia.nombre,
             activo: this.institution.activo
-            // users: [user]
         };
 
         this.institutionService.save(dto).subscribe(rta => {
