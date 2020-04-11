@@ -32,6 +32,12 @@ export const loadUserMiddleware = async function(req: Request, res: Response, ne
     });
     if (user) {
         req.user = user;
+        req.user['usuario'] = {
+            email: user.email,
+            nombre: user.nombre,
+            apellido: user.apellido,
+            documento: user.documento
+        };
         return next();
     } else {
         return next(403);
@@ -48,6 +54,14 @@ export const authenticate = () => {
 };
 
 export const checkPermission = (req: Request, permiso: string) => {
+    if (req.user && req.user.permisos) {
+        const shiro = shiroTrie.new();
+        shiro.add(req.user.permisos);
+        return shiro.check(permiso);
+    }
+};
+
+export const getPermission = (req: Request, permiso: string) => {
     if (req.user && req.user.permisos) {
         const shiro = shiroTrie.new();
         shiro.add(req.user.permisos);

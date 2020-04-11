@@ -3,6 +3,7 @@ import { Plex } from '@andes/plex';
 import { LocationService } from '../../../shared/location.services';
 import { InstitutionService } from '../../service/institution.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../../login/auth.services';
 
 @Component({
     selector: 'institution-crud',
@@ -26,7 +27,8 @@ export class AppInstitutionCrudComponent implements OnInit {
             direccion: '',
             coordenadas: []
         },
-        activo: false
+        activo: false,
+        users: []
     };
     neuquen = true;
     provincias = [];
@@ -42,8 +44,9 @@ export class AppInstitutionCrudComponent implements OnInit {
         public plex: Plex,
         private locationService: LocationService,
         private institutionService: InstitutionService,
-        private router: Router
-    ) { }
+        private router: Router,
+        private auth: AuthService
+    ) {}
 
     ngOnInit() {
         this.institutionParam = this.route.snapshot.params; // Si viene un objeto es un update
@@ -71,18 +74,18 @@ export class AppInstitutionCrudComponent implements OnInit {
         this.institution.location.direccion = institucion.direccion ? institucion.direccion : null;
         this.institution.location.barrio = institucion.barrio
             ? this.locationService.getBarrios({ nombre: institucion.barrio }).subscribe(barrios => {
-                this.institution.location.barrio = barrios[0];
-            })
+                  this.institution.location.barrio = barrios[0];
+              })
             : '';
         this.institution.location.localidad = institucion.localidad
             ? this.locationService.getLocalidades({ nombre: institucion.localidad }).subscribe(localidades => {
-                this.institution.location.localidad = localidades[0];
-            })
+                  this.institution.location.localidad = localidades[0];
+              })
             : '';
         this.institution.location.provincia = institucion.provincia
             ? this.locationService.getProvincias({ nombre: institucion.provincia }).subscribe(provincias => {
-                this.institution.location.provincia = provincias[0];
-            })
+                  this.institution.location.provincia = provincias[0];
+              })
             : '';
         this.institution.activo = institucion.activo === 'true' ? true : false;
     }
@@ -125,8 +128,6 @@ export class AppInstitutionCrudComponent implements OnInit {
             provincia: this.institution.location.provincia.nombre,
             activo: this.institution.activo
         };
-
-
 
         this.institutionService.save(dto).subscribe(rta => {
             this.plex.toast('success', `La institución ${rta.nombre} se guardó correctamente`);

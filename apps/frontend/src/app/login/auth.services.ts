@@ -36,7 +36,6 @@ export class AuthService {
         );
     }
 
-
     resetPassword(body): Observable<any> {
         return this.server.post(`${this.authUrl}/resetPassword`, body)
     }
@@ -60,4 +59,5 @@ export class AuthService {
     logout() {
         localStorage.removeItem('JWT');
     }
+
 }
