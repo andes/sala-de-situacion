@@ -1,14 +1,26 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { AuthService } from '../../auth.services';
 import { Router } from '@angular/router';
+import { PlexModalComponent } from '@andes/plex/src/lib/modal/modal.component';
 @Component({
-    selector: 'reset-password',
+    selector: 'modal-reset-password',
     templateUrl: 'reset-password.html',
-    styleUrls: ['reset-password.scss'],
-    encapsulation: ViewEncapsulation.None // Use to disable CSS Encapsulation for this component
+    styleUrls: ['reset-password.scss']
 })
 export class ResetPasswordComponent implements OnInit {
+
+    @ViewChild('modal', { static: true }) modal: PlexModalComponent;
+
+    @Input()
+    set show(value) {
+        if (value) {
+            this.modal.show();
+        }
+    }
+
+    @Output() closeModal = new EventEmitter<any>();
+
     public loading = false;
     public email = '';
     constructor(private plex: Plex, private auth: AuthService, private router: Router) { }
@@ -21,23 +33,28 @@ export class ResetPasswordComponent implements OnInit {
             this.auth.setNewValidationToken(this.email).subscribe(
                 data => {
                     if (data.status === 'ok') {
-                        this.plex.info('success', 'Hemos enviado un mail para regenerar su contraseña');
+                        this.plex.info('success', 'Hemos enviado un e-mail para regenerar su contraseña');
                         this.loading = false;
-                        this.router.navigate(['/']);
+                        this.router.navigate(['/auth/login']);
                     } else {
-                        this.plex.info('danger', 'El mail ingresado no existe');
+                        this.plex.info('danger', 'El e-mail ingresado no está registrado');
                         this.loading = false;
                     }
+                    this.closeModal.emit();
                 },
                 err => {
                     this.plex.info('danger', err);
                     this.loading = false;
+                    this.closeModal.emit();
                 }
             );
         }
     }
 
     cancel() {
-        this.router.navigate(['/']);
+        this.modal.showed = false;
+        this.closeModal.emit();
+        this.router.navigate(['/auth/login']);
     }
+
 }
