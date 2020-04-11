@@ -6,6 +6,9 @@ import { tap } from 'rxjs/operators';
 @Injectable()
 export class AuthService {
     private authUrl = '/auth'; // URL to web api
+    public showPassword = false;
+    public eye: 'eye' | 'eye-off' = 'eye'; // mostrar/ocultar password
+    public passwordTooltip: 'mostrar contraseña' | 'ocultar contraseña' = 'mostrar contraseña';
 
     constructor(private server: Server) { }
 
@@ -58,6 +61,17 @@ export class AuthService {
 
     logout() {
         localStorage.removeItem('JWT');
+    }
+
+    toggleEye() {
+        if (!this.showPassword) {
+            this.eye = 'eye-off';
+            this.passwordTooltip = 'ocultar contraseña';
+        } else {
+            this.eye = 'eye';
+            this.passwordTooltip = 'mostrar contraseña';
+        }
+        this.showPassword = !this.showPassword;
     }
 
 }
