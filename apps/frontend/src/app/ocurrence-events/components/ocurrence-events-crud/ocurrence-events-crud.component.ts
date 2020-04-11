@@ -37,9 +37,7 @@ export class OccurrenceEventsCrudComponent implements OnInit {
             this.eventsService.search({ categoria: ocurrenceEvent.eventKey }).subscribe(evento => {
                 this.eventSelected = evento[0];
             });
-            this.ocurrenceEvent.indicadores.forEach(indicador => {
-                this.indicadores[indicador.key] = indicador.valor;
-            });
+            this.indicadores = ocurrenceEvent.indicadores;
         }
     }
 
@@ -67,10 +65,11 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         if (!$event.formValid) {
             return;
         }
-        const indicadores = [];
+        const indicadores = {};
         for (const key in this.indicadores) {
-            indicadores.push({ key, valor: this.indicadores[key] });
+            indicadores[key] = this.indicadores[key];
         }
+
         const event: OcurrenceEvent = {
             id: this.ocurrenceEvent ? this.ocurrenceEvent.id : null,
             institucion: {

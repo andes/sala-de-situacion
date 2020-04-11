@@ -11,10 +11,7 @@ export interface OcurrenceEvent {
         id: string;
         nombre: string;
     };
-    indicadores: {
-        key: string;
-        valor: any;
-    }[];
+    indicadores: any;
 }
 
 @Injectable()
