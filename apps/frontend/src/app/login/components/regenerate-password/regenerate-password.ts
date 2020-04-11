@@ -10,7 +10,6 @@ import { Observable } from 'rxjs';
     selector: 'regenerate-password',
     templateUrl: 'regenerate-password.html',
     styleUrls: ['regenerate-password.scss'],
-    encapsulation: ViewEncapsulation.None // Use to disable CSS Encapsulation for this component
 })
 export class RegeneratePasswordComponent implements OnInit {
     public loading = false;
@@ -19,7 +18,7 @@ export class RegeneratePasswordComponent implements OnInit {
     public user$: Observable<IUsuario>;
     public token;
 
-    constructor(private plex: Plex, private route: ActivatedRoute, private auth: AuthService, private router: Router) { }
+    constructor(private plex: Plex, private route: ActivatedRoute, public auth: AuthService, private router: Router) { }
 
     ngOnInit() {
         //Busca el token y activa la cuenta
