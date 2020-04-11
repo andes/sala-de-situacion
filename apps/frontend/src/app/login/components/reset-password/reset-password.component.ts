@@ -35,17 +35,16 @@ export class ResetPasswordComponent implements OnInit {
                     if (data.status === 'ok') {
                         this.plex.info('success', 'Hemos enviado un e-mail para regenerar su contraseña');
                         this.loading = false;
-                        this.router.navigate(['/auth/login']);
                     } else {
                         this.plex.info('danger', 'El e-mail ingresado no está registrado');
                         this.loading = false;
                     }
-                    this.closeModal.emit();
+                    this.cancel();
                 },
                 err => {
                     this.plex.info('danger', err);
                     this.loading = false;
-                    this.closeModal.emit();
+                    this.cancel();
                 }
             );
         }
@@ -54,7 +53,6 @@ export class ResetPasswordComponent implements OnInit {
     cancel() {
         this.modal.showed = false;
         this.closeModal.emit();
-        this.router.navigate(['/auth/login']);
     }
 
 }
