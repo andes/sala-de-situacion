@@ -41,15 +41,28 @@
         }
 
         plex-icon {
-            position: absolute;
-            right: 7px;
-            top: 1px;
+            &[name=account-key],
+            &[type=info]{
+                position: absolute;
+            }
             &[name=account-key] {
                 right: 10px;
                 color: grey;
             }
+            &[type=info] {
+                right: 7px;
+                top: 1px;
+            }
         }
     }
+
+    .sala {
+        color: var(--nav-bar-color);
+        font-size: 2rem;
+        font-weight: 200;
+        letter-spacing: 7px;
+    }
+
     // Andes
     .andes {
         width: 150px;

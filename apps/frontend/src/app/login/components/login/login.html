@@ -1,45 +1,52 @@
-<div class="login">
-    <form #formulario="ngForm">
-        <div class="row">
-            <div class="col flex-column" justify="center">
-                <div class="andes"></div>
-            </div>
+<plex-layout>
+    <plex-layout-main>
+        <div class="login">
+            <form #formulario="ngForm">
+                <div class="row">
+                    <div class="col flex-column" justify="center">
+                        <div class="andes"></div>
+                        <div class="sala">Sala de situación</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="usuario mb-2">
+                            <plex-text [autoFocus]="true" [(ngModel)]="usuario" name="usuario" [required]="true"
+                                       placeholder="usuario (e-mail)">
+                            </plex-text>
+                            <plex-icon class="hover" name="account-key" type="default" size="24"
+                                       title="e-mail registrado">
+                            </plex-icon>
+                        </div>
+                        <a class="hover small text-info" justify="end" (click)="forgot()">
+                            (olvidé mi contraseña)
+                        </a>
+                        <div class="password mb-3">
+                            <plex-text [(ngModel)]="password" name="password" [password]="!auth.showPassword"
+                                       [required]="true" placeholder="contraseña">
+                            </plex-text>
+                            <plex-icon class="hover" [name]="auth.eye" type="info" size="24" (click)="auth.toggleEye()"
+                                       [title]="auth.passwordTooltip"></plex-icon>
+                        </div>
+                        <div class="ingresar mb-3">
+                            <plex-button type="success" [validateForm]="formulario" [disabled]="!formulario.form.valid"
+                                         (click)="login($event)" size="block">
+                                Iniciar sesión
+                            </plex-button>
+                        </div>
+                        <plex-loader *ngIf="loading" type="ball-pulse-sync"></plex-loader>
+                        <div class="usuario-nuevo" justify="center">
+                            ¿No tenés usuario?
+                            <plex-button type="link" [validateForm]="formulario" (click)="create($event)" size="sm">
+                                Solicitá una Cuenta
+                            </plex-button>
+                            <!-- <plex-icon class="d-inline-block" name="account-plus"></plex-icon> -->
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <modal-reset-password [show]="showModalResetPassword" (closeModal)="close($event)">
+            </modal-reset-password>
         </div>
-        <div class="row">
-            <div class="col">
-                <div class="usuario mb-2">
-                    <plex-text [autoFocus]="true" [(ngModel)]="usuario" name="usuario" [required]="true"
-                               placeholder="usuario (e-mail)">
-                    </plex-text>
-                    <plex-icon class="hover" name="account-key" type="default" size="24" title="e-mail registrado">
-                    </plex-icon>
-                </div>
-                <div class="password mb-3">
-                    <plex-text [(ngModel)]="password" name="password" [password]="showPassword" [required]="true"
-                               placeholder="contraseña">
-                    </plex-text>
-                    <plex-icon class="hover" [name]="eye" type="info" size="24" (click)="toggleEye()"
-                               [title]="passwordTooltip"></plex-icon>
-                </div>
-                <div class="ingresar mb-3">
-                    <plex-button type="success" [validateForm]="formulario" [disabled]="!formulario.form.valid"
-                                 (click)="login($event)" size="block">
-                        Iniciar sesión
-                    </plex-button>
-                </div>
-                <div class="usuario-nuevo border border-info" justify="center">
-                    ¿No tenés usuario?
-                    <plex-button type="link" [validateForm]="formulario" (click)="create($event)" size="sm">
-                        Solicitá una Cuenta <plex-icon name=""></plex-icon>
-                    </plex-button>
-                </div>
-                <div class="usuario-nuevo border border-info" justify="center">
-                    ¿olvidaste tu contraseña?
-                    <plex-button type="link" [validateForm]="formulario" (click)="forgot()" size="sm">
-                        Recuperala acá <plex-icon name=""></plex-icon>
-                    </plex-button>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
+    </plex-layout-main>
+</plex-layout>
