@@ -30,7 +30,7 @@
         "@andes/api-tool": "^1.3.0",
         "@andes/core": "^1.5.0",
         "@andes/mongoose-plugin-audit": "^1.1.0",
-        "@andes/plex": "github:andes/plex#mdi-5.0.45",
+        "@andes/plex": "^5.12.0",
         "@andes/shared": "^5.2.0",
         "@angular/animations": "^8.2.0",
         "@angular/cdk": "^8.2.3",
