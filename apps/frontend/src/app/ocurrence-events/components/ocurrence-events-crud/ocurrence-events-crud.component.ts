@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class OccurrenceEventsCrudComponent implements OnInit {
     public institutionSelected: any;
+    public institutions = [];
     public eventSelected: Event;
     public tiposList;
     public eventDate: Date;
@@ -29,6 +30,12 @@ export class OccurrenceEventsCrudComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.institutionService.search({}).subscribe(rta => {
+            this.institutions = rta;
+            if (rta.length === 1) {
+                this.institutionSelected = rta[0];
+            }
+        });
         const ocurrenceEvent: OcurrenceEvent = this.route.snapshot.data.ocurrenceEvent;
         if (ocurrenceEvent) {
             this.ocurrenceEvent = ocurrenceEvent;
@@ -38,17 +45,6 @@ export class OccurrenceEventsCrudComponent implements OnInit {
                 this.eventSelected = evento[0];
             });
             this.indicadores = ocurrenceEvent.indicadores;
-        }
-    }
-
-    @Unsubscribe()
-    onInstitutionSearch($event) {
-        if ($event.query) {
-            return this.institutionService
-                .search({ search: '^' + $event.query, fields: 'nombre' })
-                .subscribe($event.callback);
-        } else {
-            $event.callback([]);
         }
     }
 
