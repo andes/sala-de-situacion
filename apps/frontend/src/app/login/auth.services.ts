@@ -53,11 +53,11 @@ export class AuthService {
     }
 
     setToken(token: string) {
-        return window.sessionStorage.setItem('jwt', token);
+        window.sessionStorage.setItem('jwt', token);
     }
 
     logout() {
-        return window.sessionStorage.removeItem('jwt');
+        window.sessionStorage.removeItem('jwt');
     }
 
 }
