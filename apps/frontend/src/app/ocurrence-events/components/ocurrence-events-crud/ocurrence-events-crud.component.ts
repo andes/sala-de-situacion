@@ -27,12 +27,12 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         private plex: Plex,
         private location: Location,
         private route: ActivatedRoute
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.institutionService.search({}).subscribe(rta => {
             this.institutions = rta;
-            if (rta.length > 0) {
+            if (rta.length === 1) {
                 this.institutionSelected = rta[0];
             }
         });
