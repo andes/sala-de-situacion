@@ -27,6 +27,15 @@ class InstitutionResource extends ResourceBase {
                 }
             }
             return next();
+        },
+        search: (req: Request, res: Response, next) => {
+            const permisoAdmin = checkPermission(req, 'admin:true');
+            if (!permisoAdmin) {
+                if (req.user) {
+                    req.query.user = req.user._id;
+                }
+            }
+            return next();
         }
     };
     searchFileds = {
@@ -38,7 +47,7 @@ class InstitutionResource extends ResourceBase {
         zona: MongoQuery.partialString,
         activo: MongoQuery.equalMatch,
         user: {
-            field: 'users.id',
+            field: 'users._id',
             fn: value => mongoose.Types.ObjectId(value)
         },
         search: ['nombre', 'direccion', 'zona', 'tipoInstitucion', 'provincia', 'localidad']

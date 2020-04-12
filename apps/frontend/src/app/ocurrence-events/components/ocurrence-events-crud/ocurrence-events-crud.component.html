@@ -8,7 +8,7 @@
     <form #formulario="ngForm">
       <plex-wrapper>
         <plex-select label="Institucion" grow="full" required [(ngModel)]="institutionSelected"
-                     name="institution-selected" (getData)="onInstitutionSearch($event)"></plex-select>
+                     name="institution-selected" [data]="institutions"></plex-select>
         <plex-datetime label="Fecha y hora" required [(ngModel)]="eventDate" name="event-date"></plex-datetime>
         <plex-select label="Evento" required [(ngModel)]="eventSelected" name="event-selected"
                      (getData)="onEventSearch($event)"></plex-select>
