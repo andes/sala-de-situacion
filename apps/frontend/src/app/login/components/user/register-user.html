@@ -1,12 +1,10 @@
 <plex-layout>
   <plex-layout-main>
     <plex-title titulo="Registrar usuario">
-      <ng-container>
-        <plex-button [disabled]="disableEnviar" label="Enviar" type="info" (click)="enviar()"></plex-button>
-        <plex-button label="Cancelar" type="danger" (click)="cancelar()">
-        </plex-button>
-      </ng-container>
-
+      <plex-button label="Cancelar" type="danger" (click)="cancelar()">
+      </plex-button>
+      <plex-button class="ml-2" [disabled]="disableEnviar" label="Enviar" type="success" (click)="enviar()">
+      </plex-button>
     </plex-title>
     <div class="row">
       <div class="col-md">

@@ -12,7 +12,7 @@ import { ActivacionCuentaComponent } from './components/activacion-cuenta/activa
 const routes = [
     { path: 'login', component: LoginComponent },
     { path: 'logout', component: LogoutComponent, canActivate: [RoutingGuard] },
-    { path: 'reset-password', component: ResetPasswordComponent },
+    { path: 'password-reset', component: ResetPasswordComponent },
     { path: 'regenerate-password/:token', component: RegeneratePasswordComponent },
     { path: 'register-user', component: RegisterUserComponent },
     { path: 'verify-email/:email', component: VerifyEmailComponent },

@@ -10,12 +10,11 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
     public usuario: string;
     public password = '';
-    public showPassword = true;
-    public passwordTooltip: 'mostrar contraseña' | 'ocultar contraseña' = 'mostrar contraseña';
-    public loading = false;
-    public eye: 'eye' | 'eye-off' = 'eye'; // mostrar/ocultar password
 
-    constructor(private plex: Plex, private auth: AuthService, private router: Router) { }
+    public loading = false;
+    public showModalResetPassword = false;
+
+    constructor(private plex: Plex, public auth: AuthService, private router: Router) { }
 
     ngOnInit() {
         this.auth.logout();
@@ -40,17 +39,12 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['auth/register-user']);
     }
 
-    toggleEye() {
-        this.showPassword = !this.showPassword;
-        if (this.showPassword) {
-            this.eye = 'eye';
-            this.passwordTooltip = 'mostrar contraseña';
-        } else {
-            this.eye = 'eye-off';
-            this.passwordTooltip = 'ocultar contraseña';
-        }
+    close(event) {
+        this.showModalResetPassword = false;
     }
+
+
     forgot() {
-        this.router.navigate(['auth/reset-password']);
+        this.showModalResetPassword = true;
     }
 }
