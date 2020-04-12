@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { Plex } from '@andes/plex';
 import { AuthService } from './auth.services';
-import { map } from 'rxjs/operators';
 
 @Injectable()
 export class RoutingGuard implements CanActivate {

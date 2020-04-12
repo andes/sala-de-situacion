@@ -60,7 +60,7 @@ export class AuthService {
     }
 
     logout() {
-        localStorage.removeItem('JWT');
+        window.sessionStorage.removeItem('jwt');
     }
 
     toggleEye() {
