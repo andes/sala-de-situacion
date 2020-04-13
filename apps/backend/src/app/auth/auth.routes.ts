@@ -4,6 +4,7 @@ import { Request } from '@andes/api-tool';
 import { sendEmailNotification } from '../services/mail/mail';
 import { Types } from 'mongoose';
 import { environment } from '../../environments/environment';
+import { User } from './../users/user.interface';
 
 export const AuthRouter = application.router();
 
@@ -74,6 +75,24 @@ AuthRouter.post('/auth/resetPassword', async (req: Request, res, next) => {
         } else {
             return res.json({ status: 404 });
         }
+    } catch (err) {
+        return next(403);
+    }
+});
+
+AuthRouter.get('/auth/usuario', async (req: Request, res, next) => {
+    try {
+        const id = req.query.id;
+        const usuario = await UsersCtr.findById({ _id: id }, {});
+        const user: User = {
+            active: usuario.active,
+            nombre: usuario.nombre,
+            apellido: usuario.apellido,
+            documento: usuario.documento,
+            email: usuario.email,
+            permisos: usuario.permisos
+        }
+        return res.json({ user });
     } catch (err) {
         return next(403);
     }

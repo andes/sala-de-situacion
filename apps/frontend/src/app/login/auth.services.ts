@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Server } from '@andes/shared';
 import { tap } from 'rxjs/operators';
+import * as jwt_decode from "jwt-decode";
+const shiroTrie = require('shiro-trie');
 
 @Injectable()
 export class AuthService {
@@ -51,6 +53,12 @@ export class AuthService {
         );
     }
 
+    getPermisosUsuario(): Observable<any> {
+        const t = this.getToken();
+        const id = jwt_decode(t).user_id;
+        return this.server.get(`${this.authUrl}/usuario/?id=${id}`);
+    }
+
     getToken() {
         return window.sessionStorage.getItem('jwt');
     }
@@ -73,5 +81,12 @@ export class AuthService {
         }
         this.showPassword = !this.showPassword;
     }
+
+    checkPermisos(listaPermisos, permiso) {
+        const shiro = shiroTrie.new();
+        shiro.add(listaPermisos);
+        return shiro.check(permiso);
+    }
+
 
 }
