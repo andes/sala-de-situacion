@@ -7,7 +7,8 @@ const shiroTrie = require('shiro-trie');
 
 @Injectable()
 export class AuthService {
-    private authUrl = '/auth'; // URL to web api
+    private authUrl = '/auth'; // URL to web api auth
+    private authUsers = '/users'; // URL to web api users
     public showPassword = false;
     public eye: 'eye' | 'eye-off' = 'eye'; // mostrar/ocultar password
     public passwordTooltip: 'mostrar contraseña' | 'ocultar contraseña' = 'mostrar contraseña';
@@ -56,7 +57,7 @@ export class AuthService {
     getPermisosUsuario(): Observable<any> {
         const t = this.getToken();
         const id = jwt_decode(t).user_id;
-        return this.server.get(`${this.authUrl}/usuario/?id=${id}`);
+        return this.server.get(`${this.authUsers}/${id}`);
     }
 
     getToken() {

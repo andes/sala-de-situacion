@@ -23,9 +23,11 @@ export class AppComponent {
 
         if (this.loggedIn) {
             this.auth.getPermisosUsuario().subscribe(data => {
-                this.permisos = data.user.permisos;
+                this.permisos = data.permisos;
                 this.crearMenu();
             })
+        } else {
+            this.crearMenu();
         }
     }
 
