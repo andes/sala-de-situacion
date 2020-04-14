@@ -51,7 +51,7 @@ export class AppInstitutionCrudComponent implements OnInit {
 
     ngOnInit() {
         this.auth.getPermisosUsuario().subscribe(data => {
-            this.isAdmin = this.auth.checkPermisos(data.user.permisos, 'admin:true');
+            this.isAdmin = this.auth.checkPermisos(data.permisos, 'admin:true');
         });
         this.institutionParam = this.route.snapshot.params; // Si viene un objeto es un update
         if (this.institutionParam.id) {
