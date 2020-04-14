@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Server } from '@andes/shared';
-import { tap } from 'rxjs/operators';
+import { tap, publishReplay, refCount } from 'rxjs/operators';
 import * as jwt_decode from "jwt-decode";
 const shiroTrie = require('shiro-trie');
 
@@ -12,8 +12,18 @@ export class AuthService {
     public showPassword = false;
     public eye: 'eye' | 'eye-off' = 'eye'; // mostrar/ocultar password
     public passwordTooltip: 'mostrar contraseña' | 'ocultar contraseña' = 'mostrar contraseña';
+    public session$: Observable<any>;
+    public nombre: any;
+    public apellido: any;
+    private shiro = shiroTrie.new();
+    private permisos: string[];
 
     constructor(private server: Server) { }
+
+    private initShiro() {
+        this.shiro.reset();
+        this.shiro.add(this.permisos);
+    }
 
     create(body): Observable<any> {
         return this.server.post(this.authUrl + '/create', body);
@@ -61,6 +71,31 @@ export class AuthService {
         return this.server.get(`${this.authUsers}/${id}?fields=nombre&fields=apellido&fields=permisos&fields=active`);
     }
 
+    getPermissions(string: string): string[] {
+        return this.shiro.permissions(string);
+    }
+
+    session(force = false) {
+        if (!this.session$ || force) {
+            const token = this.getToken();
+            if (token) {
+                const id = jwt_decode(token).user_id;
+                this.session$ = this.server.get(`${this.authUsers}/${id}?fields=nombre&fields=apellido&fields=permisos&fields=active`).pipe(
+                    tap((payload) => {
+                        this.nombre = payload.nombre;
+                        this.apellido = payload.apellido;
+                        this.permisos = payload.permisos;
+                        this.initShiro()
+                    }),
+                    publishReplay(1),
+                    refCount()
+                );
+            }
+
+        }
+        return this.session$;
+    }
+
     getToken() {
         return window.sessionStorage.getItem('jwt');
     }
@@ -84,10 +119,9 @@ export class AuthService {
         this.showPassword = !this.showPassword;
     }
 
-    checkPermisos(listaPermisos, permiso) {
-        const shiro = shiroTrie.new();
-        shiro.add(listaPermisos);
-        return shiro.check(permiso);
+    checkPermisos(permiso: string) {
+        console.log(permiso, 'valor: ', this.shiro.check(permiso));
+        return this.shiro.check(permiso);
     }
 
 

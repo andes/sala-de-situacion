@@ -7,7 +7,7 @@ const appRoutes: Routes = [
     {
         path: '',
         component: AppHomeComponent,
-        canActivate: [RoutingNavBar, RoutingGuard],
+        canActivate: [RoutingGuard, RoutingNavBar],
         pathMatch: 'full'
     },
     { path: 'auth', loadChildren: './login/login.module#LoginModule', canActivate: [RoutingNavBar] },
