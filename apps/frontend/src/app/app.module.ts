@@ -29,4 +29,4 @@ import { InstitutionProvidersModule } from './institutions/institution.provider'
     providers: [Plex, Server, AuthService, RoutingNavBar, RoutingGuard, LocationService],
     bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
