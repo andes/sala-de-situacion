@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   API: '//localhost:3000/api',
+  charts_embedding_base_url: 'http://localhost/mongodb-charts-zypoq'
 };
 
 /*

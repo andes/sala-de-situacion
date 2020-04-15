@@ -13,7 +13,7 @@ export class AppComponent {
 
     constructor(private server: Server, private plex: Plex, private location: Location) {
         this.server.setBaseURL(environment.API);
-        this.plex.updateTitle('SALAaaaaa DE SITUACIÓN');
+        this.plex.updateTitle('SALA DE SITUACIÓN');
     }
 
     back() {
