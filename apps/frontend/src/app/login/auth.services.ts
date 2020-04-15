@@ -64,13 +64,6 @@ export class AuthService {
         );
     }
 
-    getPermisosUsuario(): Observable<any> {
-        const t = this.getToken();
-        const id = jwt_decode(t).user_id;
-        // Esta es la forma que encontre para hacer una suerte de "interface" para devolver lo que necesito. (mejorar!!!)
-        return this.server.get(`${this.authUsers}/${id}?fields=nombre&fields=apellido&fields=permisos&fields=active`);
-    }
-
     getPermissions(string: string): string[] {
         return this.shiro.permissions(string);
     }
@@ -120,7 +113,6 @@ export class AuthService {
     }
 
     checkPermisos(permiso: string) {
-        console.log(permiso, 'valor: ', this.shiro.check(permiso));
         return this.shiro.check(permiso);
     }
 
