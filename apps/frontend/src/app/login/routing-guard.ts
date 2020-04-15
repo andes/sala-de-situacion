@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { Plex } from '@andes/plex';
 import { AuthService } from './auth.services';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class RoutingGuard implements CanActivate {
@@ -9,10 +10,14 @@ export class RoutingGuard implements CanActivate {
 
     canActivate() {
         const token = this.auth.getToken();
-        if (!token) {
-            return this.router.navigate(['auth', 'login']);
+        if (token) {
+            return this.auth.session(true).pipe(map(() => {
+                return true;
+            }));
+        } else {
+            this.router.navigate(['auth', 'login']);
+            return false;
         }
-        return true;
     }
 }
 

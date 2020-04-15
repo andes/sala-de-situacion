@@ -3,7 +3,7 @@ import { Plex } from '@andes/plex';
 import { LocationService } from '../../../shared/location.services';
 import { InstitutionService } from '../../service/institution.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../../login/auth.services';
+import { AuthService } from './../../../login/auth.services';
 
 @Component({
     selector: 'institution-crud',
@@ -38,6 +38,7 @@ export class AppInstitutionCrudComponent implements OnInit {
     // Georref-map
     geoReferenciaAux = []; // Coordenadas para la vista del mapa.
     infoMarcador: String = null;
+    public isAdmin;
 
     constructor(
         public route: ActivatedRoute, // Permite obtener objetos o datos por parámetro.
@@ -46,9 +47,12 @@ export class AppInstitutionCrudComponent implements OnInit {
         private institutionService: InstitutionService,
         private router: Router,
         private auth: AuthService
-    ) {}
+    ) { }
 
     ngOnInit() {
+
+        this.isAdmin = this.auth.checkPermisos('admin:true');
+
         this.institutionParam = this.route.snapshot.params; // Si viene un objeto es un update
         if (this.institutionParam.id) {
             this.loadInstitution(this.institutionParam);
@@ -66,6 +70,8 @@ export class AppInstitutionCrudComponent implements OnInit {
         });
     }
 
+
+
     loadInstitution(institucion) {
         this.institution.id = institucion.id;
         this.institution.nombre = institucion.nombre;
@@ -74,18 +80,18 @@ export class AppInstitutionCrudComponent implements OnInit {
         this.institution.location.direccion = institucion.direccion ? institucion.direccion : null;
         this.institution.location.barrio = institucion.barrio
             ? this.locationService.getBarrios({ nombre: institucion.barrio }).subscribe(barrios => {
-                  this.institution.location.barrio = barrios[0];
-              })
+                this.institution.location.barrio = barrios[0];
+            })
             : '';
         this.institution.location.localidad = institucion.localidad
             ? this.locationService.getLocalidades({ nombre: institucion.localidad }).subscribe(localidades => {
-                  this.institution.location.localidad = localidades[0];
-              })
+                this.institution.location.localidad = localidades[0];
+            })
             : '';
         this.institution.location.provincia = institucion.provincia
             ? this.locationService.getProvincias({ nombre: institucion.provincia }).subscribe(provincias => {
-                  this.institution.location.provincia = provincias[0];
-              })
+                this.institution.location.provincia = provincias[0];
+            })
             : '';
         this.institution.activo = institucion.activo === 'true' ? true : false;
     }

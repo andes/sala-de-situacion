@@ -10,23 +10,10 @@ import { Location } from '@angular/common';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    private menuList = [];
 
     constructor(private server: Server, private plex: Plex, private location: Location) {
         this.server.setBaseURL(environment.API);
-
-        this.plex.updateTitle('SALA DE SITUACIÓN');
-        this.crearMenu();
-    }
-
-    public crearMenu() {
-        this.menuList = [];
-        this.menuList.push({ label: 'Página Principal', icon: 'home', route: '/home' });
-        this.menuList.push({ label: 'Instituciones', icon: 'hospital-building', route: '/institution/list' });
-        this.menuList.push({ label: 'Configuración de eventos', icon: 'cogs', route: '/events' });
-        this.menuList.push({ label: 'Indicadores salud', icon: 'chart-bar', route: '/ocurrence-events' });
-        this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/auth/logout' });
-        this.plex.updateMenu(this.menuList);
+        this.plex.updateTitle('SALAaaaaa DE SITUACIÓN');
     }
 
     back() {
