@@ -9,12 +9,15 @@
         <plex-heading>
           <b label>Evento</b>
           <b label>Institucion</b>
+          <b label>Servicio</b>
           <b label>Fecha</b>
           <b button></b>
         </plex-heading>
         <plex-item *ngFor="let ocurrenceEvent of ocurrenceEvents">
           <plex-label [titulo]="ocurrenceEvent.eventKey"></plex-label>
           <plex-label [titulo]="ocurrenceEvent.institucion.nombre"></plex-label>
+          <plex-label [titulo]="ocurrenceEvent.indicadores.servicio"></plex-label>
+
           <plex-label [titulo]="ocurrenceEvent.fecha | date: 'dd/MM/yyyy  HH:mm' "></plex-label>
           <plex-badge [type]="ocurrenceEvent.activo ? 'success' : 'danger'">
             {{ ocurrenceEvent.activo ? 'HABILITADO' : 'DESHABILITADO' }}
