@@ -27,6 +27,11 @@ const appRoutes: Routes = [
         loadChildren: './ocurrence-events/ocurrence-events.module#OcurrenceEventsModule',
         canActivate: [RoutingNavBar, RoutingGuard]
     },
+    {
+        path: 'chart',
+        loadChildren: './charts/chart.module#ChartModule',
+        canActivate: [RoutingNavBar]
+    },
 
     { path: '**', redirectTo: '/home' }
 ];

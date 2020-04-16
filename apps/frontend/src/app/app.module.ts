@@ -14,6 +14,7 @@ import { RoutingNavBar, RoutingGuard } from './login/routing-guard';
 import { AuthService } from './login/auth.services';
 import { LocationService } from './shared/location.services';
 import { InstitutionProvidersModule } from './institutions/institution.provider';
+import { ChartModule } from './charts/chart.module';
 
 @NgModule({
     declarations: [AppComponent, AppHomeComponent],
@@ -24,7 +25,8 @@ import { InstitutionProvidersModule } from './institutions/institution.provider'
         HttpClientModule,
         AppRouting,
         NgxObserveModule,
-        InstitutionProvidersModule
+        InstitutionProvidersModule,
+        ChartModule
     ],
     providers: [Plex, Server, AuthService, RoutingNavBar, RoutingGuard, LocationService],
     bootstrap: [AppComponent]
