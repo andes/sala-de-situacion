@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 const { Connections } = require('./app/connection');
 const { application } = require('./app/application');
@@ -13,6 +14,7 @@ const OcurrenceEventRoutes = require('./app/ocurrence-events/ocurrence-events.co
 const ProvinciaRouter = require('./app/location/provincia.controller').ProvinciaRouter;
 const LocalidadRouter = require('./app/location/localidad.controller').LocalidadRouter;
 const BarrioRouter = require('./app/location/barrio.controller').BarrioRouter;
+const GeoreferenciasRouter = require('./app/georeferencia/georeferencia.routes').GeoreferenciaRouter;
 
 // Rutas
 application.add({ path: '/api', router: UsersRouter });
@@ -23,5 +25,7 @@ application.add({ path: '/api', router: OcurrenceEventRoutes });
 application.add({ path: '/api', router: ProvinciaRouter });
 application.add({ path: '/api', router: LocalidadRouter });
 application.add({ path: '/api', router: BarrioRouter });
+application.add({ path: '/api', router: GeoreferenciasRouter });
+
 
 application.start();

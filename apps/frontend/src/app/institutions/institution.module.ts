@@ -8,10 +8,11 @@ import { AppInstitutionCrudComponent } from './components/institutions-crud/inst
 import { AppInstitutionListComponent } from './components/institutions-list/institution-list.component';
 
 import { InstitutionRouting } from './institution.routing';
+import { GeorrefMapComponent } from './components/georeferencia/georref-map.component';
 
 @NgModule({
     imports: [CommonModule, FormsModule, HttpClientModule, PlexModule, InstitutionRouting],
-    declarations: [AppInstitutionCrudComponent, AppInstitutionListComponent],
+    declarations: [AppInstitutionCrudComponent, AppInstitutionListComponent, GeorrefMapComponent],
     providers: []
 })
-export class InstitutionModule {}
+export class InstitutionModule { }

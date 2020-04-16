@@ -68,11 +68,12 @@
                 {{ institution.activo ? 'Habilitada' : 'Deshabilitada' }}
             </div>
         </div>
-        <!-- <div class="row">
-      <div class="col-md">
-        <plex-button [disabled]="disableGeolocalizar" label="Geolocalizar" type="success" (click)="actualizarMapa()">
-        </plex-button>
-      </div>
-    </div> -->
+        <div class="row">
+            <div class="col-md" *ngIf="geoReferenciaAux.length">
+                <label class="block">Localización</label>
+                <georref-map [latLong]="geoReferenciaAux" (changeCoordinates)="changeCoordenadas($event)">
+                </georref-map>
+            </div>
+        </div>
     </plex-layout-main>
 </plex-layout>
