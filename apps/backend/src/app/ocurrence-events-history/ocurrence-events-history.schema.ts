@@ -1,6 +1,4 @@
 import * as mongoose from 'mongoose';
-import { environment } from '../../environments/environment';
-import { AuditPlugin } from '@andes/mongoose-plugin-audit';
 
 export interface OcurrenceEventHistory {
     eventKey: string;
@@ -32,9 +30,6 @@ export const OcurrenceEventHistorySchema = new mongoose.Schema({
     originalRef: mongoose.SchemaTypes.ObjectId
 });
 
-if (environment.key) {
-    OcurrenceEventHistorySchema.plugin(AuditPlugin);
-}
 
 export const OcurrenceEventHistory = mongoose.model<OcurrenceEventHistoryDocument>(
     'ocurrence_event_history',

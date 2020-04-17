@@ -10,7 +10,6 @@ import { RouterModule } from '@angular/router';
 import { OccurrenceEventsCrudComponent } from './components/ocurrence-events-crud/ocurrence-events-crud.component';
 import { OcurrenceEventsListComponent } from './components/ocurrence-events-list/ocurrence-events-list.component';
 import { OcurrenceEventsResolver } from './resolver/ocurrence-events.resolver';
-import { OcurrenceEventsHistoryService } from './services/ocurrence-events-history.service';
 
 @NgModule({
     // prettier-ignore
@@ -31,7 +30,6 @@ import { OcurrenceEventsHistoryService } from './services/ocurrence-events-histo
     // prettier-ignore
     providers: [
         OcurrenceEventsService,
-        OcurrenceEventsHistoryService,
         OcurrenceEventsResolver
     ],
     bootstrap: []
