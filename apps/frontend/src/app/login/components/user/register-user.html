@@ -1,18 +1,19 @@
 <plex-layout>
   <plex-layout-main>
-    <plex-title titulo="Registrar usuario" (dimensionEmitter)="getSize($event)" [size]="responsiveSize | async">
-      <plex-button label="Cancelar" type="danger" (click)="cancelar()">
+    <plex-title titulo="Registrar usuario">
+      <plex-button size="sm" label="Cancelar" type="danger" (click)="cancelar()">
       </plex-button>
-      <plex-button class="ml-2" [disabled]="disableEnviar" label="Enviar" type="success" (click)="enviar()">
+      <plex-button size="sm" class="ml-2" [disabled]="disableEnviar" label="Enviar" type="success" (click)="enviar()">
       </plex-button>
     </plex-title>
     <form #formulario="ngForm" class="register-user">
       <div class="row">
         <div class="col-md-6">
           <plex-text label="E-mail" prefix="<i class='mdi mdi-email'></i>" [(ngModel)]="usuario.email" name="email"
-                     [required]="true" (change)=verificarFormatoEmail()>
-          </plex-text>
+                     [required]="true" (change)=verificarFormatoEmail()></plex-text>
+
           <span *ngIf="errorEmail" class="text-danger mt-1">Formato incorrecto</span>
+
         </div>
       </div>
       <div class="row">
@@ -29,7 +30,6 @@
         </div>
         <div class="col-md col-sm-12">
           <div class="password">
-
             <plex-text label="Confirmar contraseña" [(ngModel)]="usuario.password2" name="password"
                        [password]="!auth.showPassword" [required]="true">
             </plex-text>
@@ -39,6 +39,8 @@
           </div>
         </div>
       </div>
+      <plex-title titulo="Datos personales" size="sm"></plex-title>
+
       <div class="row">
         <div class="col-md col-sm-12">
           <plex-text label="Documento" [(ngModel)]="usuario.documento" name="documento" [required]="true">

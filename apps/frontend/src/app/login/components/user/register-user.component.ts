@@ -12,6 +12,7 @@ import { IUsuario } from './IUsuario.interfaces';
 export class RegisterUserComponent implements OnInit {
     public email = '';
     public disableEnviar = false;
+    public password2 = null;
     usuario = {
         documento: '',
         nombre: '',
@@ -73,6 +74,5 @@ export class RegisterUserComponent implements OnInit {
     }
     getresponsiveSize() {
         return this.size;
-
     }
 }
