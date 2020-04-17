@@ -39,6 +39,7 @@ export class AppInstitutionCrudComponent implements OnInit {
     geoReferenciaAux = []; // Coordenadas para la vista del mapa.
     infoMarcador: String = null;
     public isAdmin;
+    public disableGuardar = false;
 
     constructor(
         public route: ActivatedRoute, // Permite obtener objetos o datos por parámetro.
@@ -147,5 +148,19 @@ export class AppInstitutionCrudComponent implements OnInit {
 
     mainInsitutions() {
         this.router.navigate(['/institution/list']);
+    }
+
+    verificarFormatoEmail() {
+        let formato = /^[a-zA-Z0-9_.+-]+\@[a-zA-Z0-9-]+(\.[a-z]{2,4})+$/;
+        let email = this.institution.email;
+        if (email) {
+            if (formato.test(email)) {
+                this.disableGuardar = false;
+            } else {
+                this.disableGuardar = true;
+            }
+        } else {
+            this.disableGuardar = false;
+        }
     }
 }
