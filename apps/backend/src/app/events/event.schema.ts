@@ -12,6 +12,10 @@ export interface EventTypes {
         type: string;
         descripcion: string;
         required: boolean;
+        subfiltro: {
+            type: boolean;
+            default: false;
+        };
         extras: any;
     }[];
 }
@@ -30,7 +34,8 @@ export const IndicatorsSchema = new mongoose.Schema({
     type: String,
     min: Number,
     max: Number,
-    required: Boolean
+    required: Boolean,
+    subfiltro: Boolean
 });
 
 export const EventsSchema = new mongoose.Schema({

@@ -11,6 +11,7 @@ export interface Event {
         type: string;
         descripcion: string;
         required: boolean;
+        subfiltro: boolean;
         extras: any;
     }[];
 }
