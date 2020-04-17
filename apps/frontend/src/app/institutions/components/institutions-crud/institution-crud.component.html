@@ -2,8 +2,10 @@
     <plex-layout-main>
         <plex-title titulo="Instituciones">
             <ng-container>
-                <plex-button label="Guardar" type="info" (click)="guardar()"></plex-button>
                 <plex-button label="Cancelar" type="danger" (click)="cancelar()"> </plex-button>
+                <plex-button label="Guardar" type="success" class="ml-2" [disabled]="disableGuardar"
+                             (click)="guardar()">
+                </plex-button>
             </ng-container>
         </plex-title>
         <div class="row">
@@ -12,8 +14,9 @@
             </div>
             <div class="col-md">
                 <plex-text label="e-mail de la institución" prefix="<i class='mdi mdi-email'></i>"
-                           [(ngModel)]="institution.email" name="email">
+                           [(ngModel)]="institution.email" name="email" (change)="verificarFormatoEmail()">
                 </plex-text>
+                <span *ngIf="disableGuardar" class="text-danger mt-1">Formato incorrecto</span>
             </div>
         </div>
         <div class="row">

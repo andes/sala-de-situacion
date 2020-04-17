@@ -19,10 +19,11 @@ export class RegisterUserComponent implements OnInit {
         telefono: '',
         password: ''
     };
+    public errorEmail = false;
 
-    constructor(public plex: Plex, private auth: AuthService, private router: Router) {}
+    constructor(public plex: Plex, private auth: AuthService, private router: Router) { }
 
-    ngOnInit() {}
+    ngOnInit() { }
 
     enviar() {
         this.disableEnviar = true;
@@ -30,11 +31,25 @@ export class RegisterUserComponent implements OnInit {
             data => {
                 this.router.navigate(['auth/verify-email/' + this.usuario.email]);
             },
-            err => {}
+            err => { }
         );
     }
 
     cancelar() {
         this.router.navigate(['auth', 'login']);
+    }
+
+    verificarFormatoEmail() {
+        let formato = /^[a-zA-Z0-9_.+-]+\@[a-zA-Z0-9-]+(\.[a-z]{2,4})+$/;
+        let email = this.usuario.email;
+        if (email) {
+            if (formato.test(email)) {
+                this.errorEmail = false;
+            } else {
+                this.errorEmail = true;
+            }
+        } else {
+            this.errorEmail = false;
+        }
     }
 }

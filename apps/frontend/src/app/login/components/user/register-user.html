@@ -3,14 +3,16 @@
     <plex-title titulo="Registrar usuario">
       <plex-button label="Cancelar" type="danger" (click)="cancelar()">
       </plex-button>
-      <plex-button class="ml-2" [disabled]="disableEnviar" label="Enviar" type="success" (click)="enviar()">
+      <plex-button class="ml-2" [disabled]="disableEnviar || errorEmail" label="Enviar" type="success"
+                   (click)="enviar()">
       </plex-button>
     </plex-title>
     <div class="row">
       <div class="col-md">
         <plex-text label="Ingrese su e-mail" prefix="<i class='mdi mdi-email'></i>" [(ngModel)]="usuario.email"
-                   name="email" [required]="true">
+                   name="email" [required]="true" (change)=verificarFormatoEmail()>
         </plex-text>
+        <span *ngIf="errorEmail" class="text-danger mt-1">Formato incorrecto</span>
       </div>
       <div class="col-md">
         <plex-text label="Contraseña" [(ngModel)]="usuario.password" name="password" [password]="true"
