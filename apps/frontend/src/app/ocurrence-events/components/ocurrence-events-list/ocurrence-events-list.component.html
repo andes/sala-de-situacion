@@ -16,6 +16,9 @@
           <plex-label [titulo]="ocurrenceEvent.eventKey"></plex-label>
           <plex-label [titulo]="ocurrenceEvent.institucion.nombre"></plex-label>
           <plex-label [titulo]="ocurrenceEvent.fecha | date: 'dd/MM/yyyy  HH:mm' "></plex-label>
+          <!-- <plex-label *ngFor="let indicador of indicadores[ocurrenceEvent.eventKey]">
+            {{indicador}}
+          </plex-label> -->
           <plex-badge [type]="ocurrenceEvent.activo ? 'success' : 'danger'">
             {{ ocurrenceEvent.activo ? 'HABILITADO' : 'DESHABILITADO' }}
           </plex-badge>

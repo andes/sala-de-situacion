@@ -17,6 +17,10 @@ export interface EventTypes {
             default: false;
         };
         extras: any;
+        subfiltro: {
+            type: boolean;
+            default: false;
+        };
     }[];
 }
 
