@@ -1,44 +1,64 @@
 <plex-layout>
   <plex-layout-main>
-    <plex-title titulo="Registrar usuario">
+    <plex-title titulo="Registrar usuario" (dimensionEmitter)="getSize($event)" [size]="responsiveSize | async">
       <plex-button label="Cancelar" type="danger" (click)="cancelar()">
       </plex-button>
-      <plex-button class="ml-2" [disabled]="disableEnviar || errorEmail" label="Enviar" type="success"
-                   (click)="enviar()">
+      <plex-button class="ml-2" [disabled]="disableEnviar" label="Enviar" type="success" (click)="enviar()">
       </plex-button>
     </plex-title>
-    <div class="row">
-      <div class="col-md">
-        <plex-text label="Ingrese su e-mail" prefix="<i class='mdi mdi-email'></i>" [(ngModel)]="usuario.email"
-                   name="email" [required]="true" (change)=verificarFormatoEmail()>
-        </plex-text>
-        <span *ngIf="errorEmail" class="text-danger mt-1">Formato incorrecto</span>
+    <form #formulario="ngForm" class="register-user">
+      <div class="row">
+        <div class="col-md-6">
+          <plex-text label="E-mail" prefix="<i class='mdi mdi-email'></i>" [(ngModel)]="usuario.email" name="email"
+                     [required]="true" (change)=verificarFormatoEmail()>
+          </plex-text>
+          <span *ngIf="errorEmail" class="text-danger mt-1">Formato incorrecto</span>
+        </div>
       </div>
-      <div class="col-md">
-        <plex-text label="Contraseña" [(ngModel)]="usuario.password" name="password" [password]="true"
-                   prefix="<i class='mdi mdi-dialpad'></i>">
-        </plex-text>
+      <div class="row">
+        <div class="col-md col-sm-12">
+          <div class="password">
+
+            <plex-text label="Contraseña" [(ngModel)]="usuario.password" name="password" [password]="!auth.showPassword"
+                       [required]="true">
+            </plex-text>
+            <plex-icon class="hover" [name]="auth.eye" type="info" size="24" [title]="auth.passwordTooltip"
+                       (click)="auth.toggleEye()">
+            </plex-icon>
+          </div>
+        </div>
+        <div class="col-md col-sm-12">
+          <div class="password">
+
+            <plex-text label="Confirmar contraseña" [(ngModel)]="usuario.password2" name="password"
+                       [password]="!auth.showPassword" [required]="true">
+            </plex-text>
+            <plex-icon class="hover" [name]="auth.eye" type="info" size="24" [title]="auth.passwordTooltip"
+                       (click)="auth.toggleEye()">
+            </plex-icon>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md">
-        <plex-text label="Documento" [(ngModel)]="usuario.documento" name="documento" [required]="true">
-        </plex-text>
+      <div class="row">
+        <div class="col-md col-sm-12">
+          <plex-text label="Documento" [(ngModel)]="usuario.documento" name="documento" [required]="true">
+          </plex-text>
+        </div>
+        <div class="col-md col-sm-12">
+          <plex-text label="Apellido" [(ngModel)]="usuario.apellido" name="apellido" [required]="true">
+          </plex-text>
+        </div>
       </div>
-      <div class="col-md">
-        <plex-text label="Apellido" [(ngModel)]="usuario.apellido" name="apellido" [required]="true">
-        </plex-text>
+      <div class="row">
+        <div class="col-md col-sm-12">
+          <plex-text label="Nombre" [(ngModel)]="usuario.nombre" name="nombre" [required]="true">
+          </plex-text>
+        </div>
+        <div class="col-md col-sm-12">
+          <plex-phone label="Teléfono" [(ngModel)]="usuario.telefono" name="telefono" [required]="true">
+          </plex-phone>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md">
-        <plex-text label="Nombre" [(ngModel)]="usuario.nombre" name="nombre" [required]="true">
-        </plex-text>
-      </div>
-      <div class="col-md">
-        <plex-phone label="Teléfono" [(ngModel)]="usuario.telefono" name="telefono" [required]="true">
-        </plex-phone>
-      </div>
-    </div>
+    </form>
   </plex-layout-main>
 </plex-layout>
