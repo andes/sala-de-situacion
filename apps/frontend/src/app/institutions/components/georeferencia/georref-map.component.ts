@@ -79,7 +79,6 @@ export class GeorrefMapComponent implements AfterViewInit {
                 anchorXUnits: 'fraction',
                 anchorYUnits: 'pixels',
                 opacity: 0.75,
-                // src: 'http://openlayers.org/api/img/marker-blue.png'
                 src: '//raw.githubusercontent.com/jonataswalker/map-utils/master/images/marker.png'
             }))
         });
