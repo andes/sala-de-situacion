@@ -5,6 +5,7 @@ import { InstitutionService } from '../../service/institution.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from './../../../login/auth.services';
 import { GeoreferenciaService } from '../../service/georeferencia.service';
+import { Utils } from './../../../shared/utils';
 
 @Component({
     selector: 'institution-crud',
@@ -172,17 +173,8 @@ export class AppInstitutionCrudComponent implements OnInit {
         this.router.navigate(['/institution/list']);
     }
     verificarFormatoEmail() {
-        let formato = /^[a-zA-Z0-9_.+-]+\@[a-zA-Z0-9-]+(\.[a-z]{2,4})+$/;
-        let email = this.institution.email;
-        if (email) {
-            if (formato.test(email)) {
-                this.disableGuardar = false;
-            } else {
-                this.disableGuardar = true;
-            }
-        } else {
-            this.disableGuardar = false;
-        }
+        let utils = new Utils();
+        utils.verificarFormatoEmail(this.institution.email) ? this.disableGuardar = false : this.disableGuardar = true;
     }
 
     inicializarMapa() {

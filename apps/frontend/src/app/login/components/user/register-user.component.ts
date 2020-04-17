@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { AuthService } from '../../auth.services';
 import { Router } from '@angular/router';
-import { IUsuario } from './IUsuario.interfaces';
+import { Utils } from './../../../shared/utils';
 
 @Component({
     selector: 'register-user',
@@ -52,19 +52,12 @@ export class RegisterUserComponent implements OnInit {
     cancelar() {
         this.router.navigate(['auth', 'login']);
     }
+
     verificarFormatoEmail() {
-        let formato = /^[a-zA-Z0-9_.+-]+\@[a-zA-Z0-9-]+(\.[a-z]{2,4})+$/;
-        let email = this.usuario.email;
-        if (email) {
-            if (formato.test(email)) {
-                this.errorEmail = false;
-            } else {
-                this.errorEmail = true;
-            }
-        } else {
-            this.errorEmail = false;
-        }
-    };
+        let utils = new Utils();
+        utils.verificarFormatoEmail(this.usuario.email) ? this.errorEmail = false : this.errorEmail = true;
+    }
+
     passwordMatch() {
         return this.usuario.password2 === this.usuario.password;
     }
