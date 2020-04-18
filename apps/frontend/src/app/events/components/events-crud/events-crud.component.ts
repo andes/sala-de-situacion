@@ -68,6 +68,14 @@ export class AppEventsCrudComponent implements OnInit {
             subfiltro: false
         });
         this.event.indicadores = [...this.event.indicadores];
+
+        setTimeout(() => {
+            const element = document.querySelector(`#wrapper-${this.event.indicadores.length - 1}`);
+            console.log(element);
+            if (element) {
+                element.scrollIntoView({ block: "end", behavior: "smooth" });
+            }
+        }, 100);
     }
 
     onRemove(i) {
