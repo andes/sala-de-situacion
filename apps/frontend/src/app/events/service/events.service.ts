@@ -10,8 +10,8 @@ export interface Event {
         label: string;
         type: string;
         descripcion: string;
-        required: boolean;
         subfiltro: boolean;
+        required: boolean;
         extras: any;
     }[];
 }
