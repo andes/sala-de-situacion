@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { Server } from '@andes/shared';
-import { tap, publishReplay, refCount } from 'rxjs/operators';
-import * as jwt_decode from "jwt-decode";
+import { tap, switchMap, catchError, publishReplay, refCount } from 'rxjs/operators';
 const shiroTrie = require('shiro-trie');
+import { cache } from '@andes/shared';
 
 @Injectable()
 export class AuthService {
     private authUrl = '/auth'; // URL to web api auth
-    private authUsers = '/users'; // URL to web api users
     public showPassword = false;
     public eye: 'eye' | 'eye-off' = 'eye'; // mostrar/ocultar password
     public passwordTooltip: 'mostrar contraseña' | 'ocultar contraseña' = 'mostrar contraseña';
@@ -17,8 +16,21 @@ export class AuthService {
     public apellido: any;
     private shiro = shiroTrie.new();
     private permisos: string[];
+    public token$ = new Subject<any>();
 
-    constructor(private server: Server) { }
+    constructor(private server: Server) {
+        this.session$ = this.token$.pipe(
+            switchMap(() => {
+                return this.server.get(`${this.authUrl}/session`);
+            }),
+            tap((payload) => {
+                this.nombre = payload.nombre;
+                this.apellido = payload.apellido;
+                this.permisos = payload.permisos;
+                this.initShiro()
+            }),
+            cache());
+    }
 
     private initShiro() {
         this.shiro.reset();
@@ -68,33 +80,17 @@ export class AuthService {
         return this.shiro.permissions(string);
     }
 
-    session(force = false) {
-        if (!this.session$ || force) {
-            const token = this.getToken();
-            if (token) {
-                const id = jwt_decode(token).user_id;
-                this.session$ = this.server.get(`${this.authUsers}/${id}?fields=nombre&fields=apellido&fields=permisos&fields=active`).pipe(
-                    tap((payload) => {
-                        this.nombre = payload.nombre;
-                        this.apellido = payload.apellido;
-                        this.permisos = payload.permisos;
-                        this.initShiro()
-                    }),
-                    publishReplay(1),
-                    refCount()
-                );
-            }
-
-        }
-        return this.session$;
-    }
-
     getToken() {
         return window.sessionStorage.getItem('jwt');
     }
 
+    getSession() {
+        return this.session$;
+    }
+
     setToken(token: string) {
         window.sessionStorage.setItem('jwt', token);
+        this.token$.next(token);
     }
 
     logout() {

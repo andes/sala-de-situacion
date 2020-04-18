@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { AppChartComponent } from './components/chart.component';
 
 const routes: Routes = [
-    { path: '', component: AppChartComponent, pathMatch: 'full' },
     { path: 'dashboard', component: AppChartComponent },
 ];
 

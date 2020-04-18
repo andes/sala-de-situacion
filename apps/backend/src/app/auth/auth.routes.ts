@@ -79,6 +79,13 @@ AuthRouter.post('/auth/resetPassword', async (req: Request, res, next) => {
     }
 });
 
-AuthRouter.get('/auth/sesion', (req, res) => {
-    res.json((req as any).user);
+AuthRouter.get('/auth/session', application.authenticate(), async (req, res, next) => {
+    try {
+        const user_id = req.user.user_id;
+        const user = await UsersCtr.findById(user_id, { fields: 'nombre apellido permisos active' });
+        res.json(user);
+
+    } catch (err) {
+        return next(403);
+    }
 });

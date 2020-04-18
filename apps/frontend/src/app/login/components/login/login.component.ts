@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
             this.loading = true;
             this.auth.login(this.usuario.toString(), this.password).subscribe(
                 data => {
-                    this.router.navigate(['/home']);
+                    this.router.navigate(['/']);
                 },
                 err => {
                     this.plex.info('danger', 'Usuario o contraseña incorrectos');
