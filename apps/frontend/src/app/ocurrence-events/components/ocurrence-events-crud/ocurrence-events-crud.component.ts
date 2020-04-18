@@ -19,6 +19,7 @@ export class OccurrenceEventsCrudComponent implements OnInit {
     public eventDate: Date;
     public indicadores = {};
     public ocurrenceEvent: OcurrenceEvent;
+    public show: boolean = false;
 
     constructor(
         private ocurrenceEventsService: OcurrenceEventsService,
@@ -27,7 +28,7 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         private plex: Plex,
         private location: Location,
         private route: ActivatedRoute
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.institutionService.search({}).subscribe(rta => {
@@ -38,9 +39,10 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         });
         const ocurrenceEvent: OcurrenceEvent = this.route.snapshot.data.ocurrenceEvent;
         if (ocurrenceEvent) {
+            this.show = true;
             this.ocurrenceEvent = ocurrenceEvent;
             this.institutionSelected = ocurrenceEvent.institucion;
-            this.eventDate = ocurrenceEvent.fecha;
+            this.eventDate = new Date();
             this.eventsService.search({ categoria: ocurrenceEvent.eventKey }).subscribe(evento => {
                 this.eventSelected = evento[0];
             });
@@ -56,7 +58,6 @@ export class OccurrenceEventsCrudComponent implements OnInit {
             $event.callback([]);
         }
     }
-
     onSave($event) {
         if (!$event.formValid) {
             return;
@@ -77,9 +78,11 @@ export class OccurrenceEventsCrudComponent implements OnInit {
             indicadores,
             activo: true
         };
+
         this.ocurrenceEventsService.save(event).subscribe(() => {
             this.plex.toast('success', 'Indicadores registrados con exito! ');
             this.location.back();
+
         });
     }
 }

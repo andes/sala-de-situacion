@@ -19,12 +19,12 @@ import { OcurrenceEventsResolver } from './resolver/ocurrence-events.resolver';
     ],
     // prettier-ignore
     imports: [
-        CommonModule, 
-        FormsModule, 
-        HttpClientModule, 
+        CommonModule,
+        FormsModule,
+        HttpClientModule,
         RouterModule,
         PlexModule,
-        NgxObserveModule,  
+        NgxObserveModule,
         OcurrenceEventsRouting
     ],
     // prettier-ignore
@@ -34,4 +34,4 @@ import { OcurrenceEventsResolver } from './resolver/ocurrence-events.resolver';
     ],
     bootstrap: []
 })
-export class OcurrenceEventsModule {}
+export class OcurrenceEventsModule { }
