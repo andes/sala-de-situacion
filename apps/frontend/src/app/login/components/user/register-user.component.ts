@@ -31,12 +31,6 @@ export class RegisterUserComponent implements OnInit {
     ngOnInit() { }
     enviar() {
         this.disableEnviar = true;
-        this.auth.create(this.usuario).subscribe(
-            data => {
-                this.router.navigate(['auth/verify-email/' + this.usuario.email]);
-            },
-            err => { }
-        );
         if (this.passwordMatch()) {
             this.auth.create(this.usuario).subscribe(
                 data => {
