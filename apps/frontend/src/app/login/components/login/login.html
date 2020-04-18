@@ -15,7 +15,7 @@
                                        placeholder="usuario (e-mail)">
                             </plex-text>
                             <plex-icon class="hover" name="account-key" type="default" size="24"
-                                       title="e-mail registrado">
+                                       title="e-mail registrado" titlePosition="right">
                             </plex-icon>
                         </div>
                         <a class="hover small text-sala" justify="end" (click)="forgot()">
@@ -26,7 +26,7 @@
                                        [required]="true" placeholder="contraseña">
                             </plex-text>
                             <plex-icon class="hover" [name]="auth.eye" type="info" size="24" (click)="auth.toggleEye()"
-                                       [title]="auth.passwordTooltip"></plex-icon>
+                                       [title]="auth.passwordTooltip" titlePosition="right"></plex-icon>
                         </div>
                         <div class="ingresar mb-3">
                             <plex-button type="success" [validateForm]="formulario" [disabled]="!formulario.form.valid"
