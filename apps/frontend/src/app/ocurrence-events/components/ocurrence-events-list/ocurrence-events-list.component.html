@@ -5,26 +5,28 @@
     </plex-title>
 
     <div *ngxObserve="ocurrenceEvents$ as ocurrenceEvents; before: loadingTemplate; error: errorTemplate">
-      <plex-list>
-        <plex-heading>
-          <b label>Evento</b>
-          <b label>Institucion</b>
-          <b label>Fecha</b>
-          <b button></b>
-        </plex-heading>
-        <plex-item *ngFor="let ocurrenceEvent of ocurrenceEvents">
-          <plex-label [titulo]="ocurrenceEvent.eventKey"></plex-label>
-          <plex-label [titulo]="ocurrenceEvent.institucion.nombre"></plex-label>
-          <plex-label [titulo]="ocurrenceEvent.fecha | date: 'dd/MM/yyyy  HH:mm' "></plex-label>
-          <!-- <plex-label *ngFor="let indicador of indicadores[ocurrenceEvent.eventKey]">
-            {{indicador}}
-          </plex-label> -->
-          <plex-badge [type]="ocurrenceEvent.activo ? 'success' : 'danger'">
-            {{ ocurrenceEvent.activo ? 'HABILITADO' : 'DESHABILITADO' }}
-          </plex-badge>
-          <plex-button size="sm" icon="pencil" type="info" [routerLink]="[ocurrenceEvent.id]"></plex-button>
-        </plex-item>
-      </plex-list>
+      <plex-accordion>
+        <plex-panel *ngFor="let institucion of arrayInstituciones"
+                    tituloPrincipal="{{institucion[0].institucion.nombre}}">
+          <plex-accordion>
+            <ng-container *ngFor="let inst of institucion">
+              <plex-panel *ngFor="let subfiltro of indicadores[inst.eventKey].subfiltros"
+                          tituloPrincipal="{{ inst.indicadores[subfiltro] }}">
+                <plex-title size="sm" titulo="{{ inst.fecha | date: 'dd/MM/yyyy  HH:mm' }}">
+                  <plex-button size="sm" icon="pencil" type="info" [routerLink]="[inst.id]"></plex-button>
+                </plex-title>
+                <ng-container *ngFor="let item of inst.indicadores | keyvalue">
+                  <plex-detail size="sm" *ngIf="item.value !== inst.indicadores[subfiltro]">
+                    <div title>{{ item.key }}:</div>
+                    <div subtitle>{{ item.value }}</div>
+                  </plex-detail>
+                </ng-container>
+              </plex-panel>
+            </ng-container>
+          </plex-accordion>
+        </plex-panel>
+      </plex-accordion>
+
     </div>
 
     <ng-template #loadingTemplate>
