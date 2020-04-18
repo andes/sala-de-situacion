@@ -1,9 +1,31 @@
 <plex-layout>
   <plex-layout-main>
     <plex-title titulo="Listado de eventos">
-      <plex-button type="info" [routerLink]="['create']"> NUEVO </plex-button>
+      <plex-button type="success" [routerLink]="['create']"> NUEVO </plex-button>
     </plex-title>
-
+    <div class="row">
+      <div class="col-md-3">
+        <plex-datetime type="date" [(ngModel)]="fechaDesde" name="fechaDesde" (change)="filtrarResultados()"
+                       label="Fecha Desde" [required]="false">
+        </plex-datetime>
+      </div>
+      <div class="col-md-3">
+        <plex-datetime type="date" [(ngModel)]="fechaHasta" name="fechaHasta" (change)="filtrarResultados()"
+                       label="Fecha Hasta" [required]="false">
+        </plex-datetime>
+      </div>
+      <div class="col-md-3">
+        <plex-select [(ngModel)]="selectedInstitution" name="institucion" (change)="filtrarResultados()"
+                     label="Institucion" [data]="institutions" [required]="false">
+        </plex-select>
+      </div>
+      <div class="col-md-3">
+        <plex-select [(ngModel)]="selectedEvent" name="evento" (change)="filtrarResultados()" label="Evento"
+                     [data]="eventos" [required]="false">
+        </plex-select>
+      </div>
+    </div>
+    <br>
     <div *ngxObserve="ocurrenceEvents$ as ocurrenceEvents; before: loadingTemplate; error: errorTemplate">
       <plex-accordion>
         <plex-panel *ngFor="let institucion of arrayInstituciones"
