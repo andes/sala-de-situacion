@@ -19,8 +19,8 @@
                     <plex-label>{{ institution.email }}</plex-label>
                     <plex-label>{{ institution.telefono }}</plex-label>
                     <plex-label>{{ institution.direccion }}</plex-label>
-                    <plex-badge *ngIf="institution.activo" type="success">Habilitado</plex-badge>
-                    <plex-badge *ngIf="!institution.activo" type="danger">deshabilitado</plex-badge>
+                    <plex-badge *ngIf="institution.activo" type="success">Habilitada</plex-badge>
+                    <plex-badge *ngIf="!institution.activo" type="danger">Deshabilitada</plex-badge>
                     <plex-button type="info" size="sm" icon="pencil" (click)="edit(institution)"></plex-button>
                 </plex-item>
             </ng-container>
