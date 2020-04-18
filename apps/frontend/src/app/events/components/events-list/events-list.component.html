@@ -10,12 +10,14 @@
           <b label>Nombre</b>
           <b label>Categoría/Key</b>
           <b label>Cant. Variables</b>
+
           <b button></b>
         </plex-heading>
         <plex-item *ngFor="let event of events">
           <plex-label [titulo]="event.nombre"></plex-label>
           <plex-label [titulo]="event.categoria"></plex-label>
           <plex-label> {{ event.indicadores.length }} </plex-label>
+
           <plex-badge [type]="event.activo ? 'success' : 'danger'">
             {{ event.activo ? 'HABILITADO' : 'DESHABILITADO' }}
           </plex-badge>

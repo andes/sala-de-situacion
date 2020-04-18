@@ -24,6 +24,7 @@ export class AppEventsCrudComponent implements OnInit {
                 label: '',
                 required: true,
                 type: '',
+                subfiltro: true,
                 extras: {}
             }
         ]
@@ -53,6 +54,7 @@ export class AppEventsCrudComponent implements OnInit {
             label: '',
             required: true,
             type: '',
+            subfiltro: false,
             extras: {}
         });
         this.event.indicadores = [...this.event.indicadores];
