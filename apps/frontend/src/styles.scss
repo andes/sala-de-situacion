@@ -25,3 +25,25 @@ body {
     width: 48px;
     height: 50px;
 }
+
+
+%login-icons {
+    plex-text {
+        width: 100%;
+    }
+
+    plex-icon {
+        &[name=account-key],
+        &[type=info]{
+            position: absolute;
+        }
+        &[name=account-key] {
+            right: 10px;
+            color: grey;
+        }
+        &[type=info] {
+            right: 7px;
+            top: 1px;
+        }
+    }
+}

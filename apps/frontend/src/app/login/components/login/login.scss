@@ -1,5 +1,33 @@
 @import '~@andes/plex/src/lib/css/variables';
 
+%login-icons {
+
+    .usuario, .password {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+    }
+
+    plex-text {
+        width: 100%;
+    }
+
+    plex-icon {
+        &[name=account-key],
+        &[type=info]{
+            position: absolute;
+        }
+        &[name=account-key] {
+            right: 10px;
+            color: grey;
+        }
+        &[type=info] {
+            right: 7px;
+            bottom: 1px;
+        }
+    }
+}
+
 // Overrides
 :root {
     // --nav-bar-color: #7a3e7b;
@@ -13,7 +41,10 @@
     }
     plex-text .clear-icon {
         display: none !important;
-}
+    }
+    // plex-title.size-sm {
+
+    // }
 }
 .login {
     position: fixed;
@@ -30,30 +61,7 @@
     form {
         width: 25vw;
 
-        .usuario, .password {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-        }
-
-        plex-text {
-            width: 100%;
-        }
-
-        plex-icon {
-            &[name=account-key],
-            &[type=info]{
-                position: absolute;
-            }
-            &[name=account-key] {
-                right: 10px;
-                color: grey;
-            }
-            &[type=info] {
-                right: 7px;
-                top: 1px;
-            }
-        }
+        @extend %login-icons;
     }
 
     .sala {
@@ -80,4 +88,6 @@
 }
 
 
-    
+.register-user {
+    @extend %login-icons;
+}
