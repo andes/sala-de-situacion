@@ -34,15 +34,10 @@ export class RegisterUserComponent implements OnInit {
         if (this.passwordMatch()) {
             this.auth.create(this.usuario).subscribe(
                 data => {
-                    if (data.status === 'ok') {
-                        this.router.navigate(['auth/verify-email/' + this.usuario.email]);
-                    } else {
-                        this.plex.toast('danger', 'El email ingresado ya existe en la base de datos.');
-                        this.disableEnviar = false;
-                    }
+                    this.router.navigate(['auth/verify-email/' + this.usuario.email]);
                 },
                 err => {
-                    this.plex.toast('danger', 'Hubo un error con los datos ingresados, reintente');
+                    this.plex.toast('danger', 'Error en los datos ingresador, verifique su email y vuelva a intentarlo.');
                     this.disableEnviar = false;
                 }
             );

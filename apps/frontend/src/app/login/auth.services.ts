@@ -38,7 +38,7 @@ export class AuthService {
     }
 
     create(body): Observable<any> {
-        return this.server.post(this.authUrl + '/create', body);
+        return this.server.post(this.authUrl + '/create', body, { showError: false });
     }
 
     login(usuario: string, password: string): Observable<any> {
