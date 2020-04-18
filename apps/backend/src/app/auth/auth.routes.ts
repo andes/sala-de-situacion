@@ -33,10 +33,15 @@ AuthRouter.post('/auth/login', async (req: Request, res, next) => {
 AuthRouter.post('/auth/create', async (req: Request, res, next) => {
     try {
         const user = req.body;
-        const createdUser = await UsersCtr.create(user, req);
-        const url = `${environment.host}/auth/activacion-cuenta/${createdUser.validationToken}`;
-        await sendEmailNotification(user.email, user.nombre, 'SALA DE SITUACIÓN :: Verificación de cuenta', `${user.nombre}, gracias por registrar tu cuenta. Para activarla haz click aquí ${url}`);
-        return res.json({ status: 'ok' });
+        const existUser = await UsersCtr.search({ email: user.email }, {}, req);
+        if (existUser.length > 0) {
+            return res.json({ status: 'exists' })
+        } else {
+            const createdUser = await UsersCtr.create(user, req);
+            const url = `${environment.host}/auth/activacion-cuenta/${createdUser.validationToken}`;
+            await sendEmailNotification(user.email, user.nombre, 'SALA DE SITUACIÓN :: Verificación de cuenta', `${user.nombre}, gracias por registrar tu cuenta. Para activarla haz click aquí ${url}`);
+            return res.json({ status: 'ok' });
+        }
     } catch (err) {
         return next(403);
     }
