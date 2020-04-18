@@ -1,23 +1,17 @@
-<plex-layout>
-  <plex-layout-main>
-    <plex-title titulo="Registrar usuario">
-      <plex-button label="Cancelar" type="danger" (click)="cancelar()">
-      </plex-button>
-      <plex-button class="ml-2" [disabled]="disableEnviar || errorEmail" label="Enviar" type="success"
-                   (click)="enviar()">
-      </plex-button>
-    </plex-title>
-    <form #formulario="ngForm" class="register-user">
+<plex-modal #modal>
+  <main>
+    <form #formulario="ngForm" class="mx-4 register-user">
+      <plex-title size="sm" titulo="Registrar Usuario"></plex-title>
       <div class="row">
-        <div class="col-md-6">
-          <plex-text label="E-mail" prefix="<i class='mdi mdi-email'></i>" [(ngModel)]="usuario.email" name="email"
-                     [required]="true" (change)="verificarFormatoEmail()">
+        <div class="col-sm-12">
+          <plex-text label="Usuario (e-mail)" prefix="<i class='mdi mdi-email'></i>" [(ngModel)]="usuario.email"
+                     name="email" [required]="true" (change)="verificarFormatoEmail()">
           </plex-text>
           <span *ngIf="errorEmail" class="text-danger mt-1">Formato incorrecto</span>
         </div>
       </div>
       <div class="row">
-        <div class="col-md col-sm-12">
+        <div class="col-sm-12">
           <div class="password">
 
             <plex-text label="Contraseña" [(ngModel)]="usuario.password" name="password" [password]="!auth.showPassword"
@@ -28,38 +22,41 @@
             </plex-icon>
           </div>
         </div>
-        <div class="col-md col-sm-12">
+        <div class="col-sm-12">
           <div class="password">
 
             <plex-text label="Confirmar contraseña" [(ngModel)]="usuario.password2" name="password"
                        [password]="!auth.showPassword" [required]="true">
             </plex-text>
-            <plex-icon class="hover" [name]="auth.eye" type="info" size="24" [title]="auth.passwordTooltip"
-                       (click)="auth.toggleEye()">
-            </plex-icon>
           </div>
         </div>
       </div>
+      <plex-title size="sm" titulo="Datos personales"></plex-title>
       <div class="row">
-        <div class="col-md col-sm-12">
+        <div class="col-sm-6">
           <plex-text label="Documento" [(ngModel)]="usuario.documento" name="documento" [required]="true">
           </plex-text>
         </div>
-        <div class="col-md col-sm-12">
+        <div class="col-sm-6">
           <plex-text label="Apellido" [(ngModel)]="usuario.apellido" name="apellido" [required]="true">
           </plex-text>
         </div>
       </div>
       <div class="row">
-        <div class="col-md col-sm-12">
+        <div class="col-sm-6">
           <plex-text label="Nombre" [(ngModel)]="usuario.nombre" name="nombre" [required]="true">
           </plex-text>
         </div>
-        <div class="col-md col-sm-12">
+        <div class="col-sm-6">
           <plex-phone label="Teléfono" [(ngModel)]="usuario.telefono" name="telefono" [required]="true">
           </plex-phone>
         </div>
       </div>
     </form>
-  </plex-layout-main>
-</plex-layout>
+  </main>
+  <plex-button modal left label="Cancelar" type="danger" (click)="cancel()">
+  </plex-button>
+  <plex-button modal right class="ml-2" label="Enviar" type="success" (click)="enviar()" [validateForm]="formulario"
+               [disabled]="disableEnviar || errorEmail">
+  </plex-button>
+</plex-modal>

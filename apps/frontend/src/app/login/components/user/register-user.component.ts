@@ -1,15 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { AuthService } from '../../auth.services';
 import { Router } from '@angular/router';
 import { Utils } from './../../../shared/utils';
+import { PlexModalComponent } from '@andes/plex/src/lib/modal/modal.component';
 
 @Component({
-    selector: 'register-user',
+    selector: 'modal-register-user',
     templateUrl: './register-user.html',
     styleUrls: ['../login/login.scss']
 })
 export class RegisterUserComponent implements OnInit {
+
+    @ViewChild('modal', { static: true }) modal: PlexModalComponent;
+
+    @Input()
+    set show(value) {
+        if (value) {
+            this.modal.show();
+        }
+    }
+
+    @Output() closeModal = new EventEmitter<any>();
+
     public email = '';
     public disableEnviar = false;
     public password2 = null;
@@ -46,8 +59,10 @@ export class RegisterUserComponent implements OnInit {
             this.disableEnviar = false;
         }
     }
-    cancelar() {
-        this.router.navigate(['auth', 'login']);
+
+    cancel() {
+        this.modal.showed = false;
+        this.closeModal.emit();
     }
 
     verificarFormatoEmail() {

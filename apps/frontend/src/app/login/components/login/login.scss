@@ -23,7 +23,7 @@
         }
         &[type=info] {
             right: 7px;
-            bottom: 1px;
+            bottom: 28px;
         }
     }
 }
@@ -42,9 +42,9 @@
     plex-text .clear-icon {
         display: none !important;
     }
-    // plex-title.size-sm {
-
-    // }
+    .plex-modal {
+        overflow-y: scroll !important;
+    }
 }
 .login {
     position: fixed;
@@ -59,7 +59,6 @@
     background: whitesmoke;
     
     form {
-        width: 25vw;
 
         @extend %login-icons;
     }
@@ -90,4 +89,6 @@
 
 .register-user {
     @extend %login-icons;
+
 }
+        
