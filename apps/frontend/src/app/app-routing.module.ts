@@ -5,13 +5,14 @@ import { RoutingNavBar, RoutingGuard } from './login/routing-guard';
 
 const appRoutes: Routes = [
 
-    { path: 'auth', loadChildren: './login/login.module#LoginModule', canActivate: [RoutingNavBar] },
     {
-        path: 'home',
+        path: '',
         component: AppHomeComponent,
         canActivate: [RoutingGuard, RoutingNavBar],
         pathMatch: 'full'
     },
+    { path: 'auth', loadChildren: './login/login.module#LoginModule', canActivate: [RoutingNavBar] },
+
     {
         path: 'institution',
         loadChildren: './institutions/institution.module#InstitutionModule',
@@ -30,10 +31,10 @@ const appRoutes: Routes = [
     {
         path: 'chart',
         loadChildren: './charts/chart.module#ChartModule',
-        canActivate: [RoutingNavBar]
+        canActivate: [RoutingGuard, RoutingNavBar]
     },
 
-    { path: '**', redirectTo: '/home' }
+    { path: '**', redirectTo: '/' }
 ];
 
 export const AppRouting: ModuleWithProviders = RouterModule.forRoot(appRoutes);
