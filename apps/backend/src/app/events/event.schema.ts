@@ -17,6 +17,7 @@ export interface EventTypes {
             default: false;
         };
         extras: any;
+        recurso: string;
     }[];
 }
 
@@ -35,7 +36,8 @@ export const IndicatorsSchema = new mongoose.Schema({
     min: Number,
     max: Number,
     required: Boolean,
-    subfiltro: Boolean
+    subfiltro: Boolean,
+    recurso: { type: String, required: false }
 });
 
 export const EventsSchema = new mongoose.Schema({

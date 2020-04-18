@@ -28,7 +28,7 @@ export class OcurrenceEventsListComponent implements OnInit {
         private ocurrenceEventsService: OcurrenceEventsService,
         private eventService: EventsService,
         private institutionService: InstitutionService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.ocurrenceEvents$ = this.ocurrenceEventsService.search().pipe(cache());

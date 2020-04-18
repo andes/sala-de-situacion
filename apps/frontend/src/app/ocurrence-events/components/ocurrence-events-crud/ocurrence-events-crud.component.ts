@@ -6,6 +6,7 @@ import { OcurrenceEvent, OcurrenceEventsService } from '../../services/ocurrence
 import { Plex } from '@andes/plex';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { SelectSearchService } from '../../../shared/select-search.service';
 
 @Component({
     selector: 'occurrence-events-crud',
@@ -27,7 +28,8 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         private institutionService: InstitutionService,
         private plex: Plex,
         private location: Location,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private selectSearch: SelectSearchService
     ) { }
 
     ngOnInit() {
@@ -47,6 +49,14 @@ export class OccurrenceEventsCrudComponent implements OnInit {
                 this.eventSelected = evento[0];
             });
             this.indicadores = ocurrenceEvent.indicadores;
+            for (const key in this.indicadores) {
+                if (key.startsWith('id_')) {
+                    this.indicadores[key.substring(3)] = {
+                        id: this.indicadores[key],
+                        nombre: this.indicadores[key.substring(3)]
+                    }
+                }
+            }
         }
     }
 
@@ -64,7 +74,14 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         }
         const indicadores = {};
         for (const key in this.indicadores) {
-            indicadores[key] = this.indicadores[key];
+            const indicador = this.eventSelected.indicadores.find(indicador => indicador.key === key);
+            if (indicador && indicador.type === 'select') {
+                indicadores[`id_${key}`] = this.indicadores[key].id;
+                indicadores[key] = this.indicadores[key].nombre;
+
+            } else {
+                indicadores[key] = this.indicadores[key];
+            }
         }
 
         const event: OcurrenceEvent = {
@@ -82,7 +99,18 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         this.ocurrenceEventsService.save(event).subscribe(() => {
             this.plex.toast('success', 'Indicadores registrados con exito! ');
             this.location.back();
-
         });
+    }
+
+    loadData($event, recurso, indicadorKey) {
+        if ($event.query.length > 0) {
+            this.selectSearch.get(recurso, $event.query).subscribe((listado) => {
+                $event.callback(listado);
+            })
+        } else {
+            return $event.callback([
+                this.indicadores[indicadorKey]
+            ]);
+        }
     }
 }

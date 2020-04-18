@@ -36,6 +36,7 @@ export class Connections {
 
         // Conecta y configura conexiones
         // 1. PRINCIPAL
+
         mongoose.connect(environment.mongo_host, {
             reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
             reconnectInterval: 500
