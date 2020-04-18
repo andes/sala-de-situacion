@@ -4,6 +4,7 @@ import { LocationService } from '../../../shared/location.services';
 import { InstitutionService } from '../../service/institution.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from './../../../login/auth.services';
+import { GeoreferenciaService } from '../../service/georeferencia.service';
 
 @Component({
     selector: 'institution-crud',
@@ -35,7 +36,6 @@ export class AppInstitutionCrudComponent implements OnInit {
     localidades = [];
     barrios = [];
     institutionParam = null;
-    // Georref-map
     geoReferenciaAux = []; // Coordenadas para la vista del mapa.
     infoMarcador: String = null;
     public isAdmin;
@@ -47,7 +47,8 @@ export class AppInstitutionCrudComponent implements OnInit {
         private locationService: LocationService,
         private institutionService: InstitutionService,
         private router: Router,
-        private auth: AuthService
+        private auth: AuthService,
+        private georeferenciaService: GeoreferenciaService
     ) { }
 
     ngOnInit() {
@@ -57,6 +58,7 @@ export class AppInstitutionCrudComponent implements OnInit {
         this.institutionParam = this.route.snapshot.params; // Si viene un objeto es un update
         if (this.institutionParam.id) {
             this.loadInstitution(this.institutionParam);
+            this.inicializarMapa();
             this.neuquen = this.institutionParam.provincia === 'Neuquén' ? true : false;
         } else {
             this.institution.location.provincia = this.provNeuquen;
@@ -95,6 +97,8 @@ export class AppInstitutionCrudComponent implements OnInit {
             })
             : '';
         this.institution.activo = institucion.activo === 'true' ? true : false;
+        this.institution.location.coordenadas = institucion.coordenadas ? JSON.parse("[" + institucion.coordenadas + "]") : []; //Convierte a array las corrdenadas
+
     }
 
     setNeuquen(event) {
@@ -130,13 +134,31 @@ export class AppInstitutionCrudComponent implements OnInit {
             email: this.institution.email,
             telefono: this.institution.telefono,
             direccion: this.institution.location.direccion,
-            barrio: this.institution.location.barrio.nombre,
+            barrio: this.institution.location.barrio.nombre ? this.institution.location.barrio.nombre : '',
             localidad: this.institution.location.localidad.nombre,
             provincia: this.institution.location.provincia.nombre,
-            activo: this.institution.activo
+            activo: this.institution.activo,
+            coordenadas: []
         };
+        if (this.institution.location.provincia && this.institution.location.localidad && this.institution.location.direccion) {
+            let direccionCompleta = this.institution.location.direccion + ', ' + this.institution.location.localidad.nombre
+                + ', ' + this.institution.location.provincia.nombre;
+            // se calcula la georeferencia
+            this.georeferenciaService.get({ direccion: direccionCompleta }).subscribe(point => {
+                if (point) {
+                    this.institution.location.coordenadas = [point.lat, point.lng];
+                    dto.coordenadas = [point.lat, point.lng];
+                }
+                this.guardarInstitucion(dto);
+            });
+        } else {
+            this.guardarInstitucion(dto);
+        }
 
-        this.institutionService.save(dto).subscribe(rta => {
+    }
+
+    guardarInstitucion(institucion) {
+        this.institutionService.save(institucion).subscribe(rta => {
             this.plex.toast('success', `La institución ${rta.nombre} se guardó correctamente`);
             this.mainInsitutions();
         });
@@ -149,7 +171,6 @@ export class AppInstitutionCrudComponent implements OnInit {
     mainInsitutions() {
         this.router.navigate(['/institution/list']);
     }
-
     verificarFormatoEmail() {
         let formato = /^[a-zA-Z0-9_.+-]+\@[a-zA-Z0-9-]+(\.[a-z]{2,4})+$/;
         let email = this.institution.email;
@@ -163,4 +184,16 @@ export class AppInstitutionCrudComponent implements OnInit {
             this.disableGuardar = false;
         }
     }
+
+    inicializarMapa() {
+        if (this.institution.location.coordenadas) {
+            this.geoReferenciaAux = this.institution.location.coordenadas;
+        }
+    }
+
+    changeCoordenadas(coordenadas) {
+        this.geoReferenciaAux = coordenadas;    // Se actualiza vista del mapa
+        this.institution.location.coordenadas = coordenadas;    // Se asigna nueva georeferencia al paciente
+    }
+
 }
