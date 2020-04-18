@@ -49,7 +49,7 @@ export class RegisterUserComponent implements OnInit {
 
     verificarFormatoEmail() {
         let utils = new Utils();
-        utils.verificarFormatoEmail(this.usuario.email) ? this.errorEmail = false : this.errorEmail = true;
+        this.errorEmail = !utils.verificarFormatoEmail(this.usuario.email);
     }
 
     passwordMatch() {

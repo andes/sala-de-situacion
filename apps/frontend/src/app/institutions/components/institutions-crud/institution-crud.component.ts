@@ -174,7 +174,7 @@ export class AppInstitutionCrudComponent implements OnInit {
     }
     verificarFormatoEmail() {
         let utils = new Utils();
-        utils.verificarFormatoEmail(this.institution.email) ? this.disableGuardar = false : this.disableGuardar = true;
+        this.disableGuardar = !utils.verificarFormatoEmail(this.institution.email);
     }
 
     inicializarMapa() {
