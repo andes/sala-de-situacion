@@ -1,6 +1,6 @@
 <plex-layout>
   <plex-layout-main>
-    <plex-title titulo="Listado de indicadores">
+    <plex-title titulo="Tipos de Eventos">
       <plex-button type="info" [routerLink]="['create']"> Registar evento </plex-button>
     </plex-title>
 
@@ -13,7 +13,7 @@
 
           <b button></b>
         </plex-heading>
-        <plex-item *ngFor="let event of events">
+        <plex-item *ngFor="let event of events" class="mb-4 mb-0-md">
           <plex-label [titulo]="event.nombre"></plex-label>
           <plex-label [titulo]="event.categoria"></plex-label>
           <plex-label> {{ event.indicadores.length }} </plex-label>

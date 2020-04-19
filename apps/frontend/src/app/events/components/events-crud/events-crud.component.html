@@ -22,7 +22,8 @@
             </plex-title>
 
             <div class="mt-4">
-                <div class="row mb-2" id="wrapper-{{ i }}" *ngFor="let indicador of event.indicadores; let i = index">
+                <div class="row mb-4 mb-2-md" id="wrapper-{{ i }}"
+                     *ngFor="let indicador of event.indicadores; let i = index">
                     <div class="col-md col-sm-12">
                         <b>Clave</b>
 
@@ -44,20 +45,21 @@
 
                         <plex-text name="descripcion-{{ i }}" [(ngModel)]="indicador.descripcion" required></plex-text>
                     </div>
-                    <div class="col-md col-sm-12">
+                    <div class="col-md col-sm-4">
                         <b>Subfiltro</b>
                         <br>
                         <plex-bool type="slide" name="subfiltro-{{ i }}" [(ngModel)]="indicador.subfiltro">
                         </plex-bool>
                     </div>
-                    <div class="col-md col-sm-12">
+                    <div class="col-md col-sm-4">
                         <b>Requerido</b>
                         <br>
                         <plex-bool type="slide" name="active-{{ i }}" [(ngModel)]="indicador.required" required>
                         </plex-bool>
                     </div>
-                    <div class="col-md col-sm-12" justify>
-                        <plex-button title="Borrar" type="danger" icon="delete" (click)="onRemove(i)">
+                    <div class="col-md-1 col-sm-4" justify="center justify-content-sm-start">
+                        <plex-button size="sm" class="mt-2 mt-0-md" title="Borrar" type="danger" label="Eliminar"
+                                     (click)="onRemove(i)">
                         </plex-button>
                     </div>
                     <div class="col-md col-sm-12" *ngIf="indicador.type.id === 'int'">
