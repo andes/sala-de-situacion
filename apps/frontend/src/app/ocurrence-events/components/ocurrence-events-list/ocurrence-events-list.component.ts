@@ -34,6 +34,9 @@ export class OcurrenceEventsListComponent implements OnInit {
         this.ocurrenceEvents$ = this.ocurrenceEventsService.search().pipe(cache());
         this.institutionService.search({}).subscribe(rtaInstitutions => {
             this.institutions = rtaInstitutions;
+            if (this.institutions && this.institutions.length === 1) {
+                this.selectedInstitution = this.institutions[0];
+            }
         });
         this.eventService.search({}).subscribe(rta => {
             this.eventos = rta;
