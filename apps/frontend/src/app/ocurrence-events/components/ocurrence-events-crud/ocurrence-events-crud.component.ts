@@ -28,8 +28,7 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         private institutionService: InstitutionService,
         private plex: Plex,
         private location: Location,
-        private route: ActivatedRoute,
-        private selectSearch: SelectSearchService
+        private route: ActivatedRoute
     ) { }
 
     ngOnInit() {
@@ -60,14 +59,6 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         }
     }
 
-    @Unsubscribe()
-    onEventSearch($event) {
-        if ($event.query) {
-            return this.eventsService.search({ search: '^' + $event.query }).subscribe($event.callback);
-        } else {
-            $event.callback([]);
-        }
-    }
     onSave($event) {
         if (!$event.formValid) {
             return;
@@ -102,19 +93,4 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         });
     }
 
-    // loadData($event, recurso, indicadorKey) {
-    //     if ($event.query.length > 0) {
-    //         this.selectSearch.get(recurso, $event.query).subscribe((listado) => {
-    //             $event.callback(listado);
-    //         })
-    //     } else {
-    //         if (this.indicadores[indicadorKey]) {
-    //             return $event.callback([
-    //                 this.indicadores[indicadorKey]
-    //             ]);
-    //         } else {
-    //             return $event.callback([]);
-    //         }
-    //     }
-    // }
 }
