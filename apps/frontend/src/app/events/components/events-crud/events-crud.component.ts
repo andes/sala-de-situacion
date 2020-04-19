@@ -18,7 +18,8 @@ export class AppEventsCrudComponent implements OnInit {
     /** Eso podria ser configurable */
     public selectList = [
         { id: 'servicios', nombre: 'Servicios' },
-        { id: 'localidad', nombre: 'Localidades' }
+        { id: 'localidad', nombre: 'Localidades' },
+        { id: 'provincia', nombre: 'Provincias' },
     ];
 
     public event: Event = {
