@@ -32,13 +32,26 @@
                     tituloPrincipal="{{institucion[0].institucion.nombre}}">
           <plex-accordion>
             <ng-container *ngFor="let inst of institucion">
-              <plex-panel *ngFor="let subfiltro of indicadores[inst.eventKey].subfiltros"
-                          tituloPrincipal="{{ inst.indicadores[subfiltro] }}">
+              <ng-container *ngIf="indicadores[inst.eventKey].subfiltros">
+                <plex-panel *ngFor="let subfiltro of indicadores[inst.eventKey].subfiltros"
+                            tituloPrincipal="{{ inst.indicadores[subfiltro] }}">
+                  <plex-title size="sm" titulo="{{indicadores[inst.eventKey].evento.nombre}}: {{ inst.fecha | date: 'dd/MM/yyyy  HH:mm' }}">
+                    <plex-button size="sm" icon="pencil" type="info" [routerLink]="[inst.id]"></plex-button>
+                  </plex-title>
+                  <ng-container *ngFor="let item of inst.indicadores | keyvalue">
+                    <plex-detail size="sm" *ngIf="item.value !== inst.indicadores[subfiltro]">
+                      <div title>{{ item.key }}:</div>
+                      <div subtitle>{{ item.value }}</div>
+                    </plex-detail>
+                  </ng-container>
+                </plex-panel>
+              </ng-container>
+              <plex-panel *ngIf="indicadores[inst.eventKey].subfiltros.length === 0" tituloPrincipal="{{indicadores[inst.eventKey].evento.nombre}}">
                 <plex-title size="sm" titulo="{{ inst.fecha | date: 'dd/MM/yyyy  HH:mm' }}">
                   <plex-button size="sm" icon="pencil" type="info" [routerLink]="[inst.id]"></plex-button>
                 </plex-title>
                 <ng-container *ngFor="let item of inst.indicadores | keyvalue">
-                  <plex-detail size="sm" *ngIf="item.value !== inst.indicadores[subfiltro]">
+                  <plex-detail size="sm">
                     <div title>{{ item.key }}:</div>
                     <div subtitle>{{ item.value }}</div>
                   </plex-detail>
