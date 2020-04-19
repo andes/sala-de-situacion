@@ -44,6 +44,9 @@ export class AppComponent implements OnInit {
         if ((this.auth.checkPermisos('covid19:indicators:write')) || this.auth.checkPermisos('admin:true')) {
             this.accessList.push({ label: 'Indicadores salud', icon: 'chart-bar', route: '/ocurrence-events' });
         }
+        if ((this.auth.checkPermisos('covid19:indicators:write')) || this.auth.checkPermisos('admin:true')) {
+            this.accessList.push({ label: 'Dashboards', icon: 'chart-pie', route: '/chart/dashboard' });
+        }
         this.accessList.forEach(element => {
             this.menuList.push(element);
         });

@@ -6,7 +6,12 @@ export const ChartsSchema = new mongoose.Schema({
     base_url: String,
     tenant: String,
     permisos: [String],
-    activo: { type: Boolean, default: false }
+    activo: { type: Boolean, default: false },
+    filter: String,
+    operator: String,
+    autorefresh: Number,
+    theme: String,
+    embedding_signing_key: String
 });
 
 export const Charts = mongoose.model('charts', ChartsSchema, 'charts');
