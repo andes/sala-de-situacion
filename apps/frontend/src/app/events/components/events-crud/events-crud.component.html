@@ -42,6 +42,7 @@
                     <plex-bool type="slide" name="active-{{ i }}" [(ngModel)]="indicador.required" required></plex-bool>
 
                     <plex-button title="Borrar" type="danger" icon="delete" (click)="onRemove(i)"> </plex-button>
+
                 </plex-wrapper>
                 <plex-wrapper *ngIf="indicador.type.id === 'select'">
                     <plex-select label="Tipo de recurso" style="width: 100%;" name="select-recurso-{{ i }}"
