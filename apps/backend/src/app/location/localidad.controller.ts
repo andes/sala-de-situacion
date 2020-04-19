@@ -13,8 +13,8 @@ class LocalidadResource extends ResourceBase {
         provincia: {
             field: 'provincia._id',
             fn: value => mongoose.Types.ObjectId(value)
-        }
-        // search: ['nombre', 'provincia'];
+        },
+        search: ['nombre']
     };
 }
 
