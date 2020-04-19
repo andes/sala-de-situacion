@@ -59,7 +59,16 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         }
     }
 
+    @Unsubscribe()
+    onEventSearch($event) {
+        if ($event.query) {
+            return this.eventsService.search({ search: '^' + $event.query }).subscribe($event.callback);
+        } else {
+            $event.callback([]);
+        }
+    }
     onSave($event) {
+        debugger
         if (!$event.formValid) {
             return;
         }

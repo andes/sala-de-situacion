@@ -10,8 +10,8 @@
         <plex-select label="Institucion" grow="full" [(ngModel)]="institutionSelected" name="institution-selected"
                      [data]="institutions" [readonly]="show"></plex-select>
         <plex-datetime label="Fecha y hora" required [(ngModel)]="eventDate" name="event-date"></plex-datetime>
-        <plex-select label="Evento" required [(ngModel)]="eventSelected" name="event-selected" [readonly]="show"
-                     [ssSearch]="'events'" [preload]="true"></plex-select>
+        <plex-select label="Evento" required [(ngModel)]="eventSelected" name="event-selected"
+                     (getData)="onEventSearch($event)" [readonly]="show"></plex-select>
       </plex-wrapper>
       <plex-title titulo="Indicadores"></plex-title>
 
