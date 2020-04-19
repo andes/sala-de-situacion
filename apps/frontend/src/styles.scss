@@ -50,3 +50,31 @@ body {
         }
     }
 }
+
+plex-panel {
+    .card {
+        border: 0;
+    }
+    .card-header {
+        background-color: #dae5ec;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        border-left: 4px solid rgba(0,0,0,0.125);
+        margin: 2px 0;
+    }
+    .card-block {
+        padding-top: 0.2rem;
+        padding-left: 0.5rem;
+        border-left: 4px solid rgba(0, 0, 0, 0.125);
+    }
+    plex-accordion {
+        plex-panel {
+            .card-header {
+                background-color: #e6e6e6;
+                padding: 0.45rem 0.75rem;
+                h5 {
+                    font-size: 1rem;
+                }
+            }
+        }
+    }
+}

@@ -28,12 +28,12 @@
     <br>
     <div *ngxObserve="ocurrenceEvents$ as ocurrenceEvents; before: loadingTemplate; error: errorTemplate">
       <plex-accordion>
-        <plex-panel *ngFor="let institucion of arrayInstituciones"
+        <plex-panel class="hover" icon="chevron-double-down" *ngFor=" let institucion of arrayInstituciones"
                     tituloPrincipal="{{institucion[0].institucion.nombre}}">
           <plex-accordion>
             <ng-container *ngFor="let inst of institucion">
               <ng-container *ngIf="indicadores[inst.eventKey].subfiltros">
-                <plex-panel *ngFor="let subfiltro of indicadores[inst.eventKey].subfiltros"
+                <plex-panel class="hover" *ngFor="let subfiltro of indicadores[inst.eventKey].subfiltros"
                             tituloPrincipal="{{ inst.indicadores[subfiltro] }}">
                   <plex-title size="sm"
                               titulo="{{indicadores[inst.eventKey].evento.nombre}}: {{ inst.fecha | date: 'dd/MM/yyyy  HH:mm' }}">
