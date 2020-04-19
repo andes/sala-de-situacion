@@ -12,6 +12,7 @@ export class AuthService {
     public eye: 'eye' | 'eye-off' = 'eye'; // mostrar/ocultar password
     public passwordTooltip: 'mostrar contraseña' | 'ocultar contraseña' = 'mostrar contraseña';
     public session$: Observable<any>;
+    public user_id: any;
     public nombre: any;
     public apellido: any;
     private shiro = shiroTrie.new();
@@ -23,13 +24,15 @@ export class AuthService {
             switchMap(() => {
                 return this.server.get(`${this.authUrl}/session`);
             }),
-            tap((payload) => {
+            tap(payload => {
+                this.user_id = payload.id;
                 this.nombre = payload.nombre;
                 this.apellido = payload.apellido;
                 this.permisos = payload.permisos;
-                this.initShiro()
+                this.initShiro();
             }),
-            cache());
+            cache()
+        );
     }
 
     private initShiro() {
@@ -65,7 +68,7 @@ export class AuthService {
     }
 
     resetPassword(body): Observable<any> {
-        return this.server.post(`${this.authUrl}/resetPassword`, body)
+        return this.server.post(`${this.authUrl}/resetPassword`, body);
     }
 
     setNewValidationToken(email): Observable<any> {
@@ -111,6 +114,4 @@ export class AuthService {
     checkPermisos(permiso: string) {
         return this.shiro.check(permiso);
     }
-
-
 }
