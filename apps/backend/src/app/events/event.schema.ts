@@ -18,10 +18,11 @@ export interface EventTypes {
         };
         extras: any;
         recurso: string;
+        preload: boolean;
     }[];
 }
 
-export interface EventTypesDocument extends mongoose.Document, EventTypes {}
+export interface EventTypesDocument extends mongoose.Document, EventTypes { }
 
 export const IndicatorsSchema = new mongoose.Schema({
     key: {
@@ -37,7 +38,9 @@ export const IndicatorsSchema = new mongoose.Schema({
     max: Number,
     required: Boolean,
     subfiltro: Boolean,
-    recurso: { type: String, required: false }
+    recurso: { type: String, required: false },
+    preload: Boolean,
+
 });
 
 export const EventsSchema = new mongoose.Schema({

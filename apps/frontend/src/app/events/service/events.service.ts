@@ -13,6 +13,9 @@ export interface Event {
         subfiltro: boolean;
         required: boolean;
         recurso?: string;
+        preload?: boolean;
+        min?: number;
+        max?: number;
     }[];
 }
 

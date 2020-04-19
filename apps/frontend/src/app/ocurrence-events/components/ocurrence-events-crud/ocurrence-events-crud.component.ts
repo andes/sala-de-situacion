@@ -102,15 +102,19 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         });
     }
 
-    loadData($event, recurso, indicadorKey) {
-        if ($event.query.length > 0) {
-            this.selectSearch.get(recurso, $event.query).subscribe((listado) => {
-                $event.callback(listado);
-            })
-        } else {
-            return $event.callback([
-                this.indicadores[indicadorKey]
-            ]);
-        }
-    }
+    // loadData($event, recurso, indicadorKey) {
+    //     if ($event.query.length > 0) {
+    //         this.selectSearch.get(recurso, $event.query).subscribe((listado) => {
+    //             $event.callback(listado);
+    //         })
+    //     } else {
+    //         if (this.indicadores[indicadorKey]) {
+    //             return $event.callback([
+    //                 this.indicadores[indicadorKey]
+    //             ]);
+    //         } else {
+    //             return $event.callback([]);
+    //         }
+    //     }
+    // }
 }

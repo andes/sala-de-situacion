@@ -8,8 +8,15 @@ export class SelectSearchService {
     constructor(private server: Server) { }
 
     get(recurso, texto): Observable<any[]> {
-        const search = `^${texto}`;
-        return this.server.get(`/${recurso}`, { params: { search }, showError: true });
+        let search = null;
+        if (texto) {
+            search = `^${texto}`;
+        }
+        const params = {
+            search,
+            fields: 'nombre'
+        }
+        return this.server.get(`/${recurso}`, { params, showError: true });
     }
 
 }
