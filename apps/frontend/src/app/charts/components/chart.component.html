@@ -1,31 +1,5 @@
-<div class="app-main">
-    <div class="row">
-        <div class="col-sm-12 col-lg-6" *ngIf="urls">
-            <iframe
-                name="barras"
-                style="background: #FFFFFF;border: none;border-radius: 2px;box-shadow: 0 2px 10px 0 rgba(70, 76, 79, .2);"
-                width="640"
-                height="300"
-                [src]="urls[0] | safe"
-            ></iframe>
-        </div>
-        <div class="col-sm-12 col-lg-6" *ngIf="urls">
-            <iframe
-                name="dona"
-                style="background: #FFFFFF;border: none;border-radius: 2px;box-shadow: 0 2px 10px 0 rgba(70, 76, 79, .2);"
-                width="640"
-                height="300"
-                [src]="urls[1] | safe"
-            ></iframe>
-        </div>
+<ng-container *ngFor="let url of urls$ | async">
+    <div class="w-100">
+        <iframe class="grafico" name="tabla" [src]="url | safe"></iframe>
     </div>
-    <div class="card mb-3" *ngIf="urls">
-        <iframe
-            name="tabla"
-            style="background: #FFFFFF;border: none;border-radius: 2px;box-shadow: 0 2px 10px 0 rgba(70, 76, 79, .2);"
-            width="available"
-            height="300"
-            [src]="urls[2] | safe"
-        ></iframe>
-    </div>
-</div>
+</ng-container>
