@@ -75,7 +75,6 @@ export class AppEventsCrudComponent implements OnInit {
     }
 
     save($event) {
-        debugger
         if (!this.event.indicadores.length) {
             return this.plex.toast('danger', 'Al menos debes agregar un indicador');
         }

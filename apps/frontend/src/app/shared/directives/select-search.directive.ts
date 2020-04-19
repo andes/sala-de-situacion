@@ -32,7 +32,6 @@ export class SelectSearchDirective implements OnDestroy, AfterContentInit {
         const plexSelect: PlexSelectComponent = this._viewContainerRef['_data'].componentView.component;
         if (this.preload) {
             plexSelect.data = [];
-            debugger
             this.selectSearch.get(this.ssSearch, null).subscribe(result => {
                 plexSelect.data = result;
             });
