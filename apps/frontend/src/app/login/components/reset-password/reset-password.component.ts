@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { AuthService } from '../../auth.services';
-import { Router } from '@angular/router';
 import { PlexModalComponent } from '@andes/plex/src/lib/modal/modal.component';
+import { Utils } from './../../../shared/utils';
+
 @Component({
     selector: 'modal-reset-password',
     templateUrl: 'reset-password.html',
@@ -22,8 +23,10 @@ export class ResetPasswordComponent implements OnInit {
     @Output() closeModal = new EventEmitter<any>();
 
     public loading = false;
-    public email = '';
-    constructor(private plex: Plex, private auth: AuthService, private router: Router) { }
+    public email = null;
+    public utils = new Utils();
+    public validEmail = true;
+    constructor(private plex: Plex, private auth: AuthService) { }
 
     ngOnInit() { }
 
@@ -42,12 +45,16 @@ export class ResetPasswordComponent implements OnInit {
                     this.cancel();
                 },
                 err => {
-                    this.plex.info('danger', err);
+                    this.plex.info('danger', 'El email ingresado no existe. Verifique los datos ingresados y vuelva a intentar');
                     this.loading = false;
                     this.cancel();
                 }
             );
         }
+    }
+
+    verificarFormatoEmail() {
+        this.validEmail = this.utils.verificarFormatoEmail(this.email);
     }
 
     cancel() {
