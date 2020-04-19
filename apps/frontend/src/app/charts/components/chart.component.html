@@ -1,13 +1,13 @@
 <div class="app-main">
     <div class="row" *ngIf="urls">
         <div class="col-sm-12 col-md-6">
-            <iframe class="grafico dona" name="dona" [src]="urls[0] | safe"></iframe>
+            <iframe class="grafico dona" name="dona1" [src]="urls[0] | safe"></iframe>
         </div>
         <div class="col-sm-12 col-md-6">
-            <iframe class="grafico tabla" name="tabla" [src]="urls[1] | safe "></iframe>
-        </div>
-        <div class="col-sm-12 col-md-6">
-            <iframe class="grafico tabla" name="tabla" [src]="urls[2] | safe "></iframe>
+            <iframe class="grafico dona" name="dona2" [src]="urls[1] | safe "></iframe>
         </div>
     </div>
+</div>
+<div class="w-100" *ngIf="urls">
+    <iframe class="grafico tabla" name="tabla" [src]="urls[2] | safe "></iframe>
 </div>
