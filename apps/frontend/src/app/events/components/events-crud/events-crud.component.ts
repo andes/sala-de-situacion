@@ -51,7 +51,7 @@ export class AppEventsCrudComponent implements OnInit {
             this.event = event;
             this.event.indicadores.forEach(indicador => {
                 indicador.type = this.tiposList.find(t => t.id === indicador.type) as any;
-                if (indicador.recurso === 'select') {
+                if ((indicador.type as any).id === 'select') {
                     indicador.recurso = this.selectList.find(t => t.id === indicador.recurso) as any;
                 }
             });

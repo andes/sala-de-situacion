@@ -68,7 +68,6 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         }
     }
     onSave($event) {
-        debugger
         if (!$event.formValid) {
             return;
         }
