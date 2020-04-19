@@ -4,8 +4,7 @@
             <ng-container>
                 <plex-button label="Cancelar" type="danger" (click)="cancelar()"> </plex-button>
                 <plex-button label="Guardar" type="success" [validateForm]="formulario"
-                             [disabled]="!formulario.form.valid" class="ml-2" [disabled]="disableGuardar"
-                             (click)="guardar()">
+                             [disabled]="!formulario.form.valid || disableGuardar" class="ml-2" (click)="guardar()">
                 </plex-button>
             </ng-container>
         </plex-title>
