@@ -36,7 +36,10 @@ export class RegisterUserComponent implements OnInit {
                 data => {
                     this.router.navigate(['auth/verify-email/' + this.usuario.email]);
                 },
-                err => { }
+                err => {
+                    this.plex.toast('danger', 'Error en los datos ingresador, verifique su email y vuelva a intentarlo.');
+                    this.disableEnviar = false;
+                }
             );
         } else {
             this.plex.toast('danger', 'Las contraseñas ingresadas no coinciden', 'Error contraseñas');
