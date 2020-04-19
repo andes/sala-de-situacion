@@ -23,7 +23,14 @@
             </plex-text>
 
             <plex-int *ngSwitchCase="'int'" [label]="indicador.label" grow="full" name="{{ indicador.key }}"
-                      [(ngModel)]="indicadores[indicador.key]" [required]="indicador.required"></plex-int>
+                      [(ngModel)]="indicadores[indicador.key]" [required]="indicador.required" [min]="indicador.min"
+                      [max]="indicador.max">
+            </plex-int>
+
+            <plex-select *ngSwitchCase="'select'" [label]="indicador.label" grow="full" name="{{ indicador.key }}"
+                         [(ngModel)]="indicadores[indicador.key]" [required]="indicador.required"
+                         [ssSearch]="indicador.recurso" [preload]="indicador.preload"></plex-select>
+
           </ng-container>
         </plex-wrapper>
       </ng-container>

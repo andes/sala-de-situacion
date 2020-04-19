@@ -11,8 +11,17 @@ import { ActivatedRoute } from '@angular/router';
 export class AppEventsCrudComponent implements OnInit {
     public tiposList = [
         { id: 'string', nombre: 'Texto' },
-        { id: 'int', nombre: 'Numerico' }
+        { id: 'int', nombre: 'Numerico' },
+        { id: 'select', nombre: 'Selección' }
     ];
+
+    /** Eso podria ser configurable */
+    public selectList = [
+        { id: 'servicios', nombre: 'Servicios' },
+        { id: 'localidad', nombre: 'Localidades' },
+        { id: 'provincia', nombre: 'Provincias' },
+    ];
+
     public event: Event = {
         categoria: '',
         nombre: '',
@@ -24,8 +33,7 @@ export class AppEventsCrudComponent implements OnInit {
                 label: '',
                 required: true,
                 type: '',
-                subfiltro: true,
-                extras: {}
+                subfiltro: true
             }
         ]
     };
@@ -35,7 +43,7 @@ export class AppEventsCrudComponent implements OnInit {
         private eventsService: EventsService,
         private location: Location,
         private route: ActivatedRoute
-    ) {}
+    ) { }
 
     ngOnInit() {
         const event = this.route.snapshot.data.event;
@@ -43,6 +51,9 @@ export class AppEventsCrudComponent implements OnInit {
             this.event = event;
             this.event.indicadores.forEach(indicador => {
                 indicador.type = this.tiposList.find(t => t.id === indicador.type) as any;
+                if ((indicador.type as any).id === 'select') {
+                    indicador.recurso = this.selectList.find(t => t.id === indicador.recurso) as any;
+                }
             });
         }
     }
@@ -54,8 +65,7 @@ export class AppEventsCrudComponent implements OnInit {
             label: '',
             required: true,
             type: '',
-            subfiltro: false,
-            extras: {}
+            subfiltro: false
         });
         this.event.indicadores = [...this.event.indicadores];
     }
@@ -75,6 +85,11 @@ export class AppEventsCrudComponent implements OnInit {
                 indicadores: this.event.indicadores.map(i => {
                     const indicador: any = { ...i };
                     indicador.type = indicador.type.id;
+                    if (indicador.type === 'select') {
+                        indicador.recurso = indicador.recurso.id;
+                    } else {
+                        indicador.recurso = null;
+                    }
                     return indicador;
                 })
             };

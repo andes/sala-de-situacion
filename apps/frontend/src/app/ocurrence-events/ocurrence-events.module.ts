@@ -10,12 +10,14 @@ import { RouterModule } from '@angular/router';
 import { OccurrenceEventsCrudComponent } from './components/ocurrence-events-crud/ocurrence-events-crud.component';
 import { OcurrenceEventsListComponent } from './components/ocurrence-events-list/ocurrence-events-list.component';
 import { OcurrenceEventsResolver } from './resolver/ocurrence-events.resolver';
+import { SelectSearchDirective } from '../shared/directives/select-search.directive';
 
 @NgModule({
     // prettier-ignore
     declarations: [
         OccurrenceEventsCrudComponent,
-        OcurrenceEventsListComponent
+        OcurrenceEventsListComponent,
+        SelectSearchDirective
     ],
     // prettier-ignore
     imports: [

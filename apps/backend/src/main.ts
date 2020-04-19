@@ -1,7 +1,6 @@
 require('dotenv').config();
 const { Connections } = require('./app/connection');
 const { application } = require('./app/application');
-
 Connections.initialize();
 
 // Constantes
@@ -17,6 +16,8 @@ const LocalidadRouter = require('./app/location/localidad.controller').Localidad
 const BarrioRouter = require('./app/location/barrio.controller').BarrioRouter;
 const GeoreferenciasRouter = require('./app/georeferencia/georeferencia.routes').GeoreferenciaRouter;
 const ChartsRouter = require('./app/charts/charts.controller').ChartsRouter;
+const ServiciosRouter = require('./app/servicios/servicios.routes').ServiciosRouter;
+
 
 // Rutas
 application.add({ path: '/api', router: UsersRouter });
@@ -30,5 +31,6 @@ application.add({ path: '/api', router: LocalidadRouter });
 application.add({ path: '/api', router: BarrioRouter });
 application.add({ path: '/api', router: GeoreferenciasRouter });
 application.add({ path: '/api', router: ChartsRouter });
+application.add({ path: '/api', router: ServiciosRouter });
 
 application.start();

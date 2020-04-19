@@ -12,7 +12,10 @@ export interface Event {
         descripcion: string;
         subfiltro: boolean;
         required: boolean;
-        extras: any;
+        recurso?: string;
+        preload?: boolean;
+        min?: number;
+        max?: number;
     }[];
 }
 

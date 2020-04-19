@@ -15,6 +15,7 @@ import { AuthService } from './login/auth.services';
 import { LocationService } from './shared/location.services';
 import { InstitutionProvidersModule } from './institutions/institution.provider';
 import { ChartModule } from './charts/chart.module';
+import { SelectSearchService } from './shared/select-search.service';
 
 @NgModule({
     declarations: [AppComponent, AppHomeComponent],
@@ -28,7 +29,7 @@ import { ChartModule } from './charts/chart.module';
         InstitutionProvidersModule,
         ChartModule
     ],
-    providers: [Plex, Server, AuthService, RoutingNavBar, RoutingGuard, LocationService],
+    providers: [Plex, Server, AuthService, RoutingNavBar, RoutingGuard, LocationService, SelectSearchService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
