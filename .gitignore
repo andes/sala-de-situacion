@@ -4,10 +4,8 @@
 
 # compiled output
 /dist
-
-# env
-apps/backend/src/environments/environment.ts
-apps/frontend/src/environments/environment.ts
+/tmp
+/out-tsc
 
 # dependencies
 /node_modules
