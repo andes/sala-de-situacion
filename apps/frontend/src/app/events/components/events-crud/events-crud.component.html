@@ -45,38 +45,52 @@
 
                         <plex-text name="descripcion-{{ i }}" [(ngModel)]="indicador.descripcion" required></plex-text>
                     </div>
-                    <div class="col-md col-sm-4">
-                        <b>Subfiltro</b>
-                        <br>
-                        <plex-bool type="slide" name="subfiltro-{{ i }}" [(ngModel)]="indicador.subfiltro">
-                        </plex-bool>
+                    <div class="col-md col-sm-4 d-flex justify-content-between">
+                        <div>
+                            <b>Subfiltro</b>
+                            <br>
+                            <plex-bool type="slide" name="subfiltro-{{ i }}" [(ngModel)]="indicador.subfiltro">
+                            </plex-bool>
+                        </div>
+                        <div>
+                            <b>Requerido</b>
+                            <br>
+                            <plex-bool type="slide" name="active-{{ i }}" [(ngModel)]="indicador.required" required>
+                            </plex-bool>
+                        </div>
                     </div>
-                    <div class="col-md col-sm-4">
-                        <b>Requerido</b>
-                        <br>
-                        <plex-bool type="slide" name="active-{{ i }}" [(ngModel)]="indicador.required" required>
-                        </plex-bool>
+                    <div class="col-md col-sm-4 d-flex justify-content-between" *ngIf="indicador.type.id === 'int'">
+                        <ng-container>
+                            <div>
+                                <plex-int class="sm" label="Mínimo" name="minimo-{{ indicador.key }}"
+                                          [(ngModel)]="indicador.min">
+                                </plex-int>
+                            </div>
+                            <div>
+                                <plex-int class="sm" label="Máximo" name="maximo-{{ indicador.key }}"
+                                          [(ngModel)]="indicador.max">
+                                </plex-int>
+                            </div>
+
+                        </ng-container>
                     </div>
+                    <div class="col-md col-sm-4 d-flex justify-content-between" *ngIf="indicador.type.id === 'select'">
+                        <div>
+                            <plex-select name="select-recurso-{{ i }}" [(ngModel)]="indicador.recurso"
+                                         [data]="selectList" required placeholder="Tipo de recurso">
+                            </plex-select>
+                        </div>
+                        <div class="precargado">
+                            <b>Precargado</b>
+                            <plex-bool class="sm" type="slide" name="preload-{{ i }}" [(ngModel)]="indicador.preload">
+                            </plex-bool>
+                        </div>
+                    </div>
+
                     <div class="col-md-1 col-sm-4" justify="center justify-content-sm-start">
                         <plex-button size="sm" class="mt-2 mt-0-md" title="Borrar" type="danger" label="Eliminar"
                                      (click)="onRemove(i)">
                         </plex-button>
-                    </div>
-                    <div class="col-md col-sm-12" *ngIf="indicador.type.id === 'int'">
-                        <plex-int label="Minimo" name="minimo-{{ indicador.key }}" [(ngModel)]="indicador.min">
-                        </plex-int>
-                        <plex-int label="Maximo" name="maximo-{{ indicador.key }}" [(ngModel)]="indicador.max">
-                        </plex-int>
-                        <plex-bool label="Precargado" type="slide" name="preload-{{ i }}"
-                                   [(ngModel)]="indicador.preload">
-                        </plex-bool>
-                    </div>
-                    <div class="col-md col-sm-12" *ngIf="indicador.type.id === 'select'">
-                        <plex-select label="Tipo de recurso" style="width: 100%;" name="select-recurso-{{ i }}"
-                                     [(ngModel)]="indicador.recurso" [data]="selectList" required
-                                     placeholder="Tipo de recurso">
-                        </plex-select>
-
                     </div>
                 </div>
             </div>

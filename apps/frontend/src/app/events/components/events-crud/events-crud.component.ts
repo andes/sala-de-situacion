@@ -6,7 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-events-crud',
-    templateUrl: './events-crud.component.html'
+    templateUrl: './events-crud.component.html',
+    styleUrls: ['./events-crud.scss']
 })
 export class AppEventsCrudComponent implements OnInit {
     public tiposList = [
