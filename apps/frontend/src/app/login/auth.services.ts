@@ -72,11 +72,7 @@ export class AuthService {
     }
 
     setNewValidationToken(email): Observable<any> {
-        return this.server.post(`${this.authUrl}/regenerate/${email}`, { params: null, showError: false }).pipe(
-            tap(data => {
-                // ver
-            })
-        );
+        return this.server.post(`${this.authUrl}/regenerate/${email}`, { showError: false })
     }
 
     getPermissions(string: string): string[] {
