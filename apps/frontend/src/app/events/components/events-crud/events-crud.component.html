@@ -40,6 +40,21 @@
                         <plex-select name="select-{{ i }}" [(ngModel)]="indicador.type" [data]="tiposList">
                         </plex-select>
                     </div>
+                    <div class="col-md col-sm-4 d-flex justify-content-between" *ngIf="indicador.type.id === 'int'">
+                        <div class="minmax">
+                            <div class="mr-4">
+                                <plex-int class="sm" label="Mínimo" name="minimo-{{ indicador.key }}"
+                                          [(ngModel)]="indicador.min">
+                                </plex-int>
+                            </div>
+                            <div>
+                                <plex-int class="sm" label="Máximo" name="maximo-{{ indicador.key }}"
+                                          [(ngModel)]="indicador.max">
+                                </plex-int>
+                            </div>
+
+                        </div>
+                    </div>
                     <div class="col-md col-sm-12">
                         <b>Descripción</b>
 
@@ -59,25 +74,12 @@
                             </plex-bool>
                         </div>
                     </div>
-                    <div class="col-md col-sm-4 d-flex justify-content-between" *ngIf="indicador.type.id === 'int'">
-                        <ng-container>
-                            <div>
-                                <plex-int class="sm" label="Mínimo" name="minimo-{{ indicador.key }}"
-                                          [(ngModel)]="indicador.min">
-                                </plex-int>
-                            </div>
-                            <div>
-                                <plex-int class="sm" label="Máximo" name="maximo-{{ indicador.key }}"
-                                          [(ngModel)]="indicador.max">
-                                </plex-int>
-                            </div>
 
-                        </ng-container>
-                    </div>
                     <div class="col-md col-sm-4 d-flex justify-content-between" *ngIf="indicador.type.id === 'select'">
                         <div>
+                            <b>Tipo de recurso</b><br>
                             <plex-select name="select-recurso-{{ i }}" [(ngModel)]="indicador.recurso"
-                                         [data]="selectList" required placeholder="Tipo de recurso">
+                                         [data]="selectList" required>
                             </plex-select>
                         </div>
                         <div class="precargado">
