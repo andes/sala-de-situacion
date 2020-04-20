@@ -2,10 +2,21 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "types": ["node", "jquery", "intro.js"]
+    "types": [
+      "node",
+      "jquery",
+      "intro.js"
+    ]
   },
-  "files": ["src/main.ts", "src/polyfills.ts"],
-  "include": ["**/*.ts", "../../node_modules/@andes/plex/**/*.ts"],
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts"
+  ],
+  "include": [
+    "**/*.ts",
+    "../../node_modules/@andes/plex/**/*.ts",
+    "../../node_modules/@andes/shared/**/*.ts"
+  ],
   "exclude": [
     "src/test-setup.ts",
     "**/*.spec.ts",

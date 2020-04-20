@@ -25,7 +25,7 @@ export class RegisterUserComponent implements OnInit {
 
     public errorEmail = false;
 
-    constructor(public plex: Plex, private auth: AuthService, private router: Router) { }
+    constructor(public plex: Plex, public auth: AuthService, private router: Router) { }
     size: any;
 
     ngOnInit() { }
