@@ -29,28 +29,18 @@ body {
     }
 }
 
-
-%login-icons {
-    plex-text {
-        width: 100%;
-    }
-
-    plex-icon {
-        &[name=account-key],
-        &[type=info]{
-            position: absolute;
-        }
-        &[name=account-key] {
-            right: 10px;
-            color: grey;
-        }
-        &[type=info] {
-            right: 7px;
-            top: 1px;
-        }
-    }
+// Pantalla Inicio
+// 1- texto Ayuda
+p.lead {
+    font-size: 1.25rem;
+}
+.secondary{
+    font-size: 1rem;
 }
 
+
+
+// Accordions
 plex-panel {
     .card {
         border: 0;
@@ -76,20 +66,5 @@ plex-panel {
                 }
             }
         }
-    }
-}
-
-// Ayuda inicial
-app-home {
-    plex-help .card.open {
-        display: flex;
-        flex-direction: column;
-        width: 50vw;
-        height: auto;
-        background: white;
-        z-index: 999;
-        position: absolute;
-        right: 30px;
-        left: unset;
     }
 }

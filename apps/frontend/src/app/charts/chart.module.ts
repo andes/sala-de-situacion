@@ -7,7 +7,6 @@ import { SafePipe } from './safe.pipe';
 import { AppChartComponent } from './components/chart.component';
 import { ChartRouting } from './chart.routing';
 import { ChartsService } from './service/charts.service';
-import { AyudaComponent } from './components/ayuda.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -22,7 +21,6 @@ import { AyudaComponent } from './components/ayuda.component';
     declarations: [
         AppChartComponent,
         SafePipe,
-        AyudaComponent
     ],
     providers: [
         ChartsService

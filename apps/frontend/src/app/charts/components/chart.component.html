@@ -1,13 +1,3 @@
-<plex-title titulo="Bienvenido a la Sala de Situación">
-    <!-- Se muestra mensaje de bienvenida y ayuda en plex-help sólo cuando SI hay gráficos/datos -->
-    <plex-help *ngIf="!ayuda" icon="help" type="help" titulo="Ayuda para el usuario" subtitulo="Sala de Situación">
-        <ayuda></ayuda>
-    </plex-help>
-</plex-title>
-
-<!-- Se muestra mensaje de bienvenida y ayuda en la página principal sólo si NO hay gráficos/datos -->
-<ayuda *ngIf="ayuda && urls?.length === 0"></ayuda>
-
 <div class="row" *ngIf="urls">
     <div class="col-sm-12 col-md-6">
         <iframe class="grafico dona" name="dona1" [src]="urls[0] | safe"></iframe>

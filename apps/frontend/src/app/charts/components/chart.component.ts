@@ -7,7 +7,6 @@ import { ChartsService } from '../service/charts.service';
     styleUrls: ['./chart.component.scss']
 })
 export class AppChartComponent implements OnInit {
-    public ayuda = true;
     public urls: any;
     constructor(private chartService: ChartsService) { }
 
@@ -16,7 +15,6 @@ export class AppChartComponent implements OnInit {
             this.urls = charts.map(chart => {
                 return `${chart.base_url}/embed/charts?id=${chart.chart_id}&tenant=${chart.tenant}&autorefresh=300&attribution=false&theme=light`;
             });
-            this.ayuda = this.urls.lenght > 0;
         });
     }
 }

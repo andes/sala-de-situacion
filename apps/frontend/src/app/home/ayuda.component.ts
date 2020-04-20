@@ -5,6 +5,7 @@ import { Component, Input } from '@angular/core';
     templateUrl: './ayuda.html'
 })
 export class AyudaComponent {
+
 }
 
 
