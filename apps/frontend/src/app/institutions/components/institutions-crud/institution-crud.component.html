@@ -47,7 +47,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6 col-sm-12">
-                    <plex-select label="Localidad" [(ngModel)]="institution.location.localidad" [required]="true"
+                    <plex-select label="Localidad" [(ngModel)]="institution.location.localidad" required
                                  name="localidad" [data]="localidades" labelField="nombre"
                                  (change)="changeLocalidad($event)">
                     </plex-select>
@@ -55,8 +55,8 @@
             </div>
             <div class="row">
                 <div class="col-md-6 col-sm-12">
-                    <plex-select label="Barrio" [(ngModel)]="institution.location.barrio" name="localidad"
-                                 [data]="barrios" labelField="nombre">
+                    <plex-select label="Barrio" [(ngModel)]="institution.location.barrio" name="barrio" [data]="barrios"
+                                 labelField="nombre">
                     </plex-select>
                 </div>
             </div>
