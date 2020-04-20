@@ -11,7 +11,7 @@
         "e2e": "nx e2e",
         "affected:apps": "nx affected:apps",
         "affected:libs": "nx affected:libs",
-        "affected:build": "nx affected:build --base=remotes/origin/master",
+        "affected:build": "nx affected:build --prod --base=remotes/origin/master",
         "affected:e2e": "nx affected:e2e",
         "affected:test": "nx affected:test --base=remotes/origin/master",
         "affected:lint": "nx affected:lint --base=remotes/origin/master",
