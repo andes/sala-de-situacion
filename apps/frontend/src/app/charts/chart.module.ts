@@ -7,6 +7,7 @@ import { SafePipe } from './safe.pipe';
 import { AppChartComponent } from './components/chart.component';
 import { ChartRouting } from './chart.routing';
 import { ChartsService } from './service/charts.service';
+import { AyudaComponent } from './components/ayuda.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -20,10 +21,11 @@ import { ChartsService } from './service/charts.service';
     ],
     declarations: [
         AppChartComponent,
-        SafePipe
+        SafePipe,
+        AyudaComponent
     ],
     providers: [
         ChartsService
     ]
 })
-export class ChartModule {}
+export class ChartModule { }

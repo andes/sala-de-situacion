@@ -78,3 +78,18 @@ plex-panel {
         }
     }
 }
+
+// Ayuda inicial
+app-home {
+    plex-help .card.open {
+        display: flex;
+        flex-direction: column;
+        width: 50vw;
+        height: auto;
+        background: white;
+        z-index: 999;
+        position: absolute;
+        right: 30px;
+        left: unset;
+    }
+}
