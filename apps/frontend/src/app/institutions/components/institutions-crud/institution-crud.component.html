@@ -1,73 +1,70 @@
 <plex-layout>
     <plex-layout-main>
-        <plex-title titulo="Instituciones">
-            <ng-container>
-                <plex-button label="Cancelar" type="danger" (click)="cancelar()"> </plex-button>
-                <plex-button label="Guardar" type="success" [validateForm]="formulario"
-                             [disabled]="!formulario.form.valid || disableGuardar" class="ml-2" (click)="guardar()">
-                </plex-button>
-            </ng-container>
+        <plex-title titulo="{{ institution?.nombre ? institution?.nombre : 'Nueva Institución' }}">
+            <plex-button label="Cancelar" type="danger" (click)="cancelar()"> </plex-button>
+            <plex-button label="Guardar" type="success" class="ml-2" [disabled]="disableGuardar" (click)="guardar()">
+            </plex-button>
         </plex-title>
+
         <form #formulario="ngForm">
             <div class="row">
-                <div class="col-md">
-                    <plex-text label="Nombre" required [(ngModel)]="institution.nombre" name="nombre">
+                <div class="col-md-4 col-sm-12">
+                    <plex-text label="Nombre" [(ngModel)]="institution.nombre" name="nombre" [required]="true">
                     </plex-text>
+                    <div class="w-25 d-flex justify-between aling-end">
+                        <plex-bool *ngIf="isAdmin" [(ngModel)]="institution.activo" type="slide" name="slide">
+                        </plex-bool>
+                        <plex-badge type="{{ institution.activo ? 'success' : 'danger' }}" class="ml-2">
+                            {{ institution.activo ? 'Habilitada' : 'Deshabilitada' }}
+                        </plex-badge>
+                    </div>
                 </div>
-                <div class="col-md">
-                    <plex-text label="e-mail de la institución" prefix="<i class='mdi mdi-email'></i>" required
+                <div class="col-md-4 col-sm-12">
+                    <plex-text label="e-mail de la institución" prefix="<i class='mdi mdi-email'></i>"
                                [(ngModel)]="institution.email" name="email" (change)="verificarFormatoEmail()">
                     </plex-text>
                     <span *ngIf="disableGuardar" class="text-danger mt-1">Formato incorrecto</span>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md">
+                <div class="col-md-4 col-sm-12">
                     <!-- reemplazar por plex-phone -->
-                    <plex-phone label="Teléfono" required [(ngModel)]="institution.telefono" name="telefono"
+                    <plex-phone label="Teléfono" [(ngModel)]="institution.telefono" name="telefono" [required]="true"
                                 placeholder="Ej: 2990000000">
                     </plex-phone>
                 </div>
             </div>
+            <hr>
+            <plex-title size="sm" titulo="Ubicación"></plex-title>
             <div class="row">
-                <div class="col-md">
+                <div class="col-md-6 col-sm-12">
+                    <plex-select *ngIf="!neuquen" label="Provincia" [(ngModel)]="institution.location.provincia"
+                                 [required]="true" name="provincia" [data]="provincias" labelField="nombre"
+                                 (change)="changeProvincia($event)">
+                    </plex-select>
                     <plex-bool [(ngModel)]="neuquen" label="Provincia de Neuquén" name="provinciaNeuquen"
                                (change)="setNeuquen($event)">
                     </plex-bool>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md" *ngIf="!neuquen">
-                    <plex-select label="Provincia" required [(ngModel)]="institution.location.provincia"
-                                 name="provincia" [data]="provincias" labelField="nombre"
-                                 (change)="changeProvincia($event)">
-                    </plex-select>
-                </div>
-                <div class="col-md">
-                    <plex-select label="Localidad" required [(ngModel)]="institution.location.localidad"
+                <div class="col-md-6 col-sm-12">
+                    <plex-select label="Localidad" [(ngModel)]="institution.location.localidad" required
                                  name="localidad" [data]="localidades" labelField="nombre"
                                  (change)="changeLocalidad($event)">
                     </plex-select>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md">
+                <div class="col-md-6 col-sm-12">
                     <plex-select label="Barrio" [(ngModel)]="institution.location.barrio" name="barrio" [data]="barrios"
                                  labelField="nombre">
                     </plex-select>
                 </div>
-                <div class="col-md">
-                    <plex-text label="Dirección" required [(ngModel)]="institution.location.direccion" name="direccion"
-                               placeholder="Ej: Avenida las Flores 1200">
-                    </plex-text>
-                </div>
             </div>
             <div class="row">
-                <div *ngIf="isAdmin" class="col-md">
-                    <label class="block">Estado</label>
-                    <plex-bool [(ngModel)]="institution.activo" type="slide" name="slide"></plex-bool>
-
-                    {{ institution.activo ? 'Habilitada' : 'Deshabilitada' }}
+                <div class="col-md-6 col-sm-12">
+                    <plex-text label="Dirección" [(ngModel)]="institution.location.direccion" name="direccion"
+                               placeholder="Ej: Avenida las Flores 1200">
+                    </plex-text>
                 </div>
             </div>
             <div class="row">

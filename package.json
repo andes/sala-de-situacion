@@ -31,7 +31,7 @@
         "@andes/core": "^1.5.0",
         "@andes/georeference": "^1.0.0",
         "@andes/mongoose-plugin-audit": "^1.1.0",
-        "@andes/plex": "^6.0.1",
+        "@andes/plex": "^6.0.2",
         "@andes/shared": "^5.2.0",
         "@angular/animations": "^8.2.0",
         "@angular/cdk": "^8.2.3",

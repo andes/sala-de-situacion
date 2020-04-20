@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
 
     public loading = false;
     public showModalResetPassword = false;
+    public showModalRegisterUser = false;
 
     constructor(private plex: Plex, public auth: AuthService, private router: Router) { }
 
@@ -35,16 +36,19 @@ export class LoginComponent implements OnInit {
         }
     }
 
-    create() {
-        this.router.navigate(['auth/register-user']);
-    }
+    // create() {
+    //     this.router.navigate(['auth/register-user']);
+    // }
 
     close(event) {
         this.showModalResetPassword = false;
     }
 
-
     forgot() {
         this.showModalResetPassword = true;
+    }
+
+    register() {
+        this.showModalRegisterUser = true;
     }
 }

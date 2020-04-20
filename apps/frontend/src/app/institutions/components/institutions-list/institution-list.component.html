@@ -1,10 +1,8 @@
 <plex-layout>
     <plex-layout-main>
         <plex-title titulo="Listado de instituciones">
-            <div class="col d-flex justify-content-end">
-                <plex-button label="Nueva Institución" type="info" (click)="create()"></plex-button>
-                <plex-button label="Menú principal" type="danger" (click)="mainMenu()"></plex-button>
-            </div>
+            <!-- <plex-button label="Menú principal" type="danger" (click)="mainMenu()"></plex-button> -->
+            <plex-button label="Nueva Institución" type="info" (click)="create()"></plex-button>
         </plex-title>
 
         <plex-list>
@@ -21,8 +19,8 @@
                     <plex-label>{{ institution.email }}</plex-label>
                     <plex-label>{{ institution.telefono }}</plex-label>
                     <plex-label>{{ institution.direccion }}</plex-label>
-                    <plex-badge *ngIf="institution.activo" type="success">Habilitado</plex-badge>
-                    <plex-badge *ngIf="!institution.activo" type="danger">deshabilitado</plex-badge>
+                    <plex-badge *ngIf="institution.activo" type="success">Habilitada</plex-badge>
+                    <plex-badge *ngIf="!institution.activo" type="danger">Deshabilitada</plex-badge>
                     <plex-button type="info" size="sm" icon="pencil" (click)="edit(institution)"></plex-button>
                 </plex-item>
             </ng-container>

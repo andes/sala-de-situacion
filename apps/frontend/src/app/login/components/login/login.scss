@@ -1,8 +1,8 @@
 @import '~@andes/plex/src/lib/css/variables';
 
-%login-icons {
-
-    .usuario, .password {
+@mixin floating-icons($top: 0, $bottom: 28px) {
+    .usuario,
+    .password {
         display: flex;
         justify-content: space-between;
         position: relative;
@@ -13,17 +13,18 @@
     }
 
     plex-icon {
-        &[name=account-key],
-        &[type=info]{
+        &[name='account-key'],
+        &[type='info'] {
             position: absolute;
         }
-        &[name=account-key] {
+        &[name='account-key'] {
             right: 10px;
             color: grey;
         }
-        &[type=info] {
+        &[type='info'] {
             right: 7px;
-            bottom: 1px;
+            top: $top;
+            bottom: $bottom;
         }
     }
 }
@@ -42,9 +43,9 @@
     plex-text .clear-icon {
         display: none !important;
     }
-    // plex-title.size-sm {
-
-    // }
+    .plex-modal {
+        overflow-y: scroll !important;
+    }
 }
 .login {
     position: fixed;
@@ -57,11 +58,9 @@
     justify-content: center;
     align-items: center;
     background: whitesmoke;
-    
-    form {
-        width: 25vw;
 
-        @extend %login-icons;
+    form {
+        @include floating-icons();
     }
 
     .sala {
@@ -87,7 +86,6 @@
     }
 }
 
-
 .register-user {
-    @extend %login-icons;
+    @include floating-icons(0, 1px);
 }
