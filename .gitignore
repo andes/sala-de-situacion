@@ -4,8 +4,6 @@
 
 # compiled output
 /dist
-/tmp
-/out-tsc
 
 # env
 apps/backend/src/environments/environment.ts
