@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Event, EventsService } from '../../service/events.service';
 import { Plex } from '@andes/plex';
 import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../../login/auth.services';
 
 @Component({
     selector: 'app-events-crud',
@@ -43,10 +44,15 @@ export class AppEventsCrudComponent implements OnInit {
         private plex: Plex,
         private eventsService: EventsService,
         private location: Location,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private auth: AuthService,
+        private router: Router
     ) { }
 
     ngOnInit() {
+        if (!this.auth.checkPermisos('admin:true')) {
+            this.router.navigate(['/']);
+        }
         const event = this.route.snapshot.data.event;
         if (event) {
             this.event = event;
