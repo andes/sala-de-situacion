@@ -34,7 +34,7 @@ AuthRouter.post('/auth/create', async (req: Request, res, next) => {
     try {
         const user = req.body;
         const createdUser = await UsersCtr.create(user, req);
-        const url = `${environment.host}/auth/activacion-cuenta/${createdUser.validationToken}`;
+        const url = `${environment.app_host}/auth/activacion-cuenta/${createdUser.validationToken}`;
         await sendEmailNotification(user.email, user.nombre, 'SALA DE SITUACIÓN :: Verificación de cuenta', `${user.nombre}, gracias por registrar tu cuenta. Para activarla haz click aquí ${url}`);
         return res.json({ status: 'ok' });
     } catch (err) {
@@ -46,7 +46,7 @@ AuthRouter.post('/auth/regenerate/:email', async (req: Request, res, next) => {
     try {
         const email = req.params.email;
         const updatedUser = await UsersCtr.setNewToken(email, req);
-        const url = `${environment.host}/auth/regenerate-password/${updatedUser.validationToken}`;
+        const url = `${environment.app_host}/auth/regenerate-password/${updatedUser.validationToken}`;
         await sendEmailNotification(email, updatedUser.nombre, 'SALA DE SITUACIÓN :: Regenerar contraseña', `Hola ${updatedUser.nombre}, para regenerar la contraseña de tu cuenta por favor hacer clic aquí: ${url}`);
         return res.json({ status: 'ok' });
     } catch (err) {
