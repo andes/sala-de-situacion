@@ -128,31 +128,37 @@ export class AppInstitutionCrudComponent implements OnInit {
     }
 
     guardar() {
-        let dto = {
-            id: this.institution.id,
-            nombre: this.institution.nombre,
-            email: this.institution.email,
-            telefono: this.institution.telefono,
-            direccion: this.institution.location.direccion,
-            barrio: this.institution.location.barrio.nombre ? this.institution.location.barrio.nombre : '',
-            localidad: this.institution.location.localidad.nombre,
-            provincia: this.institution.location.provincia.nombre,
-            activo: this.institution.activo,
-            coordenadas: []
-        };
-        if (this.institution.location.provincia && this.institution.location.localidad && this.institution.location.direccion) {
-            let direccionCompleta = this.institution.location.direccion + ', ' + this.institution.location.localidad.nombre
-                + ', ' + this.institution.location.provincia.nombre;
-            // se calcula la georeferencia
-            this.georeferenciaService.get({ direccion: direccionCompleta }).subscribe(point => {
-                if (point) {
-                    this.institution.location.coordenadas = [point.lat, point.lng];
-                    dto.coordenadas = [point.lat, point.lng];
-                }
+        try {
+            let dto = {
+                id: this.institution.id,
+                nombre: this.institution.nombre,
+                email: this.institution.email,
+                telefono: this.institution.telefono,
+                direccion: this.institution.location.direccion,
+                barrio: this.institution.location.barrio.nombre ? this.institution.location.barrio.nombre : '',
+                localidad: this.institution.location.localidad.nombre,
+                provincia: this.institution.location.provincia.nombre,
+                activo: this.institution.activo,
+                coordenadas: []
+            };
+            if (this.institution.location.provincia && this.institution.location.localidad && this.institution.location.direccion) {
+                let direccionCompleta = this.institution.location.direccion + ', ' + this.institution.location.localidad.nombre
+                    + ', ' + this.institution.location.provincia.nombre;
+                // se calcula la georeferencia
+                this.georeferenciaService.get({ direccion: direccionCompleta }).subscribe(point => {
+                    if (point && point.lat && point.lng) {
+                        this.institution.location.coordenadas = [point.lat, point.lng];
+                        dto.coordenadas = [point.lat, point.lng];
+                    }
+                    this.guardarInstitucion(dto);
+                });
+            } else {
                 this.guardarInstitucion(dto);
-            });
-        } else {
-            this.guardarInstitucion(dto);
+            }
+        }
+        catch (err) {
+            this.plex.info('danger', 'Error al guardar la institución');
+
         }
 
     }
