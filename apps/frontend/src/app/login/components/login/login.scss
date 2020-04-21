@@ -46,6 +46,13 @@
     .plex-modal {
         overflow-y: scroll !important;
     }
+    .verify-email {
+        plex-icon {
+            i.mdi {
+                color: var(--nav-bar-color) !important;
+            }
+        }
+    }
 }
 .login {
     position: fixed;
@@ -89,3 +96,4 @@
 .register-user {
     @include floating-icons(0, 1px);
 }
+

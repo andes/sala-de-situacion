@@ -6,11 +6,12 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'verify-email',
-    templateUrl: './verify-email.html'
+    templateUrl: './verify-email.html',
+    styleUrls: ['../login/login.scss']
 })
 export class VerifyEmailComponent implements OnInit {
     public email = '';
-    constructor(public plex: Plex, private route: ActivatedRoute, private router: Router) {}
+    constructor(public plex: Plex, private route: ActivatedRoute, private router: Router) { }
 
     ngOnInit() {
         this.email = this.route.snapshot.paramMap.get('email');

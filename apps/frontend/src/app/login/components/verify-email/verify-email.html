@@ -1,22 +1,38 @@
 <plex-layout>
-  <plex-layout-main>
-    <plex-title titulo="Gracias por Registrarse!">
-      <ng-container>
-        <plex-button label="Reenviar verificación de email" type="info" (click)="reenviar()"></plex-button>
-        <plex-button label="Ingresar" type="success" (click)="login()" class="ml-2">
-        </plex-button>
-      </ng-container>
-    </plex-title>
-    <div class="row">
-      <div class="col-md">
-        <span>Hemos enviado una confirmación a su cuenta</span>
-        <label>{{email}} </label>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md">
-        <span>Por favor, revise su correo electrónico y haga click en verificar cuenta</span>
-      </div>
-    </div>
-  </plex-layout-main>
+    <plex-layout-main>
+        <plex-title titulo="Verificación de e-email">
+            <!-- <plex-button label="Ingresar" type="success" (click)="login()" class="ml-2">
+            </plex-button> -->
+        </plex-title>
+        <div class="verify-email">
+            <div class="row mt-4">
+                <div class="col-sm-12 col-md">
+                    <h5>Te enviamos una confirmación a {{ email }}</h5>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-12 col-md">
+                    <h6>
+                        <plex-icon class="mr-2" size="24" type="info" name="email-check"></plex-icon> Revisá tu correo
+                        electrónico y
+                        hacé click en "verificar
+                        cuenta" para continuar.
+                    </h6>
+                    <h6>
+                        <plex-icon class="mr-2" size="24" type="info" name="email-send"></plex-icon>Si por alguna razón
+                        el e-mail no
+                        te llegó, podés probar
+                        <a class="hover" (click)="reenviar()">reenviar verificación de email</a>.
+                    </h6>
+                    <h6>
+                        <plex-icon class="mr-2" size="24" type="info" name="account-check"></plex-icon>Recordá que al
+                        momento de
+                        ingresar, tu nombre de usuario
+                        es tu e-mail.
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </plex-layout-main>
 </plex-layout>
