@@ -84,3 +84,12 @@ plex-panel {
         }
     }
 }
+
+::ng-deep {
+
+    plex-icon {
+        i.mdi {
+            color: var(--nav-bar-color);
+        }
+    }
+}
