@@ -37,22 +37,6 @@ if (environment.key) {
     OcurrenceEventSchema.plugin(AuditPlugin);
 }
 
-OcurrenceEventSchema.post('save', async function (doc: any, next) {
-    // Guardo el mismo dato como histórico
-    const eventHistory: OcurrenceEventHistory = {
-        eventKey: doc.eventKey,
-        activo: doc.activo,
-        fecha: doc.fecha,
-        institucion: doc.institucion,
-        indicadores: doc.indicadores,
-        originalRef: doc._id
-    };
-    const ocurrenceEventHistory = new OcurrenceEventHistory(eventHistory);
-    await ocurrenceEventHistory.save();
-    return next();
-});
-
-
 export const OcurrenceEvent = mongoose.model<OcurrenceEventDocument>(
     'ocurrence_event',
     OcurrenceEventSchema,
