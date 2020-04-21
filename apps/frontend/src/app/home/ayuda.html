@@ -8,13 +8,17 @@
                 <b>Sala de Situación de la Provincia del Neuquén</b>
             </p>
             <p class="secondary">Este sistema tiene como objetivo brindar información precisa y actualizada del estado
-                de situación del
-                sistema sanitario de la provincia en el marco de la Pandemia COVID-19. <br>Como institución de salud
-                pública o privada podrás realizar las siguientes acciones:</p>
+                de situación del sistema sanitario de la provincia en el marco de la Pandemia COVID-19.<br>
+                <br>
+                Como institución de salud pública o privada podrás realizar las siguientes acciones:</p>
             <ul class="list-group secondary">
-                <li class="ml-4">Registrar una institución de salud para realizar la carga de datos.</li>
-                <li class="ml-4">Cargar, modificar y visualizar eventos relacionados a la dotación,
-                    disponibilidad y equipamiento de camas de las instituciones de Salud.</li>
+                <li class="ml-4"><a class="hover" [routerLink]="['/institution/list']">Visualizar y registrar
+                        Instituciones de Salud</a> para realizar la carga de datos.</li>
+                <li class="ml-4"><a class="hover" [routerLink]="['/events']">Cargar, modificar y visualizar eventos</a>
+                    relacionados a la dotación,
+                    disponibilidad y equipamiento de camas de las Instituciones de Salud.</li>
+                <li class="ml-4">Además podés navegar el sitio usando el menú principal <plex-icon name="menu"
+                               type="info" size="24"></plex-icon> en la esquina superior derecha.</li>
             </ul>
         </div>
         <div class="col-sm-0 col-md-3"></div>

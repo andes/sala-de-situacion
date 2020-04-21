@@ -2,13 +2,29 @@
 @import '../../../node_modules/@andes/plex/src/lib/styles.scss';
 
 // Overrides
+$nav-bar-color:  #4d7998;
+
 :root {
     // --nav-bar-color: #7a3e7b;
-    --nav-bar-color: #4d7998;
+    --nav-bar-color: #{$nav-bar-color};
 }
+
 
 body {
     background-color: white !important;
+}
+
+a.hover {
+    color: $nav-bar-color !important;
+    &:hover {
+        color: darken($nav-bar-color, 20%) !important;
+    }
+}
+
+plex-icon i.mdi-menu {
+    padding-top: 5px;
+    background: $nav-bar-color !important;
+    color: white !important;
 }
 
 .bg-inverse {
