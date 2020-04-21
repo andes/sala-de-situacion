@@ -14,7 +14,7 @@ import { switchMap } from 'rxjs/operators';
 export class ActivacionCuentaComponent implements OnInit {
     public email = ''; // Lo dejo por si se quiere mostrar en el html el email (usuario) como feedback
     public user$: Observable<IUsuario>;
-    constructor(public plex: Plex, private route: ActivatedRoute, private router: Router, private auth: AuthService) {}
+    constructor(public plex: Plex, private route: ActivatedRoute, private router: Router, private auth: AuthService) { }
 
     ngOnInit() {
         //Busca el token y activa la cuenta
@@ -23,7 +23,7 @@ export class ActivacionCuentaComponent implements OnInit {
         );
     }
 
-    volver() {
+    ingresar() {
         this.router.navigate(['auth', 'login']);
     }
 }
