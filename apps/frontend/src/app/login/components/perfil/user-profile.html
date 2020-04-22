@@ -1,62 +1,72 @@
 <plex-layout>
-  <plex-layout-main>
-    <plex-title titulo="Perfil de usuario">
-      <plex-button type="info" size="sm">Preguntas/Sugerencias</plex-button>
-    </plex-title>
-    <div class="row">
-      <div class="col-md-4 col-sm-12 mt-4">
-        <plex-title size="sm" titulo="Mis datos"></plex-title>
-        <plex-detail size="lg">
-          <!-- <img src="{{ usuario.foto }}" alt=""> -->
-          <!-- <plex-badge size="xs">{{ usuario.estado }}</plex-badge> -->
-          <plex-icon name="account"></plex-icon>
-          <div title> {{user.apellido}}, {{user.nombre}} </div>
-          <div subtitle> {{user.email}} </div>
-          <plex-label titulo="Documento" subtitulo="{{user.documento}}"></plex-label>
-          <plex-label titulo="Teléfono" subtitulo="{{user.telefono}}"></plex-label>
+    <plex-layout-main>
+        <plex-title titulo="Perfil de usuario">
+            <plex-button type="info" size="sm">Preguntas/Sugerencias</plex-button>
+        </plex-title>
+        <div class="row">
+            <div class="col-md-4 col-sm-12 mt-4">
+                <plex-title size="sm" titulo="Mis datos"></plex-title>
+                <plex-detail size="lg">
+                    <!-- <img src="{{ usuario.foto }}" alt=""> -->
+                    <!-- <plex-badge size="xs">{{ usuario.estado }}</plex-badge> -->
+                    <plex-icon name="account"></plex-icon>
+                    <div title> {{user.apellido}}, {{user.nombre}} </div>
+                    <div subtitle> {{user.email}} </div>
+                    <plex-label titulo="Documento" subtitulo="{{user.documento}}"></plex-label>
+                    <plex-label titulo="Teléfono" subtitulo="{{user.telefono}}"></plex-label>
 
-        </plex-detail>
-        <plex-button size="sm" type="info" [routerLink]="['/auth/regenerate-password/', token]">
-          Cambiar contraseña
-        </plex-button>
-      </div>
-      <div class="col-md-8 col-sm-12 mt-4" jus>
-        <plex-title size="sm" titulo="Mis Instituciones"></plex-title>
-        <div class="w-100">
-          <plex-wrapper>
-            <b>Nombre</b>
-            <b>Email</b>
-            <b>Teléfono</b>
-            <b>Dirección</b>
-            <b> </b>
-          </plex-wrapper>
-          <plex-wrapper *ngFor="let institution of institutions; let i=index" collapse>
-            <plex-label><a class="hover" [routerLink]="'institution/list'" title="">{{ institution.nombre }}</a>
-            </plex-label>
-            <plex-label>{{ institution.email }}</plex-label>
-            <plex-label>{{ institution.telefono }}</plex-label>
-            <plex-label>{{ institution.direccion }}</plex-label>
-            <div justify="start">
-              <div>
-                <plex-badge *ngIf="institution.activo" type="success">Habilitada</plex-badge>
-                <plex-badge *ngIf="!institution.activo" type="danger">Deshabilitada</plex-badge>
-              </div>
-              <plex-button type="info" size="sm" icon="account-plus" title="Agregar usuario" titlePosition="left"
-                           (click)="showUsarios[i] = !showUsarios[i]">
-              </plex-button>
+                </plex-detail>
+                <plex-button size="sm" type="info" [routerLink]="['/auth/regenerate-password/', token]">
+                    Cambiar contraseña
+                </plex-button>
             </div>
-            <div *ngIf="showUsarios[i]">
-              <plex-list>
-                <plex-item *ngFor="let user of institution.users">
-                  <plex-label titulo="{{user.apellido}}, {{user.nombre}}" subtitulo="email@email.com" size="sm">
-                  </plex-label>
-                  <plex-button type="success" icon="account-plus" size="sm"></plex-button>
-                </plex-item>
-              </plex-list>
+            <div class="col-md-8 col-sm-12 mt-4">
+                <plex-title size="sm" titulo="Mis Instituciones"></plex-title>
+                <div class="w-100">
+                    <plex-wrapper>
+                        <b>Nombre</b>
+                        <b>Email</b>
+                        <b>Teléfono</b>
+                        <b>Dirección</b>
+                        <b> </b>
+                    </plex-wrapper>
+                    <plex-wrapper *ngFor="let institution of institutions; let i=index" collapse>
+                        <plex-label><a class="hover" [routerLink]="'institution/list'"
+                               title="">{{ institution.nombre }}</a>
+                        </plex-label>
+                        <plex-label>{{ institution.email }}</plex-label>
+                        <plex-label>{{ institution.telefono }}</plex-label>
+                        <plex-label>{{ institution.direccion }}</plex-label>
+                        <div justify="start">
+                            <div>
+                                <plex-badge *ngIf="institution.activo" type="success">Habilitada</plex-badge>
+                                <plex-badge *ngIf="!institution.activo" type="danger">Deshabilitada</plex-badge>
+                            </div>
+                            <plex-button type="info" size="sm" icon="account-plus" title="Agregar usuario"
+                                         titlePosition="left" (click)="showUsarios[i] = !showUsarios[i]">
+                            </plex-button>
+                        </div>
+                        <div *ngIf="showUsarios[i]">
+                            <plex-title size="sm" titulo="Usuarios de esta Institución">
+                                <!-- <plex-select name="select-{{ i }}" [(ngModel)]="usuariosInstitucion"
+                                 [data]="institutions"></plex-select> -->
+                                <plex-button size="sm" type="info" icon="account-plus" title="Agregar usuario"
+                                             titlePosition="left"></plex-button>
+                            </plex-title>
+                            <plex-list>
+                                <plex-item *ngFor="let user of institution.users">
+                                    <plex-label titulo="{{user.apellido}}, {{user.nombre}}" subtitulo="email@email.com"
+                                                size="sm">
+                                    </plex-label>
+                                    <plex-button type="danger" icon="account-minus" size="sm">
+                                    </plex-button>
+                                    <plex-button type="success" icon="account-plus" size="sm"></plex-button>
+                                </plex-item>
+                            </plex-list>
+                        </div>
+                    </plex-wrapper>
+                </div>
             </div>
-          </plex-wrapper>
         </div>
-      </div>
-    </div>
-  </plex-layout-main>
+    </plex-layout-main>
 </plex-layout>
