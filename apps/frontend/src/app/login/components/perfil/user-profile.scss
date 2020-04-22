@@ -2,4 +2,13 @@
     plex-list div.item-list {
         height: 40px !important;
     }
+    plex-wrapper {
+        section {
+            justify-content: space-between;
+            > * {
+                display: inline-block;
+                width: 170px;
+            }
+        }
+    }
 }

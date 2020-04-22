@@ -16,33 +16,47 @@
                     <plex-label titulo="Teléfono" subtitulo="29900000"></plex-label>
 
                 </plex-detail>
-                <plex-button size="sm" type="info" routerLink="['/auth/regenerate-password/']">
+                <plex-button size="sm" type="info" [routerLink]="['/auth/regenerate-password/', token]">
                     Cambiar contraseña
                 </plex-button>
             </div>
-            <div class="col-md-8 col-sm-12 mt-4">
+            <div class="col-md-8 col-sm-12 mt-4" jus>
                 <plex-title size="sm" titulo="Mis Instituciones"></plex-title>
-                <plex-list>
-                    <plex-heading>
-                        <b label>Nombre</b>
-                        <b label>Email</b>
-                        <b label>Teléfono</b>
-                        <b label>Dirección</b>
-                        <b label></b>
-                    </plex-heading>
-                    <ng-container *ngFor="let institution of institutions">
-                        <plex-item class="hover" [botonera]="true" [selected]="institution.selected">
-                            <plex-label>{{ institution.nombre }}</plex-label>
-                            <plex-label>{{ institution.email }}</plex-label>
-                            <plex-label>{{ institution.telefono }}</plex-label>
-                            <plex-label>{{ institution.direccion }}</plex-label>
-                            <plex-badge *ngIf="institution.activo" type="success">Habilitada</plex-badge>
-                            <plex-badge *ngIf="!institution.activo" type="danger">Deshabilitada</plex-badge>
-                            <plex-button type="info" size="sm" icon="account-multiple-plus" title="Agregar usuario"
-                                         titlePosition="left"></plex-button>
-                        </plex-item>
-                    </ng-container>
-                </plex-list>
+                <div class="w-100">
+                    <plex-wrapper>
+                        <b>Nombre</b>
+                        <b>Email</b>
+                        <b>Teléfono</b>
+                        <b>Dirección</b>
+                        <b> </b>
+                    </plex-wrapper>
+                    <plex-wrapper *ngFor="let institution of institutions; let i=index" collapse>
+                        <plex-label><a class="hover" [routerLink]="'institution/list'"
+                               title="">{{ institution.nombre }}</a>
+                        </plex-label>
+                        <plex-label>{{ institution.email }}</plex-label>
+                        <plex-label>{{ institution.telefono }}</plex-label>
+                        <plex-label>{{ institution.direccion }}</plex-label>
+                        <div justify="start">
+                            <div>
+                                <plex-badge *ngIf="institution.activo" type="success">Habilitada</plex-badge>
+                                <plex-badge *ngIf="!institution.activo" type="danger">Deshabilitada</plex-badge>
+                            </div>
+                            <plex-button type="info" size="sm" icon="account-plus" title="Agregar usuario"
+                                         titlePosition="left" (click)="showUsarios[i] = !showUsarios[i]">
+                            </plex-button>
+                        </div>
+                        <div *ngIf="showUsarios[i]">
+                            <plex-list>
+                                <plex-item>
+                                    <plex-label titulo="Usuario Número Uno" subtitulo="el.namber.wan@gmail.com"
+                                                size="sm"></plex-label>
+                                    <plex-button type="success" icon="account-plus" size="sm"></plex-button>
+                                </plex-item>
+                            </plex-list>
+                        </div>
+                    </plex-wrapper>
+                </div>
             </div>
         </div>
     </plex-layout-main>
