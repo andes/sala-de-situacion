@@ -50,6 +50,7 @@ export class AppComponent implements OnInit {
         this.accessList.forEach(element => {
             this.menuList.push(element);
         });
+        this.menuList.push({ label: 'Mi Perfil', icon: 'account-circle', route: '/auth/user-profile' });
         this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/auth/logout' });
         this.plex.updateMenu(this.menuList);
     }

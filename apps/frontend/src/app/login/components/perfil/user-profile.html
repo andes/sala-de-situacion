@@ -1,0 +1,49 @@
+<plex-layout>
+    <plex-layout-main>
+        <plex-title titulo="Perfil de usuario">
+            <plex-button type="info" size="sm">Preguntas/Sugerencias</plex-button>
+        </plex-title>
+        <div class="row">
+            <div class="col-md-4 col-sm-12 mt-4">
+                <plex-title size="sm" titulo="Mis datos"></plex-title>
+                <plex-detail size="lg">
+                    <!-- <img src="{{ usuario.foto }}" alt=""> -->
+                    <!-- <plex-badge size="xs">{{ usuario.estado }}</plex-badge> -->
+                    <plex-icon name="account"></plex-icon>
+                    <div title> DELLA SALA, USUARIO </div>
+                    <div subtitle> dellasala.usuario@gmail.com </div>
+                    <plex-label titulo="Documento" subtitulo="87364374"></plex-label>
+                    <plex-label titulo="Teléfono" subtitulo="29900000"></plex-label>
+
+                </plex-detail>
+                <plex-button size="sm" type="info" routerLink="['/auth/regenerate-password/']">
+                    Cambiar contraseña
+                </plex-button>
+            </div>
+            <div class="col-md-8 col-sm-12 mt-4">
+                <plex-title size="sm" titulo="Mis Instituciones"></plex-title>
+                <plex-list>
+                    <plex-heading>
+                        <b label>Nombre</b>
+                        <b label>Email</b>
+                        <b label>Teléfono</b>
+                        <b label>Dirección</b>
+                        <b label></b>
+                    </plex-heading>
+                    <ng-container *ngFor="let institution of institutions">
+                        <plex-item class="hover" [botonera]="true" [selected]="institution.selected">
+                            <plex-label>{{ institution.nombre }}</plex-label>
+                            <plex-label>{{ institution.email }}</plex-label>
+                            <plex-label>{{ institution.telefono }}</plex-label>
+                            <plex-label>{{ institution.direccion }}</plex-label>
+                            <plex-badge *ngIf="institution.activo" type="success">Habilitada</plex-badge>
+                            <plex-badge *ngIf="!institution.activo" type="danger">Deshabilitada</plex-badge>
+                            <plex-button type="info" size="sm" icon="account-multiple-plus" title="Agregar usuario"
+                                         titlePosition="left"></plex-button>
+                        </plex-item>
+                    </ng-container>
+                </plex-list>
+            </div>
+        </div>
+    </plex-layout-main>
+</plex-layout>
