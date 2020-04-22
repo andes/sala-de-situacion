@@ -2,6 +2,7 @@ export const environment = {
   production: true,
   port: parseInt(process.env.PORT) || 3000,
   host: process.env.HOST || '0.0.0.0',
+  app_host: process.env.APP_HOST || 'https://salasituacion.andes.gob.ar',
   key: process.env.JWT_KEY || null,
   mongo_host: process.env.MONGO_HOST || 'mongodb://localhost:27017/sala-situacion',
   mail: {
