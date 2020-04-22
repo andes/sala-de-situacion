@@ -6,7 +6,7 @@ import { AuthService } from '../../../login/auth.services';
 @Component({
     selector: 'user-profile',
     templateUrl: './user-profile.html',
-    // styleUrls: ['./user-profile.scss']
+    styleUrls: ['./user-profile.scss']
 })
 export class UserProfileComponent implements OnInit {
 
