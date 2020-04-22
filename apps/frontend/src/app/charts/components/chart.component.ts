@@ -8,7 +8,7 @@ import { ChartsService } from '../service/charts.service';
 })
 export class AppChartComponent implements OnInit {
     public urls: any;
-    constructor(private chartService: ChartsService) {}
+    constructor(private chartService: ChartsService) { }
 
     ngOnInit() {
         this.chartService.search({}).subscribe(charts => {

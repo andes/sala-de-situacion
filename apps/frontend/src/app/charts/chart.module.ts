@@ -20,10 +20,10 @@ import { ChartsService } from './service/charts.service';
     ],
     declarations: [
         AppChartComponent,
-        SafePipe
+        SafePipe,
     ],
     providers: [
         ChartsService
     ]
 })
-export class ChartModule {}
+export class ChartModule { }

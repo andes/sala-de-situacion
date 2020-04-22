@@ -16,9 +16,10 @@ import { LocationService } from './shared/location.services';
 import { InstitutionProvidersModule } from './institutions/institution.provider';
 import { ChartModule } from './charts/chart.module';
 import { SelectSearchService } from './shared/select-search.service';
+import { AyudaComponent } from './home/ayuda.component';
 
 @NgModule({
-    declarations: [AppComponent, AppHomeComponent],
+    declarations: [AppComponent, AppHomeComponent, AyudaComponent],
     imports: [
         BrowserModule,
         PlexModule,
