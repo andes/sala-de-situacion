@@ -18,18 +18,18 @@ import { UserProfileComponent } from './components/perfil/user-profile.component
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, HttpClientModule, RouterModule, PlexModule, LoginRoutingModule],
-    declarations: [
-        LoginComponent,
-        LogoutComponent,
-        ResetPasswordComponent,
-        RegisterUserComponent,
-        RegeneratePasswordComponent,
-        VerifyEmailComponent,
-        ActivacionCuentaComponent,
-        UserProfileComponent,
-        SugerenciasComponent
-    ],
-    providers: []
+        imports: [CommonModule, FormsModule, HttpClientModule, RouterModule, PlexModule, LoginRoutingModule],
+        declarations: [
+                LoginComponent,
+                LogoutComponent,
+                ResetPasswordComponent,
+                RegisterUserComponent,
+                RegeneratePasswordComponent,
+                VerifyEmailComponent,
+                ActivacionCuentaComponent,
+                UserProfileComponent,
+                SugerenciasComponent
+        ],
+        providers: []
 })
 export class LoginModule { }
