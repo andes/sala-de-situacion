@@ -45,7 +45,9 @@ OcurrenceEventSchema.post('save', async function (doc: any, next) {
         fecha: doc.fecha,
         institucion: doc.institucion,
         indicadores: doc.indicadores,
-        originalRef: doc._id
+        originalRef: doc._id,
+        createdAt: doc.updatedAt || doc.createdAt,
+        createdBy: doc.updatedBy || doc.createdBy
     };
     const ocurrenceEventHistory = new OcurrenceEventHistory(eventHistory);
     await ocurrenceEventHistory.save();
