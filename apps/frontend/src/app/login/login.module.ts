@@ -14,9 +14,10 @@ import { LoginRoutingModule } from './login-routing.module';
 import { ActivacionCuentaComponent } from './components/activacion-cuenta/activacion-cuenta.component';
 import { RegeneratePasswordComponent } from './components/regenerate-password/regenerate-password';
 import { UserProfileComponent } from './components/perfil/user-profile.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, HttpClientModule, PlexModule, LoginRoutingModule],
+    imports: [CommonModule, FormsModule, HttpClientModule, RouterModule, PlexModule, LoginRoutingModule],
     declarations: [
         LoginComponent,
         LogoutComponent,
