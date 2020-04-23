@@ -1,6 +1,6 @@
 <plex-layout>
     <plex-layout-main>
-        <plex-title titulo="Perfil de usuario">
+        <plex-title main titulo="Mi Perfil">
             <plex-button type="info" size="sm">Preguntas/Sugerencias</plex-button>
         </plex-title>
         <div class="row">
@@ -23,8 +23,8 @@
                 </modal-regenerate-password>
 
             </div>
-            <div class="col-md-8 col-sm-12 mt-4">
-                <plex-title size="sm" titulo="Mis Instituciones"></plex-title>
+            <div class=" col-md-8 col-sm-12 mt-4">
+                <plex-title main size="sm" titulo="Mis Instituciones"></plex-title>
                 <div class="w-100">
                     <plex-wrapper>
                         <b>Nombre</b>
@@ -49,13 +49,12 @@
                                          titlePosition="left" (click)="showUsarios[i] = !showUsarios[i]">
                             </plex-button>
                         </div>
-                        <div class="w-75" *ngIf="showUsarios[i]">
+                        <div class="col-12 col-md-10" *ngIf="showUsarios[i]">
                             <plex-title size="sm" titulo="Usuarios de esta Institución">
                                 <!-- <plex-select name="select-{{ i }}" [(ngModel)]="usuariosInstitucion"
                                  [data]="institutions"></plex-select> -->
-                                <plex-button size="sm" type="info" icon="account-plus" title="Agregar usuario"
-                                             titlePosition="left">
-                                </plex-button>
+                                <!-- <plex-button size="sm" type="info" icon="account-plus" title="Agregar usuario"
+                                             titlePosition="left"></plex-button> -->
                             </plex-title>
                             <plex-list>
                                 <plex-item *ngFor="let user of institution.users">
@@ -80,33 +79,6 @@
                         </div>
                     </plex-wrapper>
                 </div>
-            </div>
-        </div>
-        <div class="row" *ngIf="showResetPassword">
-            <div class="col-4">
-                <form #passForm="ngForm">
-                    <div class="mb-2 text-default">Crear una contraseña nueva</div>
-                    <div class="usuario mb-2">
-                        <plex-text placeholder="Ingresá la contraseña actual" [(ngModel)]="passwordActual"
-                                   [required]="true" name="passwordActual" [password]="!auth.showPassword">
-                        </plex-text>
-                        <plex-text placeholder="Ingresá una nueva contraseña" [(ngModel)]="password1" [required]="true"
-                                   name="password1" [password]="!auth.showPassword">
-                        </plex-text>
-                        <plex-icon class="hover" [name]="auth.eye" type="info" size="24" [title]="auth.passwordTooltip"
-                                   (click)="auth.toggleEye()">
-                        </plex-icon>
-                    </div>
-                    <div class="password mb-3">
-                        <plex-text placeholder="Confirmá tu nueva contraseña" [(ngModel)]="password2" [required]="true"
-                                   name="password2" [password]="!auth.showPassword">
-                        </plex-text>
-                    </div>
-                    <plex-button type="success" size="block" [validateForm]="passForm" (click)="save($event)">
-                        Confirmar mi nueva contraseña
-                    </plex-button>
-                    <plex-loader *ngIf="loading" type="ball-pulse-sync"></plex-loader>
-                </form>
             </div>
         </div>
     </plex-layout-main>
