@@ -13,6 +13,8 @@ export interface OcurrenceEventHistory {
         valor: any;
     }[];
     originalRef: mongoose.Types.ObjectId;
+    createdAt: Date;
+    createdBy: mongoose.Types.Subdocument;
 }
 
 export interface OcurrenceEventHistoryDocument extends mongoose.Document, OcurrenceEventHistory { }
@@ -27,7 +29,9 @@ export const OcurrenceEventHistorySchema = new mongoose.Schema({
     },
     fecha: Date,
     indicadores: mongoose.SchemaTypes.Mixed,
-    originalRef: mongoose.SchemaTypes.ObjectId
+    originalRef: mongoose.SchemaTypes.ObjectId,
+    createdAt: { type: Date, required: false },
+    createdBy: { type: mongoose.SchemaTypes.Mixed, required: false }
 });
 
 
