@@ -33,6 +33,7 @@
                         <b>Dirección</b>
                         <b> </b>
                     </plex-wrapper>
+                    <!-- {{ institutions | json }} -->
                     <plex-wrapper *ngFor="let institution of institutions; let i=index" collapse>
                         <plex-label><a class="hover" [routerLink]="'institution/list'"
                                title="">{{ institution.nombre }}</a>
@@ -46,7 +47,7 @@
                                 <plex-badge *ngIf="!institution.activo" type="danger">Deshabilitada</plex-badge>
                             </div>
                             <plex-button type="info" size="sm" icon="format-list-text" title="Lista de usuarios"
-                                         titlePosition="left" (click)="showUsarios[i] = !showUsarios[i]">
+                                         titlePosition="left" (click)="toggleShowUsuarios(i)">
                             </plex-button>
                         </div>
                         <div class="col-12 col-md-10" *ngIf="showUsarios[i]">
@@ -68,12 +69,12 @@
                             </plex-list>
                             <hr>
                             <div justify>
-                                <plex-select placeholder=" Seleccionar usuario..." grow="2"
+                                <plex-select placeholder="Seleccionar usuario..." grow="2"
                                              [data]="candidateUsers[institution.id].users" [(ngModel)]="selectedUser"
                                              labelField="apellido + ' ' + nombre">
                                 </plex-select>
                                 <plex-button type="success" icon="account-plus" size="sm"
-                                             (click)="addUserToInstitution(institution)">
+                                             (click)="addUserToInstitution(institution)" [disabled]="!selectedUser?.id">
                                 </plex-button>
                             </div>
                         </div>

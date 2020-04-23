@@ -50,7 +50,16 @@ export class UserProfileComponent implements OnInit {
                             const institutionUsers = inst.users.map((u) => u.documento);
                             let candidates: any[] = this.users.filter(item => institutionUsers.indexOf(item.documento) < 0);
                             this.candidateUsers[inst.id] = {
-                                users: candidates
+                                // users: candidates
+                                users: candidates.map(ux => ({
+                                    _id: ux.id,
+                                    id: ux.id,
+                                    nombre: ux.nombre,
+                                    apellido: ux.apellido,
+                                    permisos: ux.permisos,
+                                    documento: ux.documento,
+                                    email: ux.email
+                                }))
                             };
                         });
                     },
@@ -68,13 +77,23 @@ export class UserProfileComponent implements OnInit {
         this.showModalResetPassword = !this.showModalResetPassword;
     }
 
+    toggleShowUsuarios(i) {
+        this.showUsarios[i] = !this.showUsarios[i];
+    }
+
+    refreshCandidates(id) {
+        this.candidateUsers[id].users = [...this.candidateUsers[id].users];
+    }
+
     addUserToInstitution(institution) {
-        institution.users.push(this.selectedUser);
+        // institution.users.push(this.selectedUser);
+        institution.users = [...institution.users, this.selectedUser];
         this.institutionService.save(institution).subscribe(rta => {
             this.plex.toast('success', `El usuario fue agregado correctamente a la institución ${rta.nombre}.`);
             var index = this.candidateUsers[institution.id].users.indexOf(this.selectedUser);
             this.candidateUsers[institution.id].users.splice(index, 1);
             this.selectedUser = {};
+            this.refreshCandidates(institution.id);
         });
     }
 
@@ -83,7 +102,8 @@ export class UserProfileComponent implements OnInit {
         institution.users.splice(index, 1);
         this.institutionService.save(institution).subscribe(rta => {
             this.plex.toast('success', `El usuario fue desvinculado correctamente de la institución ${rta.nombre}.`);
-            this.candidateUsers[institution.id].users.push(user);
+            this.candidateUsers[institution.id].users = [...this.candidateUsers[institution.id].users, user];
+            this.refreshCandidates(institution.id);
         });
     }
 
