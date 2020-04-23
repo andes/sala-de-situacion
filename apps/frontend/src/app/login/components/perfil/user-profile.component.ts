@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../login/auth.services';
 import { InstitutionService } from '../../../institutions/service/institution.service';
 import { Plex } from '@andes/plex';
+import { IUsuario } from '../user/IUsuario.interfaces';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -14,20 +16,30 @@ export class UserProfileComponent implements OnInit {
 
     public institutions = [];
     public user;
-    showModalResetPassword = false;
+    showResetPassword = false;
     showUsarios = [];
+
+    public loading = false;
+    public password1 = '';
+    public password2 = '';
+    public passwordActual = '';
+    public user$: Observable<IUsuario>;
+    public token;
+    users: any[];
     constructor(
         public plex: Plex,
-        private auth: AuthService,
+        public auth: AuthService,
         private institutionService: InstitutionService
     ) { }
 
     usuario: any = {};
-    token = '';
+    selectedUsers: any = [];
 
     ngOnInit(): void {
         this.auth.getSession().subscribe((sessionUser) => {
             this.user = sessionUser;
+            this.users = [{ ...this.user, id: 1 }];
+            console.log(this.users);
         });
         let paramsInstitutions: any = {};
         paramsInstitutions.user = this.user.id;
@@ -40,13 +52,10 @@ export class UserProfileComponent implements OnInit {
         );
     }
 
-    reset() {
-        this.showModalResetPassword = true;
+    showResetForm() {
+        this.showResetPassword = !this.showResetPassword;
     }
 
-    close(event) {
-        this.showModalResetPassword = false;
-    }
 
     addUserToInstitution(institution, user) {
         institution.users.push(user);
