@@ -48,10 +48,12 @@ export class RegisterUserComponent implements OnInit {
             this.auth.create(this.usuario).subscribe(
                 data => {
                     this.router.navigate(['auth/verify-email/' + this.usuario.email]);
+                    this.cancel();
                 },
                 err => {
                     this.plex.toast('danger', 'Error en los datos ingresador, verifique su email y vuelva a intentarlo.');
                     this.disableEnviar = false;
+                    this.cancel();
                 }
             );
         } else {
@@ -62,6 +64,7 @@ export class RegisterUserComponent implements OnInit {
 
     cancel() {
         this.modal.showed = false;
+        this.auth.showPassword = false;
         this.closeModal.emit();
     }
 
@@ -72,12 +75,5 @@ export class RegisterUserComponent implements OnInit {
 
     passwordMatch() {
         return this.usuario.password2 === this.usuario.password;
-    }
-    getSize(e) {
-        this.size = e.value;
-        return this.size;
-    }
-    getresponsiveSize() {
-        return this.size;
     }
 }

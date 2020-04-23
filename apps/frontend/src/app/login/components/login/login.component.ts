@@ -40,8 +40,9 @@ export class LoginComponent implements OnInit {
     //     this.router.navigate(['auth/register-user']);
     // }
 
-    close(event) {
+    close() {
         this.showModalResetPassword = false;
+        this.showModalRegisterUser = false;
     }
 
     forgot() {
