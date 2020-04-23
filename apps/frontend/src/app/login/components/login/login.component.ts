@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Plex } from '@andes/plex';
-import { AuthService } from '../../auth.services';
+import { AuthService } from '../../services/auth.services';
 import { Router } from '@angular/router';
 @Component({
     selector: 'app-login',

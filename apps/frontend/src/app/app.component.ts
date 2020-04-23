@@ -3,7 +3,7 @@ import { environment } from './../environments/environment';
 import { Server } from '@andes/shared';
 import { Plex } from '@andes/plex';
 import { Location } from '@angular/common';
-import { AuthService } from './login/auth.services';
+import { AuthService } from './login/services/auth.services';
 
 @Component({
     selector: 'sala-de-situacion-root',

@@ -31,6 +31,7 @@ export const InstitutionsSchema = new mongoose.Schema({
             nombre: String,
             apellido: String,
             documento: String,
+            email: String,
             permisos: [String]
         }
     ]

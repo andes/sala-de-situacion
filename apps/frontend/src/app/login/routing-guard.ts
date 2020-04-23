@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { Plex } from '@andes/plex';
-import { AuthService } from './auth.services';
+import { AuthService } from './services/auth.services';
 import { map, take } from 'rxjs/operators';
 
 @Injectable()

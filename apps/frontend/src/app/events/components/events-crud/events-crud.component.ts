@@ -3,7 +3,7 @@ import { Event, EventsService } from '../../service/events.service';
 import { Plex } from '@andes/plex';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../../login/auth.services';
+import { AuthService } from '../../../login/services/auth.services';
 
 @Component({
     selector: 'app-events-crud',

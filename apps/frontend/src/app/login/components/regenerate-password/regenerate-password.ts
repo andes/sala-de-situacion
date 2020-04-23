@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { AuthService } from '../../auth.services';
+import { AuthService } from '../../services/auth.services';
 import { Router } from '@angular/router';
 import { IUsuario } from '../user/IUsuario.interfaces';
 import { Observable } from 'rxjs';

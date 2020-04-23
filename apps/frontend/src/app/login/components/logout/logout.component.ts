@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../auth.services';
+import { AuthService } from '../../services/auth.services';
 
 @Component({
     template: ``

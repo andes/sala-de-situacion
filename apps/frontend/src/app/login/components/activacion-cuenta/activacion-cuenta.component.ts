@@ -3,7 +3,7 @@ import { Plex } from '@andes/plex';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from '../../auth.services';
+import { AuthService } from '../../services/auth.services';
 import { IUsuario } from '../user/IUsuario.interfaces';
 import { switchMap } from 'rxjs/operators';
 

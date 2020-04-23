@@ -3,7 +3,7 @@ import { Plex } from '@andes/plex';
 import { LocationService } from '../../../shared/location.services';
 import { InstitutionService } from '../../service/institution.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from './../../../login/auth.services';
+import { AuthService } from '../../../login/services/auth.services';
 import { GeoreferenciaService } from '../../service/georeferencia.service';
 import { Utils } from './../../../shared/utils';
 
