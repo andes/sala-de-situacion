@@ -101,4 +101,13 @@ export class RegeneratePasswordComponent implements OnInit {
     this.password2 = '';
   }
 
+  cancel() {
+    this.modal.showed = false;
+    this.auth.showPassword = false;
+    this.closeModal.emit();
+    if (this.token) {
+      this.router.navigate(['/auth/login']);
+    }
+  }
+
 }
