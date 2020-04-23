@@ -27,12 +27,12 @@
                     <div class="col-md col-sm-12">
                         <b>Clave</b>
 
-                        <plex-text name="key-{{ i }}" required [(ngModel)]="indicador.key"></plex-text>
+                        <plex-text name="key-{{ i }}" [(ngModel)]="indicador.key" [required]="true"></plex-text>
                     </div>
                     <div class="col-md col-sm-12">
                         <b>Nombre</b>
 
-                        <plex-text name="label-{{ i }}" required [(ngModel)]="indicador.label"></plex-text>
+                        <plex-text name="label-{{ i }}" [(ngModel)]="indicador.label" [required]="true"></plex-text>
                     </div>
                     <div class="col-md col-sm-12">
                         <b>Tipo de dato</b>
