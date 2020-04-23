@@ -3,8 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.services';
 import { InstitutionService } from '../../../institutions/service/institution.service';
 import { Plex } from '@andes/plex';
-import { IUsuario } from '../user/IUsuario.interfaces';
-import { Observable } from 'rxjs';
 
 
 @Component({
@@ -55,58 +53,63 @@ export class UserProfileComponent implements OnInit {
                 this.plex.info('danger', 'Error al cargar las instituciones');
             }
         );
-    }
+    },
+      (err) => {
+}
+    );
+console.log(this.candidateUsers);
+  }
 
-    toggleResetForm() {
-        this.showModalResetPassword = !this.showModalResetPassword;
-    }
+toggleResetForm() {
+    this.showModalResetPassword = !this.showModalResetPassword;
+}
 
-    toggleShowUsuarios(i) {
-        this.showUsarios[i] = !this.showUsarios[i];
-    }
+toggleShowUsuarios(i) {
+    this.showUsarios[i] = !this.showUsarios[i];
+}
 
-    toggleShowSugerencias() {
-        this.showModalSugerencias = !this.showModalSugerencias;
-    }
+toggleShowSugerencias() {
+    this.showModalSugerencias = !this.showModalSugerencias;
+}
 
-    resetModals() {
-        this.showModalResetPassword = false;
-        this.showModalSugerencias = false;
-    }
+resetModals() {
+    this.showModalResetPassword = false;
+    this.showModalSugerencias = false;
+}
 
-    loadUsers(event) {
-        if (event.query) {
-            let query = {
-                search: "^" + event.query
-            };
-            this.userService.search
-                (query).subscribe(resultado => {
-                    event.callback(resultado);
-                });
-        } else {
-            event.callback([this.selectedUser] || []);
-        }
-    }
-
-    addUserToInstitution(institution) {
-        let existeUsuario = institution.users.filter(item => item.id === this.selectedUser.id).length > 0;
-        if (existeUsuario) {
-            this.plex.toast('danger', `El usuario ya se encuenta asociado a la institución.`);
-        } else {
-            institution.users.push(this.selectedUser);
-            this.institutionService.save(institution).subscribe(rta => {
-                this.plex.toast('success', `El usuario fue agregado correctamente a la institución ${rta.nombre}.`);
-                this.selectedUser = {};
+loadUsers(event) {
+    if (event.query) {
+        let query = {
+            search: "^" + event.query
+        };
+        this.userService.search
+            (query).subscribe(resultado => {
+                event.callback(resultado);
             });
-        }
+    } else {
+        event.callback([this.selectedUser] || []);
     }
+}
 
-    deleteUserFromInstitution(institution, user) {
-        var index = institution.users.indexOf(user);
-        institution.users.splice(index, 1);
+addUserToInstitution(institution) {
+    let existeUsuario = institution.users.filter(item => item.id === this.selectedUser.id).length > 0;
+    if (existeUsuario) {
+        this.plex.toast('danger', `El usuario ya se encuenta asociado a la institución.`);
+    } else {
+        institution.users.push(this.selectedUser);
         this.institutionService.save(institution).subscribe(rta => {
-            this.plex.toast('success', `El usuario fue desvinculado correctamente de la institución ${rta.nombre}.`);
+            this.plex.toast('success', `El usuario fue agregado correctamente a la institución ${rta.nombre}.`);
+            this.selectedUser = {};
         });
     }
+}
+
+deleteUserFromInstitution(institution, user) {
+    var index = institution.users.indexOf(user);
+    institution.users.splice(index, 1);
+    this.institutionService.save(institution).subscribe(rta => {
+        this.plex.toast('success', `El usuario fue desvinculado correctamente de la institución ${rta.nombre}.`);
+    });
+}
 
 }
