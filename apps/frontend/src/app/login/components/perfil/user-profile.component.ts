@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.services';
 import { InstitutionService } from '../../../institutions/service/institution.service';
 import { Plex } from '@andes/plex';
+import { IUsuario } from '../user/IUsuario.interfaces';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -40,6 +42,8 @@ export class UserProfileComponent implements OnInit {
     ngOnInit(): void {
         this.auth.getSession().subscribe((sessionUser) => {
             this.user = sessionUser;
+            this.users = [{ ...this.user, id: 1 }];
+            console.log(this.users);
         });
         let paramsInstitutions: any = {};
         paramsInstitutions.user = this.user.id;
