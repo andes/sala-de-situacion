@@ -100,6 +100,7 @@ addUserToInstitution(institution) {
         this.institutionService.save(institution).subscribe(rta => {
             this.plex.toast('success', `El usuario fue agregado correctamente a la institución ${rta.nombre}.`);
             this.selectedUser = {};
+            this.refreshCandidates(institution.id);
         });
     }
 }
