@@ -43,15 +43,15 @@ export class RegeneratePasswordComponent implements OnInit {
     });
   }
 
-  save(event) {
-    if (event.formValid) {
+  save(form) {
+    if (form.valid) {
       if (this.password1 === this.password2) {
         this.loading = true;
         this.auth.resetPassword({ token: this.token, password: this.password1 }).subscribe(
           data => {
             this.plex.toast('success', 'La contraseña ha sido restablecida correctamente');
-            this.clearForm();
-            this.modal.close();
+            this.clearForm(form);
+            this.cancel(form);
           },
           err => {
             this.plex.info('danger', err);
@@ -60,14 +60,14 @@ export class RegeneratePasswordComponent implements OnInit {
         );
       } else {
         this.plex.info('danger', 'Las contraseñas no coinciden', 'Error contraseñas');
-        this.modal.showed = false;
         this.auth.showPassword = false;
-        this.closeModal.emit();
+        this.cancel(form);
       }
     }
   }
 
-  cancel() {
+  cancel(form) {
+    form.reset();
     this.modal.showed = false;
     this.auth.showPassword = false;
     this.closeModal.emit();
@@ -76,7 +76,8 @@ export class RegeneratePasswordComponent implements OnInit {
     }
   }
 
-  clearForm() {
+  clearForm(form) {
+    form.reset();
     this.loading = false;
     this.password1 = '';
     this.password2 = '';

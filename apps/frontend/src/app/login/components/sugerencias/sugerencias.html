@@ -18,12 +18,12 @@
                          [data]="tiposSugerencias" required="true">
             </plex-select>
             <plex-text placeholder="Escribí aquí..." [(ngModel)]="sugerenciaModel.contenido" name="sugerencia"
-                       [html]="true" height="140" [readonly]="false">
+                       [html]="true" height="140" [readonly]="false" required="true">
             </plex-text>
             <div class="mt-2 text-default">
                 Te agradecemos tu consulta, vas a recibir una <b>notificación por e-mail</b>,
                 y <b>una persona se va contactar</b> con vos en los siguientes días</div>
-            <!-- <plex-loader *ngIf="loading" type="ball-pulse-sync"></plex-loader> -->
+            <plex-loader *ngIf="loading" type="ball-pulse-sync"></plex-loader>
         </form>
     </main>
     <plex-button modal left label="Cancelar" type="danger" (click)="cancel()">

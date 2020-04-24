@@ -3,7 +3,8 @@
     <plex-title main titulo="Mi Perfil">
       <plex-button type="info" size="sm" (click)="toggleShowSugerencias()">Preguntas/Sugerencias</plex-button>
     </plex-title>
-    <modal-sugerencias [show]="showModalSugerencias" [sugerenciaModel]="sugerencias"></modal-sugerencias>
+    <modal-sugerencias [show]="showModalSugerencias" [sugerenciaModel]="sugerencias" (closeModal)="resetModals()">
+    </modal-sugerencias>
     <div class="row">
       <div class="col-md-4 col-sm-12 mt-4">
         <plex-title size="sm" titulo="Mis datos"></plex-title>
@@ -16,8 +17,7 @@
         </plex-detail>
         <plex-button label="Cambiar contraseña" size="sm" type="info" (click)="toggleResetForm()">
         </plex-button>
-
-        <modal-regenerate-password [show]="showModalResetPassword" (closeModal)="toggleResetForm()">
+        <modal-regenerate-password [show]="showModalResetPassword" (closeModal)="resetModals()">
         </modal-regenerate-password>
 
       </div>
@@ -32,8 +32,7 @@
             <b> </b>
           </plex-wrapper>
           <plex-wrapper *ngFor="let institution of institutions; let i=index" collapse>
-            <plex-label><a class="hover" [routerLink]="'institution/list'" title="">{{ institution.nombre }}</a>
-            </plex-label>
+            <plex-label>{{ institution.nombre }}</plex-label>
             <plex-label>{{ institution.email }}</plex-label>
             <plex-label>{{ institution.telefono }}</plex-label>
             <plex-label>{{ institution.direccion }}</plex-label>
