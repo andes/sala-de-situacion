@@ -55,12 +55,12 @@ AuthRouter.post('/auth/regenerate/:email', async (req: Request, res, next) => {
   }
 });
 
-AuthRouter.post('/auth/suggestions/:email', async (req: Request, res, next) => {
+AuthRouter.post('/auth/suggestions', async (req: Request, res, next) => {
   try {
-    const email = req.params.email;
-    const user = req.body.user;
-    const suggestion = req.body.suggestion;
-    await sendEmailSuggestion(email, 'SALA DE SITUACIÓN :: Nueva pregunta/sugerencia', `Se ha recibido una sugerencia del usuario ${user.apellido}, ${user.nombre}. Sugerencia: ${suggestion}`);
+    const email = environment.suggestionsMail;
+    const { user, contenido, tipo } = req.body;
+
+    await sendEmailSuggestion(email, 'SALA DE SITUACIÓN :: Nueva pregunta/sugerencia', `${tipo.nombre} del usuario ${user.apellido}, ${user.nombre}. ${tipo.nombre}: ${contenido}`);
     return res.json({ status: 'ok' });
   } catch (err) {
     return next(403);
