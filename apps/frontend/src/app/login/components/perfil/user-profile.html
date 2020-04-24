@@ -68,10 +68,16 @@
                                 </plex-item>
                             </plex-list>
                             <hr>
+                            <!-- <small>
+                                <pre>
+                                    {{ institution.users | json }}
+                                    <hr>
+                                    {{ candidateUsers[institution.id].users | json }}
+                                </pre>
+                            </small> -->
                             <div justify>
-                                <plex-select placeholder="Seleccionar usuario..." grow="2"
-                                             [data]="candidateUsers[institution.id].users" [(ngModel)]="selectedUser"
-                                             labelField="apellido + ' ' + nombre">
+                                <plex-select placeholder="Seleccionar usuario..." grow="2" [(ngModel)]="selectedUser"
+                                             labelField="email" (getData)="loadUsers($event, institution)">
                                 </plex-select>
                                 <plex-button type="success" icon="account-plus" size="sm"
                                              (click)="addUserToInstitution(institution)" [disabled]="!selectedUser?.id">

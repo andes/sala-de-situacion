@@ -85,6 +85,21 @@ export class UserProfileComponent implements OnInit {
         this.candidateUsers[id].users = [...this.candidateUsers[id].users];
     }
 
+    loadUsers(event, institution) {
+        if (event.query) {
+            let query = {
+                email: event.query
+            };
+
+            this.userService.search
+                (query).subscribe(resultado => {
+                    event.callback(resultado);
+                });
+        } else {
+            event.callback([this.selectedUser] || []);
+        }
+    }
+
     addUserToInstitution(institution) {
         // institution.users.push(this.selectedUser);
         institution.users = [...institution.users, this.selectedUser];
