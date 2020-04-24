@@ -4,24 +4,32 @@
       <plex-button type="info" [routerLink]="['create']"> Registrar nuevo </plex-button>
     </plex-title>
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-3">
         <plex-datetime type="date" [(ngModel)]="fechaDesde" name="fechaDesde" (change)="filtrarResultados()"
                        label="Fecha Desde" [required]="false">
         </plex-datetime>
       </div>
-      <div class="col-md-3">
+      <div class="col-3">
         <plex-datetime type="date" [(ngModel)]="fechaHasta" name="fechaHasta" (change)="filtrarResultados()"
                        label="Fecha Hasta" [required]="false">
         </plex-datetime>
       </div>
-      <div class="col-md-3">
+      <div class="col-3">
         <plex-select [(ngModel)]="selectedInstitution" name="institucion" (change)="filtrarResultados()"
                      label="Institucion" [data]="institutions" [required]="false">
         </plex-select>
       </div>
-      <div class="col-md-3">
+      <div class="col-3">
         <plex-select [(ngModel)]="selectedEvent" name="evento" (change)="filtrarResultados()" label="Evento"
                      [data]="eventos" [required]="false">
+        </plex-select>
+      </div>
+    </div>
+    <div class="row" *ngIf="this.subfiltros.length > 0">
+      <div class="col-3" *ngFor="let subfilter of this.subfiltros">
+        <plex-select [(ngModel)]="selectedSubfiltros[subfilter.key]" name="{{subfilter.key}}"
+                     (change)="filtrarResultados()" label="{{subfilter.key}}" [data]="subfilter.values"
+                     [required]="false">
         </plex-select>
       </div>
     </div>
@@ -32,7 +40,7 @@
                     tituloPrincipal="{{institucion[0].institucion.nombre}}">
           <plex-accordion>
             <ng-container *ngFor="let inst of institucion">
-              <ng-container *ngIf="indicadores[inst.eventKey].subfiltros">
+              <ng-container *ngIf="indicadores[inst.eventKey] && indicadores[inst.eventKey].subfiltros">
                 <plex-panel class="hover" *ngFor="let subfiltro of indicadores[inst.eventKey].subfiltros"
                             tituloPrincipal="{{ inst.indicadores[subfiltro] }}">
                   <plex-title size="sm"
@@ -48,7 +56,7 @@
                   </ng-container>
                 </plex-panel>
               </ng-container>
-              <plex-panel *ngIf="indicadores[inst.eventKey].subfiltros.length === 0"
+              <plex-panel *ngIf="indicadores[inst.eventKey] && indicadores[inst.eventKey].subfiltros.length === 0"
                           tituloPrincipal="{{indicadores[inst.eventKey].evento.nombre}}">
                 <plex-title size="sm" titulo="{{ inst.fecha | date: 'dd/MM/yyyy  HH:mm' }}">
                   <plex-button size="sm" icon="pencil" type="info" [routerLink]="[inst.id]"></plex-button>
