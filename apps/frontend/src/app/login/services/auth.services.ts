@@ -110,4 +110,8 @@ export class AuthService {
     checkPermisos(permiso: string) {
         return this.shiro.check(permiso);
     }
+
+    sugerencias(body): Observable<any> {
+        return this.server.post(this.authUrl + `/sugerencias`, body, { showError: false });
+    }
 }
