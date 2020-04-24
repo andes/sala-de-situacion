@@ -16,7 +16,7 @@ class EventsResource extends ResourceBase {
             return next();
 
         },
-        search: (req: Request, res: Response, next) => {
+        patch: (req: Request, res: Response, next) => {
             const permisoAdmin = checkPermission(req, 'admin:true');
             if (!permisoAdmin) {
                 return next(403);
