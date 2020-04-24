@@ -2,6 +2,7 @@ import { application } from '../application';
 import { UsersCtr } from '../users/user.controller';
 import { Request } from '@andes/api-tool';
 import { sendEmailNotification } from '../services/mail/mail';
+import { sendEmailSuggestion } from '../services/mail/mail';
 import { Types } from 'mongoose';
 import { environment } from '../../environments/environment';
 
@@ -48,6 +49,18 @@ AuthRouter.post('/auth/regenerate/:email', async (req: Request, res, next) => {
     const updatedUser = await UsersCtr.setNewToken(email, req);
     const url = `${environment.app_host}/auth/regenerate-password/${updatedUser.validationToken}`;
     await sendEmailNotification(email, updatedUser.nombre, 'SALA DE SITUACIÓN :: Regenerar contraseña', `Hola ${updatedUser.nombre}, para regenerar la contraseña de tu cuenta por favor hacer clic aquí: ${url}`);
+    return res.json({ status: 'ok' });
+  } catch (err) {
+    return next(403);
+  }
+});
+
+AuthRouter.post('/auth/suggestions/:email', async (req: Request, res, next) => {
+  try {
+    const email = req.params.email;
+    const user = req.body.user;
+    const suggestion = req.body.suggestion;
+    await sendEmailSuggestion(email, 'SALA DE SITUACIÓN :: Nueva pregunta/sugerencia', `Se ha recibido una sugerencia del usuario ${user.apellido}, ${user.nombre}. Sugerencia: ${suggestion}`);
     return res.json({ status: 'ok' });
   } catch (err) {
     return next(403);
