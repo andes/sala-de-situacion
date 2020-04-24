@@ -2,6 +2,8 @@ import { AuthService } from './../../services/auth.services';
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { PlexModalComponent } from '@andes/plex/src/lib/modal/modal.component';
 import { Plex } from '@andes/plex';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
     selector: 'modal-sugerencias',
@@ -9,7 +11,7 @@ import { Plex } from '@andes/plex';
     styleUrls: ['../login/login.scss']
 })
 export class SugerenciasComponent implements OnInit {
-    constructor(private plex: Plex, private auth: AuthService) { }
+    constructor(private plex: Plex, private auth: AuthService, private route: ActivatedRoute, private router: Router) { }
 
     @ViewChild('modal', { static: true }) modal: PlexModalComponent;
 
@@ -23,19 +25,25 @@ export class SugerenciasComponent implements OnInit {
     @Output() closeModal = new EventEmitter<any>();
 
     @Input() sugerenciaModel = {
-        usuario: {},
+        user: {},
         contenido: '',
         tipo: {}
     };
 
     tiposSugerencias = [
-        { id: 1, nombre: 'sugerencia' },
-        { id: 2, nombre: 'pregunta' },
-        { id: 3, nombre: 'problema' },
+        { id: 1, nombre: 'Sugerencia' },
+        { id: 2, nombre: 'Pregunta' },
+        { id: 3, nombre: 'Problema' },
     ];
     public loading = false;
+    public token;
 
     ngOnInit(): void {
+        //Busca el token 
+        this.route.paramMap.subscribe(token => this.token = token);
+        this.auth.getSession().subscribe((sessionUser) => {
+            this.sugerenciaModel.user = sessionUser;
+        });
     }
 
     enviar(form) {

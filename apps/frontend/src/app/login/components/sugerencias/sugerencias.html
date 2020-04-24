@@ -12,13 +12,13 @@
             <ol>
                 <li>Elegí el tipo de consulta</li>
                 <li>Escribila en el campo de texto</li>
-                <li>Hacé click o tocá el botón en Enviar</li>
+                <li>Hacé click o tocá el botón Enviar</li>
             </ol>
-            <plex-select placeholder="tipo de consulta..." [(ngModel)]="sugerenciaModel.tipo" name="tipoSugerencia"
+            <plex-select placeholder="Tipo de consulta..." [(ngModel)]="sugerenciaModel.tipo" name="tipoSugerencia"
                          [data]="tiposSugerencias" required="true">
             </plex-select>
             <plex-text placeholder="Escribí aquí..." [(ngModel)]="sugerenciaModel.contenido" name="sugerencia"
-                       [html]="true" height="140" [readonly]="false" required="true">
+                       multiline="true" [readonly]="false" required="true">
             </plex-text>
             <div class="mt-2 text-default">
                 Te agradecemos tu consulta, vas a recibir una <b>notificación por e-mail</b>,
@@ -26,9 +26,9 @@
             <plex-loader *ngIf="loading" type="ball-pulse-sync"></plex-loader>
         </form>
     </main>
-    <plex-button modal left label="Cancelar" type="danger" (click)="cancel()">
+    <plex-button modal left label="Cancelar" type="danger" (click)="cancel(formulario)">
     </plex-button>
     <plex-button modal right label="Enviar" type="success" [validateForm]="formulario"
-                 [disabled]="!formulario.form.valid" (click)="enviar($event)">
+                 [disabled]="!formulario.form.valid" (click)="enviar(formulario)">
     </plex-button>
 </plex-modal>
