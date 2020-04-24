@@ -112,6 +112,6 @@ export class AuthService {
     }
 
     sugerencias(body): Observable<any> {
-        return this.server.post(this.authUrl + `/sugerencias`, body, { showError: false });
+        return this.server.post(this.authUrl + `/suggestions`, body, { showError: false });
     }
 }
