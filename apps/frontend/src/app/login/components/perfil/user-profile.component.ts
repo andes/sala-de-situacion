@@ -102,6 +102,8 @@ addUserToInstitution(institution) {
             this.selectedUser = {};
             this.refreshCandidates(institution.id);
         });
+    } else {
+        event.callback([this.selectedUser] || []);
     }
 }
 
