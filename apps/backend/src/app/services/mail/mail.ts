@@ -46,28 +46,6 @@ export async function sendEmailNotification(email: string, nombre: string, subje
   return sendMail(mail);
 }
 
-export async function sendEmailSuggestion(body) {
-
-  const handlebarsData = {
-    usuario: body.user,
-    contenido: body.contenido,
-    tipo: body.tipo
-  };
-
-  console.log(handlebarsData.usuario.email);
-
-  renderHTML('suggestions.html', handlebarsData).then((html) => {
-    const mail: MailOptions = {
-      from: `Sala de Situación <${environment.mail.auth.user}>`,
-      to: handlebarsData.usuario.email,
-      subject: 'Sala de situación ~ Preguntas y sugerencias',
-      text: '',
-      html
-    }
-    return sendMail(mail);
-  });
-};
-
 export function renderHTML(templateName: string, extras: any): Promise<string> {
   return new Promise((resolve, reject) => {
     const TEMPLATE_PATH = 'apps/backend/src/app/templates/email/';
@@ -88,3 +66,24 @@ export function renderHTML(templateName: string, extras: any): Promise<string> {
     });
   });
 }
+
+export function sendEmailSuggestion(body): Promise<any> {
+
+  const handlebarsData = {
+    usuario: body.user,
+    contenido: body.contenido,
+    tipo: body.tipo
+  };
+
+  return renderHTML('suggestions.html', handlebarsData).then((html): Promise<any> => {
+    const mail: MailOptions = {
+      from: `Sala de Situación <${environment.mail.auth.user}>`,
+      to: handlebarsData.usuario.email,
+      subject: 'Sala de situación ~ Preguntas y sugerencias',
+      text: '',
+      html
+    }
+    return sendMail(mail);
+  });
+};
+

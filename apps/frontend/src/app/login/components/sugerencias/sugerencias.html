@@ -18,7 +18,7 @@
                          [data]="tiposSugerencias" required="true">
             </plex-select>
             <plex-text placeholder="Escribí aquí..." [(ngModel)]="sugerenciaModel.contenido" name="sugerencia"
-                       multiline="true" [readonly]="false" required="true">
+                       html="true" [readonly]="false" required="true">
             </plex-text>
             <div class="mt-2 text-default">
                 Te agradecemos tu consulta, vas a recibir una <b>notificación por e-mail</b>,
