@@ -46,55 +46,56 @@ export class AppChartComponent implements OnInit {
                 return urls;
             }),
             cache());
+        console.log(this.urls$);
     }
 
     ngAfterViewInit(): void {
 
-        this.chartService.search({}).subscribe(charts => {
-            this.urls = charts.map(chart => {
-                return `${chart.base_url}/embed/charts?id=${chart.chart_id}&tenant=${chart.tenant}&autorefresh=300&attribution=false&theme=light`;
-            });
-            this.charts = charts.map(chart => {
-                return {
-                    id: chart.chart_id,
-                    base_url: chart.base_url,
-                    tenant: chart.tenant
-                };
-            });
-            this.initChart();
-        });
+        // this.chartService.search({}).subscribe(charts => {
+        //     this.urls = charts.map(chart => {
+        //         return `${chart.base_url}/embed/charts?id=${chart.chart_id}&tenant=${chart.tenant}&autorefresh=300&attribution=false&theme=light`;
+        //     });
+        //     this.charts = charts.map(chart => {
+        //         return {
+        //             id: chart.chart_id,
+        //             base_url: chart.base_url,
+        //             tenant: chart.tenant
+        //         };
+        //     });
+        // });
+        // this.initChart();
 
     }
 
 
-    initChart() {
-        const sdk = new ChartsEmbedSDK({
-            // baseUrl: 'https://charts.mongodb.com/charts-charts-fixture-tenant-zdvkh',
-            baseUrl: this.charts[0].base_url,
-        });
-        this.chart = sdk.createChart({
-            chartId: this.charts[0].id,
-            // chartId: '48043c78-f1d9-42ab-a2e1-f2d3c088f864',
-            showAttribution: false,
-            theme: 'light',
-            // tenant: this.charts[0].tenant
-        });
+    // initChart() {
+    //     const sdk = new ChartsEmbedSDK({
+    //         // baseUrl: 'https://charts.mongodb.com/charts-charts-fixture-tenant-zdvkh',
+    //         baseUrl: this.charts[0].base_url,
+    //     });
+    //     this.chart = sdk.createChart({
+    //         chartId: this.charts[0].id,
+    //         // chartId: '48043c78-f1d9-42ab-a2e1-f2d3c088f864',
+    //         showAttribution: false,
+    //         theme: 'light',
+    //         // tenant: this.charts[0].tenant
+    //     });
 
-        this.chart
-        this.renderChart();
-    }
+    //     this.chart
+    //     this.renderChart();
+    // }
 
-    renderChart() {
-        // render the chart into a container
-        this.chart
-            .render(document.getElementById('chart'))
-            .catch(() => window.alert('Chart failed to initialise'));
-    }
+    // renderChart() {
+    //     // render the chart into a container
+    //     this.chart
+    //         .render(document.getElementById('chart'))
+    //         .catch(() => window.alert('Chart failed to initialise'));
+    // }
 
-    refreshChart() {
-        // refresh the chart whenenver #refreshButton is clicked
-        this.chart.refresh();
-    }
+    // refreshChart() {
+    //     // refresh the chart whenenver #refreshButton is clicked
+    //     this.chart.refresh();
+    // }
 
 
 }

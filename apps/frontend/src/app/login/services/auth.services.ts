@@ -7,111 +7,115 @@ import { cache } from '@andes/shared';
 
 @Injectable()
 export class AuthService {
-    private authUrl = '/auth'; // URL to web api auth
-    public showPassword = false;
-    public eye: 'eye' | 'eye-off' = 'eye'; // mostrar/ocultar password
-    public passwordTooltip: 'mostrar contraseña' | 'ocultar contraseña' = 'mostrar contraseña';
-    public session$: Observable<any>;
-    public user_id: any;
-    public nombre: any;
-    public apellido: any;
-    private shiro = shiroTrie.new();
-    private permisos: string[];
-    public token$ = new Subject<any>();
+  private authUrl = '/auth'; // URL to web api auth
+  public showPassword = false;
+  public eye: 'eye' | 'eye-off' = 'eye'; // mostrar/ocultar password
+  public passwordTooltip: 'mostrar contraseña' | 'ocultar contraseña' = 'mostrar contraseña';
+  public session$: Observable<any>;
+  public user_id: any;
+  public nombre: any;
+  public apellido: any;
+  private shiro = shiroTrie.new();
+  private permisos: string[];
+  public token$ = new Subject<any>();
 
-    constructor(private server: Server) {
-        this.session$ = this.token$.pipe(
-            switchMap(() => {
-                return this.server.get(`${this.authUrl}/session`);
-            }),
-            tap(payload => {
-                this.user_id = payload.id;
-                this.nombre = payload.nombre;
-                this.apellido = payload.apellido;
-                this.permisos = payload.permisos;
-                this.initShiro();
-            }),
-            cache()
-        );
-    }
+  constructor(private server: Server) {
+    this.session$ = this.token$.pipe(
+      switchMap(() => {
+        return this.server.get(`${this.authUrl}/session`);
+      }),
+      tap(payload => {
+        this.user_id = payload.id;
+        this.nombre = payload.nombre;
+        this.apellido = payload.apellido;
+        this.permisos = payload.permisos;
+        this.initShiro();
+      }),
+      cache()
+    );
+  }
 
-    private initShiro() {
-        this.shiro.reset();
-        this.shiro.add(this.permisos);
-    }
+  private initShiro() {
+    this.shiro.reset();
+    this.shiro.add(this.permisos);
+  }
 
-    create(body): Observable<any> {
-        return this.server.post(this.authUrl + '/create', body, { showError: false });
-    }
+  create(body): Observable<any> {
+    return this.server.post(this.authUrl + '/create', body, { showError: false });
+  }
 
-    login(usuario: string, password: string): Observable<any> {
-        return this.server
-            .post(
-                this.authUrl + '/login',
-                { email: usuario, password: password ? password : '' },
-                { params: null, showError: false }
-            )
-            .pipe(
-                tap(data => {
-                    //Setear el token
-                    this.setToken(data.token);
-                })
-            );
-    }
+  login(usuario: string, password: string): Observable<any> {
+    return this.server
+      .post(
+        this.authUrl + '/login',
+        { email: usuario, password: password ? password : '' },
+        { params: null, showError: false }
+      )
+      .pipe(
+        tap(data => {
+          //Setear el token
+          this.setToken(data.token);
+        })
+      );
+  }
 
-    activarCuenta(token): Observable<any> {
-        return this.server.post(`${this.authUrl}/validate/${token}`, { params: null, showError: false }).pipe(
-            tap(data => {
-                //Setear el token
-            })
-        );
-    }
+  activarCuenta(token): Observable<any> {
+    return this.server.post(`${this.authUrl}/validate/${token}`, { params: null, showError: false }).pipe(
+      tap(data => {
+        //Setear el token
+      })
+    );
+  }
 
-    resetPassword(body): Observable<any> {
-        return this.server.post(`${this.authUrl}/resetPassword`, body);
-    }
+  resetPassword(body): Observable<any> {
+    return this.server.post(`${this.authUrl}/resetPassword`, body);
+  }
 
-    setNewValidationToken(email): Observable<any> {
-        return this.server.post(`${this.authUrl}/regenerate/${email}`, { showError: false })
-    }
+  updatePassword(body): Observable<any> {
+    return this.server.post(`${this.authUrl}/updatePassword`, body);
+  }
 
-    getPermissions(string: string): string[] {
-        return this.shiro.permissions(string);
-    }
+  setNewValidationToken(email): Observable<any> {
+    return this.server.post(`${this.authUrl}/regenerate/${email}`, { showError: false })
+  }
 
-    getToken() {
-        return window.sessionStorage.getItem('jwt');
-    }
+  getPermissions(string: string): string[] {
+    return this.shiro.permissions(string);
+  }
 
-    getSession() {
-        return this.session$;
-    }
+  getToken() {
+    return window.sessionStorage.getItem('jwt');
+  }
 
-    setToken(token: string) {
-        window.sessionStorage.setItem('jwt', token);
-        this.token$.next(token);
-    }
+  getSession() {
+    return this.session$;
+  }
 
-    logout() {
-        window.sessionStorage.removeItem('jwt');
-    }
+  setToken(token: string) {
+    window.sessionStorage.setItem('jwt', token);
+    this.token$.next(token);
+  }
 
-    toggleEye() {
-        if (!this.showPassword) {
-            this.eye = 'eye-off';
-            this.passwordTooltip = 'ocultar contraseña';
-        } else {
-            this.eye = 'eye';
-            this.passwordTooltip = 'mostrar contraseña';
-        }
-        this.showPassword = !this.showPassword;
-    }
+  logout() {
+    window.sessionStorage.removeItem('jwt');
+  }
 
-    checkPermisos(permiso: string) {
-        return this.shiro.check(permiso);
+  toggleEye() {
+    if (!this.showPassword) {
+      this.eye = 'eye-off';
+      this.passwordTooltip = 'ocultar contraseña';
+    } else {
+      this.eye = 'eye';
+      this.passwordTooltip = 'mostrar contraseña';
     }
+    this.showPassword = !this.showPassword;
+  }
 
-    sugerencias(body): Observable<any> {
-        return this.server.post(this.authUrl + `/suggestions`, body, { showError: false });
-    }
+  checkPermisos(permiso: string) {
+    return this.shiro.check(permiso);
+  }
+
+  sugerencias(body): Observable<any> {
+    return this.server.post(this.authUrl + `/suggestions`, body, { showError: false });
+  }
 }
