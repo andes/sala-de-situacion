@@ -58,10 +58,6 @@ export class RegeneratePasswordComponent implements OnInit {
             this.loading = false;
           }
         );
-      } else {
-        this.plex.info('danger', 'Las contraseñas no coinciden', 'Error contraseñas');
-        this.auth.showPassword = false;
-        this.cancel(form);
       }
     }
   }
