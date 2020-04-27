@@ -53,14 +53,11 @@ export class SugerenciasComponent implements OnInit {
                 data => {
                     if (data.status === 'ok') {
                         this.plex.toast('success', 'Envío de pregunta/sugerencia', 'Se envió correctamente.');
-                        this.loading = false;
-                        this.cancel(form);
-
                     } else {
                         this.plex.info('danger', 'Hubo un problema al enviar la sugerencia, intente de nuevo.');
-                        this.loading = false;
-                        this.cancel(form);
                     }
+                    this.loading = false;
+                    this.cancel(form);
                 },
                 err => {
                     this.plex.info('danger', err);
@@ -74,6 +71,7 @@ export class SugerenciasComponent implements OnInit {
 
     cancel(form) {
         form.reset();
+        this.sugerenciaModel.tipo = {};
         this.modal.showed = false;
         this.closeModal.emit();
     }
