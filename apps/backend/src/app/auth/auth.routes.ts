@@ -89,6 +89,21 @@ AuthRouter.post('/auth/resetPassword', async (req: Request, res, next) => {
   }
 });
 
+AuthRouter.post('/auth/updatePassword', async (req: Request, res, next) => {
+  try {
+    const { password, user_id } = req.body;
+    const user = await UsersCtr.findById(user_id, {});
+    if (user) {
+      await UsersCtr.update(user.id, { password }, req);
+      return res.json({ status: 'ok' });
+    } else {
+      return res.json({ status: 404 });
+    }
+  } catch (err) {
+    return next(403);
+  }
+});
+
 AuthRouter.get('/auth/session', application.authenticate(), async (req, res, next) => {
   try {
     const user_id = req.user.user_id;
