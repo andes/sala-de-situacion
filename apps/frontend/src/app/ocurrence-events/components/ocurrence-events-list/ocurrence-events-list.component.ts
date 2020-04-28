@@ -91,6 +91,9 @@ export class OcurrenceEventsListComponent implements OnInit {
             ocurrenceEvents = ocurrenceEvents.filter(e => e.indicadores[subfiltro] === value.nombre);
           }
         });
+      } else {
+        this.subfiltros = [];
+        this.selectedSubfiltros = [];
       }
       from(ocurrenceEvents)
         .pipe(
