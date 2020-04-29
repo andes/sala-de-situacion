@@ -6,12 +6,12 @@
 <section>
     <div class="row">
         <div class="col">
-            <div id="chart" class="w-100"></div>
+            <plex-button type="success" (click)="refreshChart()" icon="refresh"></plex-button>
         </div>
     </div>
     <div class="row">
-        <div class="col">
-            <plex-button type="success" (click)="refreshChart()" icon="refresh"></plex-button>
+        <div class="col" justify="center">
+            <div id="chart"></div>
         </div>
     </div>
 </section>

@@ -67,9 +67,6 @@ export class AppChartComponent implements OnInit {
     }
 
 
-    // http://172.16.1.63/mongodb-charts-zypoq/embed/charts?id=e2800c81-cc72-41c6-a7e7-07dc80acf2a2&tenant=a9672a8c-ba22-4076-9434-24ca28422f56&autorefresh=300&attribution=false&theme=light
-    // https://172.16.1.63/mongodb-charts-zypoq/embed/charts?id=e2800c81-cc72-41c6-a7e7-07dc80acf2a2&sdk=1&theme=light&attribution=false
-
     initChart() {
         const sdk = new ChartsEmbedSDK({
             // baseUrl: 'https://charts.mongodb.com/charts-charts-fixture-tenant-zdvkh',
