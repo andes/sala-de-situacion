@@ -16,7 +16,6 @@ export class AppChartComponent implements OnInit {
     public instituciones$: Observable<any>;
     private admin: Boolean;
     public institucionesNombres$: Observable<any>;
-    public charts$: Observable<any>;
 
     constructor(
         private chartService: ChartsService,
@@ -38,7 +37,6 @@ export class AppChartComponent implements OnInit {
                 return instituciones ? instituciones.map(item => item.nombre) : null;
             })
         );
-        this.charts$ = this.chartService.search({ activo: true }).pipe(cache());
         this.urls$ = this.institucionesNombres$.pipe(
             switchMap(nombres => {
                 return this.chartService.getEmbeddedChart({ activo: true, filter: nombres });

@@ -53,7 +53,7 @@ class ChartsResource extends ResourceBase {
             return res.json(urls);
 
         } catch (err) {
-            throw new ResourceNotFound();
+            next(err);
         }
     }
 }
