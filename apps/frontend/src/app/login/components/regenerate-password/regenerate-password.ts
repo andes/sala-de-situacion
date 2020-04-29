@@ -47,21 +47,39 @@ export class RegeneratePasswordComponent implements OnInit {
     if (form.valid) {
       if (this.password1 === this.password2) {
         this.loading = true;
-        this.auth.updatePassword({ user_id: this.auth.user_id, password: this.password1 }).subscribe(
-          data => {
-            if (data.status === 'ok') {
-              this.plex.toast('success', 'La contraseña ha sido restablecida correctamente');
-            } else {
-              this.plex.toast('danger', 'Hubo un error en la actualización de la contraseña');
+        if (this.auth.user_id) {
+          this.auth.updatePassword({ user_id: this.auth.user_id, password: this.password1 }).subscribe(
+            data => {
+              if (data.status === 'ok') {
+                this.plex.toast('success', 'La contraseña ha sido restablecida correctamente');
+              } else {
+                this.plex.toast('danger', 'Hubo un error en la actualización de la contraseña');
+              }
+              this.clearForm(form);
+              this.cancel(form);
+            },
+            err => {
+              this.plex.info('danger', err);
+              this.loading = false;
             }
-            this.clearForm(form);
-            this.cancel(form);
-          },
-          err => {
-            this.plex.info('danger', err);
-            this.loading = false;
-          }
-        );
+          );
+        } else {
+          this.auth.resetPassword({ validationToken: this.token, password: this.password1 }).subscribe(
+            data => {
+              if (data.status === 'ok') {
+                this.plex.toast('success', 'La contraseña ha sido restablecida correctamente');
+              } else {
+                this.plex.toast('danger', 'Hubo un error en la actualización de la contraseña');
+              }
+              this.clearForm(form);
+              this.cancel(form);
+            },
+            err => {
+              this.plex.info('danger', err);
+              this.loading = false;
+            }
+          );
+        }
       }
     }
   }
