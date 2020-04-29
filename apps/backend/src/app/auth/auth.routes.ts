@@ -77,7 +77,7 @@ AuthRouter.post('/auth/validate/:token', async (req: Request, res, next) => {
 AuthRouter.post('/auth/resetPassword', async (req: Request, res, next) => {
   try {
     const { password, validationToken } = req.body;
-    const users = await UsersCtr.search({ token: validationToken, active: true }, {}, req);
+    const users = await UsersCtr.search({ validationToken: validationToken, active: true }, {}, req);
     if (users.length > 0) {
       await UsersCtr.update(users[0].id, { password, validationToken: null }, req);
       return res.json({ status: 'ok' });

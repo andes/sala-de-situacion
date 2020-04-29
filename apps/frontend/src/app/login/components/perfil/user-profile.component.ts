@@ -84,9 +84,7 @@ export class UserProfileComponent implements OnInit {
     }
 
     addUserToInstitution(institution) {
-        console.log(institution.users);
         let existeUsuario = institution.users.filter(item => item.id === this.selectedUser.id).length > 0;
-        console.log(this.selectedUser.id);
         if (existeUsuario) {
             this.plex.toast('danger', `El usuario ya se encuenta asociado a la institución.`);
         } else {

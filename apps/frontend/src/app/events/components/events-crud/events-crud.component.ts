@@ -78,7 +78,6 @@ export class AppEventsCrudComponent implements OnInit {
 
         setTimeout(() => {
             const element = document.querySelector(`#wrapper-${this.event.indicadores.length - 1}`);
-            console.log(element);
             if (element) {
                 element.scrollIntoView({ block: "end", behavior: "smooth" });
             }
