@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ChartsService } from '../service/charts.service';
 import { Observable, of, combineLatest } from 'rxjs';
 import { InstitutionService } from '../../institutions/service/institution.service';
 import { AuthService } from '../../login/services/auth.services';
 import { map, switchMap } from 'rxjs/operators';
 import { cache } from '@andes/shared';
+import ChartsEmbedSDK from '@mongodb-js/charts-embed-dom';
 
 @Component({
     selector: 'chart',
@@ -45,6 +46,57 @@ export class AppChartComponent implements OnInit {
                 return urls;
             }),
             cache());
+    }
+
+    ngAfterViewInit(): void {
+
+        this.chartService.search({}).subscribe(charts => {
+            this.urls = charts.map(chart => {
+                return `${chart.base_url}/embed/charts?id=${chart.chart_id}&tenant=${chart.tenant}&autorefresh=300&attribution=false&theme=light`;
+            });
+            this.charts = charts.map(chart => {
+                return {
+                    id: chart.chart_id,
+                    base_url: chart.base_url,
+                    tenant: chart.tenant
+                };
+            });
+            this.initChart();
+        });
+
+    }
+
+
+    // http://172.16.1.63/mongodb-charts-zypoq/embed/charts?id=e2800c81-cc72-41c6-a7e7-07dc80acf2a2&tenant=a9672a8c-ba22-4076-9434-24ca28422f56&autorefresh=300&attribution=false&theme=light
+    // https://172.16.1.63/mongodb-charts-zypoq/embed/charts?id=e2800c81-cc72-41c6-a7e7-07dc80acf2a2&sdk=1&theme=light&attribution=false
+
+    initChart() {
+        const sdk = new ChartsEmbedSDK({
+            // baseUrl: 'https://charts.mongodb.com/charts-charts-fixture-tenant-zdvkh',
+            baseUrl: this.charts[0].base_url,
+        });
+        this.chart = sdk.createChart({
+            chartId: this.charts[0].id,
+            // chartId: '48043c78-f1d9-42ab-a2e1-f2d3c088f864',
+            showAttribution: false,
+            theme: 'light',
+            // tenant: this.charts[0].tenant
+        });
+
+        this.chart
+        this.renderChart();
+    }
+
+    renderChart() {
+        // render the chart into a container
+        this.chart
+            .render(document.getElementById('chart'))
+            .catch(() => window.alert('Chart failed to initialise'));
+    }
+
+    refreshChart() {
+        // refresh the chart whenenver #refreshButton is clicked
+        this.chart.refresh();
     }
 
 
