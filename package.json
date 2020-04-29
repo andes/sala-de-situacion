@@ -46,6 +46,7 @@
         "bcrypt": "^4.0.1",
         "concurrently": "^5.1.0",
         "core-js": "^2.5.4",
+        "crypto": "^1.0.1",
         "debug": "^4.1.1",
         "jquery": "^3.4.1",
         "mongoose": "^5.9.5",
