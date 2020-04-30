@@ -1,48 +1,50 @@
 <plex-layout>
-  <plex-layout-main>
-    <plex-title titulo="Listado de instituciones">
-      <plex-button label="Nueva Institución" type="info" (click)="create()"></plex-button>
-    </plex-title>
-    <div class="row">
-      <div class="col-3">
-        <plex-text [(ngModel)]="nombre" name="nombre" (change)="filtrarResultados()" label="Nombre" [required]="false">
-        </plex-text>
-      </div>
-      <div class="col-3">
-        <plex-select label="Provincia" [(ngModel)]="provincia" name="provincia" [data]="provincias" labelField="nombre"
-                     (change)="changeProvincia($event)">
-        </plex-select>
-      </div>
-      <div class="col-3">
-        <plex-select label="Localidad" [(ngModel)]="localidad" name="localidad" [data]="localidades" labelField="nombre"
-                     (change)="filtrarResultados()">
-        </plex-select>
-      </div>
-      <div class="col-md-3">
-        <plex-select label="Estado" [(ngModel)]="estado" name="estado" [data]="estados" (change)="filtrarResultados()">
-        </plex-select>
-      </div>
-    </div>
-    <br>
-    <plex-list>
-      <plex-heading>
-        <b label>Nombre</b>
-        <b label>Email</b>
-        <b label>Teléfono</b>
-        <b label>Dirección</b>
-        <b label></b>
-      </plex-heading>
-      <ng-container *ngFor="let institution of institutions$">
-        <plex-item class="hover" [botonera]="true" [selected]="institution.selected">
-          <plex-label>{{ institution.nombre }}</plex-label>
-          <plex-label>{{ institution.email }}</plex-label>
-          <plex-label>{{ institution.telefono }}</plex-label>
-          <plex-label>{{ institution.direccion }}</plex-label>
-          <plex-badge *ngIf="institution.activo" type="success">Habilitada</plex-badge>
-          <plex-badge *ngIf="!institution.activo" type="danger">Deshabilitada</plex-badge>
-          <plex-button type="info" size="sm" icon="pencil" (click)="edit(institution)"></plex-button>
-        </plex-item>
-      </ng-container>
-    </plex-list>
-  </plex-layout-main>
+    <plex-layout-main>
+        <plex-title titulo="Listado de instituciones">
+            <plex-button label="Nueva Institución" type="info" (click)="create()"></plex-button>
+        </plex-title>
+        <div class="row">
+            <div class="col-3">
+                <plex-text [(ngModel)]="nombre" name="nombre" (change)="filtrarResultados()" label="Nombre"
+                           [required]="false">
+                </plex-text>
+            </div>
+            <div class="col-3">
+                <plex-select label="Provincia" [(ngModel)]="provincia" name="provincia" [data]="provincias"
+                             labelField="nombre" (change)="changeProvincia($event)">
+                </plex-select>
+            </div>
+            <div class="col-3">
+                <plex-select label="Localidad" [(ngModel)]="localidad" name="localidad" [data]="localidades"
+                             labelField="nombre" (change)="filtrarResultados()">
+                </plex-select>
+            </div>
+            <div class="col-md-3">
+                <plex-select label="Estado" [(ngModel)]="estado" name="estado" [data]="estados"
+                             (change)="filtrarResultados()">
+                </plex-select>
+            </div>
+        </div>
+        <br>
+        <plex-list>
+            <plex-heading>
+                <b label>Nombre</b>
+                <b label>Email</b>
+                <b label>Teléfono</b>
+                <b label>Dirección</b>
+                <b label></b>
+            </plex-heading>
+            <ng-container *ngFor="let institution of institutions">
+                <plex-item class="hover" [botonera]="true" [selected]="institution.selected">
+                    <plex-label>{{ institution.nombre }}</plex-label>
+                    <plex-label>{{ institution.email }}</plex-label>
+                    <plex-label>{{ institution.telefono }}</plex-label>
+                    <plex-label>{{ institution.direccion }}</plex-label>
+                    <plex-badge *ngIf="institution.activo" type="success">Habilitada</plex-badge>
+                    <plex-badge *ngIf="!institution.activo" type="danger">Deshabilitada</plex-badge>
+                    <plex-button type="info" size="sm" icon="pencil" (click)="edit(institution)"></plex-button>
+                </plex-item>
+            </ng-container>
+        </plex-list>
+    </plex-layout-main>
 </plex-layout>
