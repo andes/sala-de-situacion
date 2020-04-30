@@ -19,15 +19,6 @@ class InstitutionResource extends ResourceBase {
             }
             return next();
         },
-        patch: (req: Request, res: Response, next) => {
-            const permisoAdmin = checkPermission(req, 'admin:true');
-            if (!permisoAdmin) {
-                if (req.user) {
-                    req.body.users = [req.user];
-                }
-            }
-            return next();
-        },
         search: (req: Request, res: Response, next) => {
             const permisoAdmin = checkPermission(req, 'admin:true');
             if (!permisoAdmin) {

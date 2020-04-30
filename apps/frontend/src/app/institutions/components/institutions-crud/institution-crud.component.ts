@@ -93,6 +93,7 @@ export class AppInstitutionCrudComponent implements OnInit {
         this.institution.referente.nombre = institucion.referente ? institucion.referente.nombre : '';
         this.institution.referente.apellido = institucion.referente ? institucion.referente.apellido : '';
         this.institution.referente.telefono = institucion.referente ? institucion.referente.telefono : '';
+        this.institution.users = institucion.users;
         this.institution.location.direccion = institucion.direccion ? institucion.direccion : '';
         this.institution.location.barrio = institucion.barrio
             ? this.locationService.getBarrios({ nombre: institucion.barrio }).subscribe(barrios => {

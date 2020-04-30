@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChartsService } from '../service/charts.service';
 import { Observable, of, combineLatest } from 'rxjs';
 import { InstitutionService } from '../../institutions/service/institution.service';
-import { AuthService } from '../../login/auth.services';
+import { AuthService } from '../../login/services/auth.services';
 import { map, switchMap } from 'rxjs/operators';
 import { cache } from '@andes/shared';
 

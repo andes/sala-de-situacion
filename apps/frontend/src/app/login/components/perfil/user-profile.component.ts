@@ -48,6 +48,7 @@ export class UserProfileComponent implements OnInit {
                 this.institutions = registros;
             },
             (err) => {
+                this.plex.info('danger', 'Error al cargar las instituciones');
             }
         );
     }
