@@ -31,9 +31,7 @@ export class AppInstitutionListComponent implements OnInit {
 
   ngOnInit() {
     this.institutions$ = this.institutionService.search().pipe(cache());
-    this.institutionService.search({}).subscribe(rta => {
-      this.institutions = rta;
-    });
+
     this.locationService.getProvincias({}).subscribe(rta => {
       this.provincias = rta;
     });

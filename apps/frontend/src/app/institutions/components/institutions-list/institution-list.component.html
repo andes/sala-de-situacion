@@ -32,7 +32,7 @@
         <b label>Dirección</b>
         <b label></b>
       </plex-heading>
-      <ng-container *ngFor="let institution of institutions">
+      <ng-container *ngFor="let institution of institutions$">
         <plex-item class="hover" [botonera]="true" [selected]="institution.selected">
           <plex-label>{{ institution.nombre }}</plex-label>
           <plex-label>{{ institution.email }}</plex-label>
