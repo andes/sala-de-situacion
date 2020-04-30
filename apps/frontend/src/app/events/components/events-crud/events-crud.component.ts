@@ -25,6 +25,7 @@ export class AppEventsCrudComponent implements OnInit {
     ];
 
     public event: Event = {
+        id: '',
         categoria: '',
         nombre: '',
         activo: true,
