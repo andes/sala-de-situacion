@@ -15,10 +15,11 @@ import { SelectSearchService } from '../../../shared/select-search.service';
 export class OccurrenceEventsCrudComponent implements OnInit {
     public institutionSelected: any;
     public institutions = [];
-    public eventos = [];
     public eventSelected: Event;
+    public events = [];
     public tiposList;
     public eventDate: Date;
+    public minDate: Date;
     public indicadores = {};
     public ocurrenceEvent: OcurrenceEvent;
     public show: boolean = false;
@@ -40,15 +41,15 @@ export class OccurrenceEventsCrudComponent implements OnInit {
             }
         });
         this.eventsService.search({}).subscribe(rta => {
-            this.eventos = rta;
+            this.events = rta;
         });
-
         const ocurrenceEvent: OcurrenceEvent = this.route.snapshot.data.ocurrenceEvent;
+        this.eventDate = new Date();
         if (ocurrenceEvent) {
             this.show = true;
             this.ocurrenceEvent = ocurrenceEvent;
             this.institutionSelected = ocurrenceEvent.institucion;
-            this.eventDate = new Date();
+            this.minDate = ocurrenceEvent.fecha;
             this.eventsService.search({ categoria: ocurrenceEvent.eventKey }).subscribe(evento => {
                 this.eventSelected = evento[0];
             });
@@ -60,6 +61,26 @@ export class OccurrenceEventsCrudComponent implements OnInit {
                         nombre: this.indicadores[key.substring(3)]
                     };
                 }
+            }
+        }
+    }
+
+    loadMinDate() {
+        this.minDate = null;
+        if (this.institutionSelected) {
+            if (this.eventSelected) {
+                this.ocurrenceEventsService
+                    .search({ instituciones: [this.institutionSelected.id], eventKey: this.eventSelected.categoria })
+                    .subscribe(rta => {
+                        let ordenados = rta.sort((a: any, b: any) => {
+                            return Date.parse(b.fecha) - Date.parse(a.fecha);
+                        });
+                        if (ordenados[0]) {
+                            this.minDate = ordenados[0].fecha;
+                        } else {
+                            this.minDate = null;
+                        }
+                    });
             }
         }
     }

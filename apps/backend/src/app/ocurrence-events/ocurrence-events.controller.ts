@@ -3,7 +3,6 @@ import { OcurrenceEvent } from './ocurrence-events.schema';
 import { Request, Response } from '@andes/api-tool';
 import { authenticate, checkPermission } from '../application';
 import { InstitutionCtr } from '../institution/institution.controller'
-import * as mongoose from 'mongoose';
 
 class OcurrenceEventResource extends ResourceBase {
     Model = OcurrenceEvent;
@@ -25,12 +24,12 @@ class OcurrenceEventResource extends ResourceBase {
     };
     searchFileds = {
         nombre: MongoQuery.partialString,
-        key: MongoQuery.partialString,
+        eventKey: MongoQuery.partialString,
         institucion: MongoQuery.equalMatch,
         instituciones: {
             field: 'institucion.id',
             fn: (value) => {
-                return { $in: value.map(i => mongoose.Types.ObjectId(i._id)) };
+                return { $in: value };
             }
         },
         search: ['nombre', 'key']
