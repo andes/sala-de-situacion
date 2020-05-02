@@ -2,13 +2,14 @@
     <plex-layout-main>
         <plex-title titulo="{{ institution?.nombre ? institution?.nombre : 'Nueva Institución' }}">
             <plex-button label="Cancelar" type="danger" (click)="cancelar()"> </plex-button>
-            <plex-button label="Guardar" type="success" class="ml-2" [disabled]="disableGuardar" (click)="guardar()">
+            <plex-button label="Guardar" type="success" class="ml-2" [disabled]="disableGuardar"
+                         [validateForm]="formulario" (click)="guardar($event)">
             </plex-button>
         </plex-title>
 
         <form #formulario="ngForm">
             <div class="row">
-                <div class="col-md-4 col-sm-12">
+                <div class="col-md-3 col-sm-12">
                     <plex-text label="Nombre" [(ngModel)]="institution.nombre" name="nombre" [required]="true">
                     </plex-text>
                     <div class="w-25 d-flex justify-between aling-end">
@@ -19,16 +20,40 @@
                         </plex-badge>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-12">
+                <div class="col-md-3 col-sm-12">
                     <plex-text label="e-mail de la institución" prefix="<i class='mdi mdi-email'></i>"
                                [(ngModel)]="institution.email" name="email" (change)="verificarFormatoEmail()">
                     </plex-text>
                     <span *ngIf="disableGuardar" class="text-danger mt-1">Formato incorrecto</span>
                 </div>
-                <div class="col-md-4 col-sm-12">
-                    <!-- reemplazar por plex-phone -->
+                <div class="col-md-3 col-sm-12">
                     <plex-phone label="Teléfono" [(ngModel)]="institution.telefono" name="telefono" [required]="true"
                                 placeholder="Ej: 2990000000">
+                    </plex-phone>
+                </div>
+                <div class="col-md-3 col-sm-12">
+                    <plex-text label="Código SISA" [(ngModel)]="institution.codigo.sisa" name="sisa" [required]="false"
+                               placeholder="">
+                    </plex-text>
+                </div>
+            </div>
+            <hr>
+            <plex-title size="sm" titulo="Referente"></plex-title>
+            <div class="row">
+                <div class="col-md-4 col-sm-12">
+                    <plex-text label="Nombre" [(ngModel)]="institution.referente.nombre" name="nombreReferente"
+                               [required]="false">
+                    </plex-text>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <plex-text label="Apellido" [(ngModel)]="institution.referente.apellido" name="apellidoReferente"
+                               [required]="false">
+                    </plex-text>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <!-- reemplazar por plex-phone -->
+                    <plex-phone label="Teléfono" [(ngModel)]="institution.referente.telefono" name="telefonoReferente"
+                                [required]="false" placeholder="Ej: 2990000000">
                     </plex-phone>
                 </div>
             </div>

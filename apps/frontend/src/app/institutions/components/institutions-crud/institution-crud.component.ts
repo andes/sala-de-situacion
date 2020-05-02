@@ -29,6 +29,14 @@ export class AppInstitutionCrudComponent implements OnInit {
             direccion: '',
             coordenadas: []
         },
+        codigo: {
+            sisa: ''
+        },
+        referente: {
+            nombre: '',
+            apellido: '',
+            telefono: ''
+        },
         activo: false,
         users: []
     };
@@ -55,31 +63,36 @@ export class AppInstitutionCrudComponent implements OnInit {
     ngOnInit() {
 
         this.isAdmin = this.auth.checkPermisos('admin:true');
-
-        this.institutionParam = this.route.snapshot.params; // Si viene un objeto es un update
+        this.institutionParam = this.route.snapshot.params; // Si viene un id es un update
         if (this.institutionParam.id) {
-            this.loadInstitution(this.institutionParam);
-            this.inicializarMapa();
-            this.neuquen = this.institutionParam.provincia === 'Neuquén' ? true : false;
+            this.institutionService.get(this.institutionParam.id).subscribe(rta => {
+                this.loadInstitution(rta);
+                this.inicializarMapa();
+                this.neuquen = this.institutionParam.provincia === 'Neuquén' ? true : false;
+                this.locationService.getLocalidades({ provincia: this.institution.location.provincia.id }).subscribe(rta => {
+                    this.localidades = rta;
+                });
+            });
         } else {
             this.institution.location.provincia = this.provNeuquen;
+            this.locationService.getLocalidades({ provincia: this.institution.location.provincia.id }).subscribe(rta => {
+                this.localidades = rta;
+            });
         }
-        // Cargamos todas las provincias
         this.locationService.getProvincias({}).subscribe(rta => {
             this.provincias = rta;
         });
-        // Cargamos todas las localidades
-        this.locationService.getLocalidades({ provincia: this.institution.location.provincia.id }).subscribe(rta => {
-            this.localidades = rta;
-        });
     }
-
 
     loadInstitution(institucion) {
         this.institution.id = institucion.id;
         this.institution.nombre = institucion.nombre;
         this.institution.email = institucion.email;
         this.institution.telefono = institucion.telefono;
+        this.institution.codigo.sisa = institucion.codigo ? institucion.codigo.sisa : '';;
+        this.institution.referente.nombre = institucion.referente ? institucion.referente.nombre : '';
+        this.institution.referente.apellido = institucion.referente ? institucion.referente.apellido : '';
+        this.institution.referente.telefono = institucion.referente ? institucion.referente.telefono : '';
         this.institution.location.direccion = institucion.direccion ? institucion.direccion : '';
         this.institution.location.barrio = institucion.barrio
             ? this.locationService.getBarrios({ nombre: institucion.barrio }).subscribe(barrios => {
@@ -96,9 +109,8 @@ export class AppInstitutionCrudComponent implements OnInit {
                 this.institution.location.provincia = provincias[0];
             })
             : '';
-        this.institution.activo = institucion.activo === 'true' ? true : false;
+        this.institution.activo = institucion.activo;
         this.institution.location.coordenadas = institucion.coordenadas ? JSON.parse("[" + institucion.coordenadas + "]") : []; //Convierte a array las corrdenadas
-
     }
 
     setNeuquen(event) {
@@ -115,52 +127,64 @@ export class AppInstitutionCrudComponent implements OnInit {
     changeProvincia(event) {
         this.institution.location.localidad = {};
         this.institution.location.barrio = {};
-        this.locationService.getLocalidades({ provincia: this.institution.location.provincia.id }).subscribe(rta => {
-            this.localidades = rta;
-        });
+        if (this.institution.location.provincia) {
+            this.locationService.getLocalidades({ provincia: this.institution.location.provincia.id }).subscribe(rta => {
+                this.localidades = rta;
+            });
+        }
     }
 
     changeLocalidad(event) {
         this.institution.location.barrio = {};
-        this.locationService.getBarrios({ localidad: this.institution.location.localidad.id }).subscribe(rta => {
-            this.barrios = rta;
-        });
+        if (this.institution.location.localidad) {
+            this.locationService.getBarrios({ localidad: this.institution.location.localidad.id }).subscribe(rta => {
+                this.barrios = rta;
+            });
+        }
     }
 
-    guardar() {
-        try {
-            let dto = {
-                id: this.institution.id,
-                nombre: this.institution.nombre,
-                email: this.institution.email,
-                telefono: this.institution.telefono,
-                direccion: this.institution.location.direccion,
-                barrio: this.institution.location.barrio.nombre ? this.institution.location.barrio.nombre : '',
-                localidad: this.institution.location.localidad.nombre,
-                provincia: this.institution.location.provincia.nombre,
-                activo: this.institution.activo,
-                coordenadas: []
-            };
-            if (this.institution.location.provincia && this.institution.location.localidad && this.institution.location.direccion) {
-                let direccionCompleta = this.institution.location.direccion + ', ' + this.institution.location.localidad.nombre
-                    + ', ' + this.institution.location.provincia.nombre;
-                // se calcula la georeferencia
-                this.georeferenciaService.get({ direccion: direccionCompleta }).subscribe(point => {
-                    if (point && point.lat && point.lng) {
-                        this.institution.location.coordenadas = [point.lat, point.lng];
-                        dto.coordenadas = [point.lat, point.lng];
-                    }
+    guardar($event) {
+        if ($event.formValid) {
+            try {
+                let dto = {
+                    id: this.institution.id,
+                    nombre: this.institution.nombre,
+                    email: this.institution.email,
+                    telefono: this.institution.telefono,
+                    codigo: {
+                        sisa: this.institution.codigo.sisa
+                    },
+                    referente: {
+                        nombre: this.institution.referente.nombre,
+                        apellido: this.institution.referente.apellido,
+                        telefono: this.institution.referente.telefono
+                    },
+                    direccion: this.institution.location.direccion,
+                    barrio: this.institution.location.barrio.nombre ? this.institution.location.barrio.nombre : '',
+                    localidad: this.institution.location.localidad.nombre,
+                    provincia: this.institution.location.provincia.nombre,
+                    activo: this.institution.activo,
+                    coordenadas: []
+                };
+                if (this.institution.location.provincia && this.institution.location.localidad && this.institution.location.direccion) {
+                    let direccionCompleta = this.institution.location.direccion + ', ' + this.institution.location.localidad.nombre
+                        + ', ' + this.institution.location.provincia.nombre;
+                    // se calcula la georeferencia
+                    this.georeferenciaService.get({ direccion: direccionCompleta }).subscribe(point => {
+                        if (point && point.lat && point.lng) {
+                            this.institution.location.coordenadas = [point.lat, point.lng];
+                            dto.coordenadas = [point.lat, point.lng];
+                        }
+                        this.guardarInstitucion(dto);
+                    });
+                } else {
                     this.guardarInstitucion(dto);
-                });
-            } else {
-                this.guardarInstitucion(dto);
+                }
+            }
+            catch (err) {
+                this.plex.info('danger', 'Error al guardar la institución');
             }
         }
-        catch (err) {
-            this.plex.info('danger', 'Error al guardar la institución');
-
-        }
-
     }
 
     guardarInstitucion(institucion) {
@@ -177,6 +201,7 @@ export class AppInstitutionCrudComponent implements OnInit {
     mainInsitutions() {
         this.router.navigate(['/institution/list']);
     }
+
     verificarFormatoEmail() {
         let utils = new Utils();
         this.disableGuardar = !utils.verificarFormatoEmail(this.institution.email);

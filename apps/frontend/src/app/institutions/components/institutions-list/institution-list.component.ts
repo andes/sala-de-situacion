@@ -40,7 +40,7 @@ export class AppInstitutionListComponent implements OnInit {
 
     edit(institution) {
         this.institucion = institution;
-        this.router.navigate(['/institution/crud', institution]);
+        this.router.navigate(['/institution/crud', { id: institution._id }]);
     }
 
     onClose() {

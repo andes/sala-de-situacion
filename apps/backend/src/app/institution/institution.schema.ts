@@ -17,6 +17,14 @@ export const InstitutionsSchema = new mongoose.Schema({
     provincia: String,
     zona: String,
     tipoInstitutcion: String,
+    codigo: {
+        sisa: String
+    },
+    referente: {
+        nombre: String,
+        apellido: String,
+        telefono: String
+    },
     users: [
         {
             id: String,
