@@ -1,10 +1,31 @@
 <plex-layout>
     <plex-layout-main>
         <plex-title titulo="Listado de instituciones">
-            <!-- <plex-button label="Menú principal" type="danger" (click)="mainMenu()"></plex-button> -->
             <plex-button label="Nueva Institución" type="info" (click)="create()"></plex-button>
         </plex-title>
-
+        <div class="row">
+            <div class="col-3">
+                <plex-text [(ngModel)]="nombre" name="nombre" (change)="filtrarResultados()" label="Nombre"
+                           [required]="false">
+                </plex-text>
+            </div>
+            <div class="col-3">
+                <plex-select label="Provincia" [(ngModel)]="provincia" name="provincia" [data]="provincias"
+                             labelField="nombre" (change)="changeProvincia($event)">
+                </plex-select>
+            </div>
+            <div class="col-3">
+                <plex-select label="Localidad" [(ngModel)]="localidad" name="localidad" [data]="localidades"
+                             labelField="nombre" (change)="filtrarResultados()">
+                </plex-select>
+            </div>
+            <div class="col-md-3">
+                <plex-select label="Estado" [(ngModel)]="estado" name="estado" [data]="estados"
+                             (change)="filtrarResultados()">
+                </plex-select>
+            </div>
+        </div>
+        <br>
         <plex-list>
             <plex-heading>
                 <b label>Nombre</b>
