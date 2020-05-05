@@ -55,7 +55,7 @@ AuthRouter.post('/auth/regenerate/:email', async (req: Request, res, next) => {
     }
 });
 
-AuthRouter.post('/auth/suggestions', async (req: Request, res, next) => {
+AuthRouter.post('/auth/suggestions', application.authenticate(), async (req: Request, res, next) => {
     try {
         await sendEmailSuggestion(req.body);
         return res.json({ status: 'ok' });
@@ -89,7 +89,7 @@ AuthRouter.post('/auth/resetPassword', async (req: Request, res, next) => {
     }
 });
 
-AuthRouter.post('/auth/updatePassword', async (req: Request, res, next) => {
+AuthRouter.post('/auth/updatePassword', application.authenticate(), async (req: Request, res, next) => {
     try {
         const { password, user_id } = req.body;
         const user = await UsersCtr.findById(user_id, {});
