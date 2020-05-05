@@ -14,5 +14,17 @@ export const environment = {
             user: process.env.MAIL_USER || 'mail@mail.com',
             pass: process.env.MAIL_PASSWORD || 'unaPass'
         }
+    },
+    snvs: {
+        host: process.env.HOST_SNVS || 'prueba',
+        user: process.env.USER_SNVS || 'user',
+        pass: process.env.PASS_SNVS || 'unapass'
     }
 };
+
+export const jobs = [
+    {
+        when: '*/5 * * * * * ',
+        action: '../../jobs/import-cases-job'
+    }];
+
