@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Plex } from '@andes/plex';
-import { AuthService } from '../../auth.services';
+import { AuthService } from '../../services/auth.services';
 import { Router } from '@angular/router';
 @Component({
     selector: 'app-login',
@@ -40,8 +40,9 @@ export class LoginComponent implements OnInit {
     //     this.router.navigate(['auth/register-user']);
     // }
 
-    close(event) {
+    close() {
         this.showModalResetPassword = false;
+        this.showModalRegisterUser = false;
     }
 
     forgot() {

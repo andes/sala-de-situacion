@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { Plex } from '@andes/plex';
-import { AuthService } from '../../auth.services';
+import { AuthService } from '../../services/auth.services';
 import { Router } from '@angular/router';
 import { Utils } from './../../../shared/utils';
 import { PlexModalComponent } from '@andes/plex/src/lib/modal/modal.component';
@@ -48,10 +48,12 @@ export class RegisterUserComponent implements OnInit {
             this.auth.create(this.usuario).subscribe(
                 data => {
                     this.router.navigate(['auth/verify-email/' + this.usuario.email]);
+                    this.cancel();
                 },
                 err => {
                     this.plex.toast('danger', 'Error en los datos ingresador, verifique su email y vuelva a intentarlo.');
                     this.disableEnviar = false;
+                    this.cancel();
                 }
             );
         } else {
@@ -62,6 +64,7 @@ export class RegisterUserComponent implements OnInit {
 
     cancel() {
         this.modal.showed = false;
+        this.auth.showPassword = false;
         this.closeModal.emit();
     }
 
@@ -72,12 +75,5 @@ export class RegisterUserComponent implements OnInit {
 
     passwordMatch() {
         return this.usuario.password2 === this.usuario.password;
-    }
-    getSize(e) {
-        this.size = e.value;
-        return this.size;
-    }
-    getresponsiveSize() {
-        return this.size;
     }
 }

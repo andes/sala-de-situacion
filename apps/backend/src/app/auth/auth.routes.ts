@@ -2,6 +2,7 @@ import { application } from '../application';
 import { UsersCtr } from '../users/user.controller';
 import { Request } from '@andes/api-tool';
 import { sendEmailNotification } from '../services/mail/mail';
+import { sendEmailSuggestion } from '../services/mail/mail';
 import { Types } from 'mongoose';
 import { environment } from '../../environments/environment';
 
@@ -54,6 +55,15 @@ AuthRouter.post('/auth/regenerate/:email', async (req: Request, res, next) => {
     }
 });
 
+AuthRouter.post('/auth/suggestions', application.authenticate(), async (req: Request, res, next) => {
+    try {
+        await sendEmailSuggestion(req.body);
+        return res.json({ status: 'ok' });
+    } catch (err) {
+        return next(403);
+    }
+});
+
 AuthRouter.post('/auth/validate/:token', async (req: Request, res, next) => {
     try {
         const token = req.params.token;
@@ -67,9 +77,24 @@ AuthRouter.post('/auth/validate/:token', async (req: Request, res, next) => {
 AuthRouter.post('/auth/resetPassword', async (req: Request, res, next) => {
     try {
         const { password, validationToken } = req.body;
-        const users = await UsersCtr.search({ token: validationToken, active: true }, {}, req);
+        const users = await UsersCtr.search({ validationToken: validationToken, active: true }, {}, req);
         if (users.length > 0) {
             await UsersCtr.update(users[0].id, { password, validationToken: null }, req);
+            return res.json({ status: 'ok' });
+        } else {
+            return res.json({ status: 404 });
+        }
+    } catch (err) {
+        return next(403);
+    }
+});
+
+AuthRouter.post('/auth/updatePassword', application.authenticate(), async (req: Request, res, next) => {
+    try {
+        const { password, user_id } = req.body;
+        const user = await UsersCtr.findById(user_id, {});
+        if (user) {
+            await UsersCtr.update(user.id, { password }, req);
             return res.json({ status: 'ok' });
         } else {
             return res.json({ status: 404 });
@@ -82,7 +107,7 @@ AuthRouter.post('/auth/resetPassword', async (req: Request, res, next) => {
 AuthRouter.get('/auth/session', application.authenticate(), async (req, res, next) => {
     try {
         const user_id = req.user.user_id;
-        const user = await UsersCtr.findById(user_id, { fields: 'nombre apellido permisos active' });
+        const user = await UsersCtr.findById(user_id, { fields: 'nombre apellido telefono email documento permisos active' });
         res.json(user);
 
     } catch (err) {

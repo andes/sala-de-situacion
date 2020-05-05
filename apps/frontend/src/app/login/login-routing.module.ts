@@ -8,6 +8,7 @@ import { RegeneratePasswordComponent } from './components/regenerate-password/re
 import { RegisterUserComponent } from './components/user/register-user.component';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { ActivacionCuentaComponent } from './components/activacion-cuenta/activacion-cuenta.component';
+import { UserProfileComponent } from './components/perfil/user-profile.component';
 
 const routes = [
     { path: 'login', component: LoginComponent },
@@ -16,7 +17,8 @@ const routes = [
     { path: 'regenerate-password/:token', component: RegeneratePasswordComponent },
     { path: 'register-user', component: RegisterUserComponent },
     { path: 'verify-email/:email', component: VerifyEmailComponent },
-    { path: 'activacion-cuenta/:token', component: ActivacionCuentaComponent }
+    { path: 'activacion-cuenta/:token', component: ActivacionCuentaComponent },
+    { path: 'user-profile', component: UserProfileComponent }
 ];
 
 @NgModule({

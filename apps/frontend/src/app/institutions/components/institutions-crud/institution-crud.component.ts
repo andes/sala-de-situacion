@@ -3,7 +3,7 @@ import { Plex } from '@andes/plex';
 import { LocationService } from '../../../shared/location.services';
 import { InstitutionService } from '../../service/institution.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from './../../../login/auth.services';
+import { AuthService } from '../../../login/services/auth.services';
 import { GeoreferenciaService } from '../../service/georeferencia.service';
 import { Utils } from './../../../shared/utils';
 
@@ -93,6 +93,7 @@ export class AppInstitutionCrudComponent implements OnInit {
         this.institution.referente.nombre = institucion.referente ? institucion.referente.nombre : '';
         this.institution.referente.apellido = institucion.referente ? institucion.referente.apellido : '';
         this.institution.referente.telefono = institucion.referente ? institucion.referente.telefono : '';
+        this.institution.users = institucion.users;
         this.institution.location.direccion = institucion.direccion ? institucion.direccion : '';
         this.institution.location.barrio = institucion.barrio
             ? this.locationService.getBarrios({ nombre: institucion.barrio }).subscribe(barrios => {

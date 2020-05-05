@@ -1,3 +1,4 @@
+import { SugerenciasComponent } from './components/sugerencias/sugerencias.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,9 +14,11 @@ import { VerifyEmailComponent } from './components/verify-email/verify-email.com
 import { LoginRoutingModule } from './login-routing.module';
 import { ActivacionCuentaComponent } from './components/activacion-cuenta/activacion-cuenta.component';
 import { RegeneratePasswordComponent } from './components/regenerate-password/regenerate-password';
+import { UserProfileComponent } from './components/perfil/user-profile.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, HttpClientModule, PlexModule, LoginRoutingModule],
+    imports: [CommonModule, FormsModule, HttpClientModule, RouterModule, PlexModule, LoginRoutingModule],
     declarations: [
         LoginComponent,
         LogoutComponent,
@@ -23,7 +26,9 @@ import { RegeneratePasswordComponent } from './components/regenerate-password/re
         RegisterUserComponent,
         RegeneratePasswordComponent,
         VerifyEmailComponent,
-        ActivacionCuentaComponent
+        ActivacionCuentaComponent,
+        UserProfileComponent,
+        SugerenciasComponent
     ],
     providers: []
 })

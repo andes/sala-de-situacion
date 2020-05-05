@@ -1,0 +1,34 @@
+<plex-modal #modal>
+    <!-- <plex-icon name="lock-reset" type="info"></plex-icon> -->
+    <main>
+        <form class="mx-4" #formulario="ngForm">
+            <plex-title size="sm" titulo="Preguntas y sugerencias"> </plex-title>
+            <br>
+            <div class="mb-1 text-120">
+                Si tenés alguna <b>consulta</b>, querés reportar algún <b>problema o error</b>, o simplemente querés
+                hacer una
+                <b>sugerencia</b>:
+            </div>
+            <ol>
+                <li>Elegí el tipo de consulta</li>
+                <li>Escribila en el campo de texto</li>
+                <li>Hacé click o tocá el botón Enviar</li>
+            </ol>
+            <plex-select placeholder="Tipo de consulta..." [(ngModel)]="sugerenciaModel.tipo" name="tipoSugerencia"
+                         [data]="tiposSugerencias" required="true">
+            </plex-select>
+            <plex-text placeholder="Escribí aquí..." [(ngModel)]="sugerenciaModel.contenido" name="sugerencia"
+                       html="true" [readonly]="false" required="true">
+            </plex-text>
+            <div class="mt-2 text-default">
+                Te agradecemos tu consulta, vas a recibir una <b>notificación por e-mail</b>,
+                y <b>una persona se va contactar</b> con vos en los siguientes días</div>
+            <plex-loader *ngIf="loading" type="ball-pulse-sync"></plex-loader>
+        </form>
+    </main>
+    <plex-button modal left label="Cancelar" type="danger" (click)="cancel(formulario)">
+    </plex-button>
+    <plex-button modal right label="Enviar" type="success" [validateForm]="formulario"
+                 [disabled]="!formulario.form.valid" (click)="enviar(formulario)">
+    </plex-button>
+</plex-modal>

@@ -1,0 +1,75 @@
+<plex-layout>
+  <plex-layout-main>
+    <plex-title main titulo="Mi Perfil">
+      <plex-button type="info" size="sm" (click)="toggleShowSugerencias()">Preguntas/Sugerencias</plex-button>
+    </plex-title>
+    <modal-sugerencias [show]="showModalSugerencias" [sugerenciaModel]="sugerencias" (closeModal)="resetModals()">
+    </modal-sugerencias>
+    <div class="row">
+      <div class="col-md-4 col-sm-12 mt-4">
+        <plex-title size="sm" titulo="Mis datos"></plex-title>
+        <plex-detail size="lg">
+          <plex-icon name="account"></plex-icon>
+          <div title> {{user.apellido}}, {{user.nombre}} </div>
+          <div subtitle> {{user.email}} </div>
+          <plex-label titulo="Documento" subtitulo="{{user.documento}}"></plex-label>
+          <plex-label titulo="Teléfono" subtitulo="{{user.telefono}}"></plex-label>
+        </plex-detail>
+        <plex-button label="Cambiar contraseña" size="sm" type="info" (click)="toggleResetForm()">
+        </plex-button>
+        <modal-regenerate-password [show]="showModalResetPassword" (closeModal)="resetModals()">
+        </modal-regenerate-password>
+
+      </div>
+      <div class=" col-md-8 col-sm-12 mt-4">
+        <plex-title main size="sm" titulo="Mis Instituciones"></plex-title>
+        <div class="w-100">
+          <plex-wrapper>
+            <b>Nombre</b>
+            <b>Email</b>
+            <b>Teléfono</b>
+            <b>Dirección</b>
+            <b> </b>
+          </plex-wrapper>
+          <plex-wrapper *ngFor="let institution of institutions; let i=index" collapse>
+            <plex-label>{{ institution.nombre }}</plex-label>
+            <plex-label>{{ institution.email }}</plex-label>
+            <plex-label>{{ institution.telefono }}</plex-label>
+            <plex-label>{{ institution.direccion }}</plex-label>
+            <div justify="start">
+              <div>
+                <plex-badge *ngIf="institution.activo" type="success">Habilitada</plex-badge>
+                <plex-badge *ngIf="!institution.activo" type="danger">Deshabilitada</plex-badge>
+              </div>
+              <plex-button type="info" size="sm" icon="format-list-text" title="Lista de usuarios" titlePosition="left"
+                           (click)="toggleShowUsuarios(i)">
+              </plex-button>
+            </div>
+            <div class="col-12 col-md-10" *ngIf="showUsarios[i]">
+              <plex-title size="sm" titulo="Usuarios de esta Institución">
+              </plex-title>
+              <div class="mt-3" justify>
+                <plex-select placeholder="Seleccionar usuario..." grow="2" [(ngModel)]="selectedUser"
+                             labelField="apellido+' '+nombre" (getData)="loadUsers($event)">
+                </plex-select>
+                <plex-button type="success" icon="account-plus" size="sm" (click)="addUserToInstitution(institution)"
+                             [disabled]="!selectedUser?.id">
+                </plex-button>
+              </div>
+              <hr>
+              <plex-list>
+                <plex-item *ngFor="let user of institution.users">
+                  <plex-label titulo="{{ user.apellido }}, {{ user.nombre }}" subtitulo="{{ user.email }}" size="sm">
+                  </plex-label>
+                  <plex-button type="danger" icon="account-minus" size="sm"
+                               (click)="deleteUserFromInstitution(institution, user)">
+                  </plex-button>
+                </plex-item>
+              </plex-list>
+            </div>
+          </plex-wrapper>
+        </div>
+      </div>
+    </div>
+  </plex-layout-main>
+</plex-layout>

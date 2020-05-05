@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EventsService, Event } from '../../service/events.service';
 import { Observable } from 'rxjs';
 import { cache } from '@andes/shared';
-import { AuthService } from '../../../login/auth.services';
+import { AuthService } from '../../../login/services/auth.services';
 import { Router } from '@angular/router';
 @Component({
     selector: 'events-list',

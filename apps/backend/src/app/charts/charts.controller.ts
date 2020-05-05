@@ -1,4 +1,4 @@
-import { MongoQuery, ResourceBase, ResourceNotFound } from '@andes/core';
+import { MongoQuery, ResourceBase } from '@andes/core';
 import { Charts } from './charts.schema';
 import { authenticate } from '../application';
 const crypto = require('crypto');

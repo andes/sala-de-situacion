@@ -3,7 +3,7 @@ import { environment } from './../environments/environment';
 import { Server } from '@andes/shared';
 import { Plex } from '@andes/plex';
 import { Location } from '@angular/common';
-import { AuthService } from './login/auth.services';
+import { AuthService } from './login/services/auth.services';
 
 @Component({
     selector: 'sala-de-situacion-root',
@@ -50,6 +50,9 @@ export class AppComponent implements OnInit {
         this.accessList.forEach(element => {
             this.menuList.push(element);
         });
+        if (!this.auth.checkPermisos('admin:true')) {
+            this.menuList.push({ label: 'Mi Perfil', icon: 'account-circle', route: '/auth/user-profile' });
+        }
         this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/auth/logout' });
         this.plex.updateMenu(this.menuList);
     }

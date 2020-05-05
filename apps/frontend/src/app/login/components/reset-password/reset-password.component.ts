@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { Plex } from '@andes/plex';
-import { AuthService } from '../../auth.services';
+import { AuthService } from '../../services/auth.services';
 import { PlexModalComponent } from '@andes/plex/src/lib/modal/modal.component';
 import { Utils } from './../../../shared/utils';
 
