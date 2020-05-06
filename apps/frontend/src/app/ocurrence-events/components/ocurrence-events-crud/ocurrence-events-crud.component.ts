@@ -15,6 +15,7 @@ import { SelectSearchService } from '../../../shared/select-search.service';
 export class OccurrenceEventsCrudComponent implements OnInit {
     public institutionSelected: any;
     public institutions = [];
+    public eventos = [];
     public eventSelected: Event;
     public tiposList;
     public eventDate: Date;
@@ -29,7 +30,7 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         private plex: Plex,
         private location: Location,
         private route: ActivatedRoute
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.institutionService.search({}).subscribe(rta => {
@@ -38,6 +39,10 @@ export class OccurrenceEventsCrudComponent implements OnInit {
                 this.institutionSelected = rta[0];
             }
         });
+        this.eventsService.search({}).subscribe(rta => {
+            this.eventos = rta;
+        });
+
         const ocurrenceEvent: OcurrenceEvent = this.route.snapshot.data.ocurrenceEvent;
         if (ocurrenceEvent) {
             this.show = true;
@@ -53,20 +58,12 @@ export class OccurrenceEventsCrudComponent implements OnInit {
                     this.indicadores[key.substring(3)] = {
                         id: this.indicadores[key],
                         nombre: this.indicadores[key.substring(3)]
-                    }
+                    };
                 }
             }
         }
     }
 
-    @Unsubscribe()
-    onEventSearch($event) {
-        if ($event.query) {
-            return this.eventsService.search({ search: '^' + $event.query }).subscribe($event.callback);
-        } else {
-            $event.callback([]);
-        }
-    }
     onSave($event) {
         if (!$event.formValid) {
             return;
@@ -77,7 +74,6 @@ export class OccurrenceEventsCrudComponent implements OnInit {
             if (indicador && indicador.type === 'select') {
                 indicadores[`id_${key}`] = this.indicadores[key].id;
                 indicadores[key] = this.indicadores[key].nombre;
-
             } else {
                 indicadores[key] = this.indicadores[key];
             }
@@ -100,5 +96,4 @@ export class OccurrenceEventsCrudComponent implements OnInit {
             this.location.back();
         });
     }
-
 }
