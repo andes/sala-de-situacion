@@ -25,7 +25,7 @@ class OcurrenceEventResource extends ResourceBase {
     };
     searchFileds = {
         nombre: MongoQuery.partialString,
-        key: MongoQuery.partialString,
+        eventKey: MongoQuery.partialString,
         institucion: MongoQuery.equalMatch,
         instituciones: {
             field: 'institucion.id',
