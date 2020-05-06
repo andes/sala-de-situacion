@@ -13,6 +13,14 @@ export interface MailOptions {
     html?: any;
 }
 
+export interface HandlebarsData {
+    titulo: string,
+    usuario: any,
+    url?: string,
+    tipo?: 'sugerencia' | 'pregunta' | 'problema'
+    contenido?: string,
+}
+
 export async function sendMail(options: MailOptions) {
     const mailOptions = {
         from: options.from,
@@ -36,14 +44,10 @@ export async function sendMail(options: MailOptions) {
     }
 }
 
-export async function sendEmailNotification(email: string, nombre: string, subject, text) {
-    const mail: MailOptions = {
-        from: environment.mail.auth.user,
-        to: email,
-        subject: subject,
-        text: text
-    };
-    return sendMail(mail);
+export function registerPartialTemplate(name: string) {
+    const filePath = path.join(process.cwd(), `apps/backend/src/app/templates/email/${name}.html`);
+    const file = fs.readFileSync(filePath);
+    handlebars.registerPartial('partial', file.toString());
 }
 
 export function renderHTML(templateName: string, extras: any) {
@@ -60,21 +64,50 @@ export function renderHTML(templateName: string, extras: any) {
     }
 }
 
-export async function sendEmailSuggestion(body) {
+// Emails a usuarios
+export async function sendUserEmail(data, tipo: 'account-activation' | 'password-reset' | 'user-suggestions') {
+    const handlebarsData: HandlebarsData = {
+        titulo: data.subject,
+        usuario: data.user,
+        url: data.url,
+    };
 
-    const handlebarsData = {
+    // Registra el template parcial de handlebars
+    registerPartialTemplate(tipo);
+
+    const html = await renderHTML('layout.html', handlebarsData);
+
+    const mail: MailOptions = {
+        from: `"Sala de Situación" <${environment.mail.auth.user}>`,
+        to: handlebarsData.usuario.email,
+        subject: handlebarsData.titulo,
+        html
+    };
+
+    return sendMail(mail);
+}
+
+
+// Emails de sistema
+export async function sendAdminEmail(body) {
+
+    const handlebarsData: HandlebarsData = {
+        titulo: 'Preguntas y sugerencias',
+        tipo: body.tipo,
         usuario: body.user,
         contenido: body.contenido,
-        tipo: body.tipo
     };
-    const html = await renderHTML('suggestions.html', handlebarsData);
+
+    // Registra el template parcial de handlebars
+    registerPartialTemplate('user-suggestions');
+
+    const html = await renderHTML('layout.html', handlebarsData);
     const mail: MailOptions = {
-        from: `"${handlebarsData.usuario.apellido}, ${handlebarsData.usuario.nombre}" <${handlebarsData.usuario.email}>`,
+        from: `"Sala de Situación" <${handlebarsData.usuario.email}>`,
         to: environment.mail.auth.user,
-        subject: 'Sala de situación ~ Preguntas y sugerencias',
+        subject: handlebarsData.titulo,
         html
     }
+
     return sendMail(mail);
 };
-
-

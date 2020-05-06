@@ -129,7 +129,7 @@
                                     width:100%;
                                     text-align:right;
                                     padding-top:12px;">
-                                Sala de Situación Neuquén - Preguntas y sugerencias</span>
+                                Sala de Situación Neuquén - {{titulo}}</span>
                         </td>
                     </tr>
                     <tr>
@@ -137,21 +137,9 @@
                             style="padding-left:24px;padding-right:24px;padding-top:12px;padding-bottom:12px;background-color:#ffffff">
                             <br>
 
-                            <div class="title"
-                                 style="font-family:Helvetica, Arial, sans-serif;font-size:18px;font-weight:600;color:#374550">
-                                Sala de Situación - Preguntas y sugerencias</div>
-                            <br>
-
                             <div class="body-text"
                                  style="font-family:Helvetica, Arial, sans-serif;font-size:14px;line-height:20px;text-align:left;color:#333333">
-                                {{#with usuario}}
-                                <b>Usuario:</b> {{ apellido}}, {{nombre}}
-                                <em>[{{ email }}]</em><br>
-                                {{/with}}
-                                {{#with tipo}}
-                                <b>{{nombre}}:</b> <!-- nombre: sugerencia | pregunta | problema -->
-                                {{/with}}<br>
-                                {{{contenido}}}<br>
+                                {{> partial}}
                                 <br><br>
                             </div>
 
