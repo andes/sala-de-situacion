@@ -4,6 +4,7 @@ import { Plex } from '@andes/plex';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../login/services/auth.services';
+import { OcurrenceEventsService } from '../../../ocurrence-events/services/ocurrence-events.service';
 
 @Component({
     selector: 'app-events-crud',
@@ -23,8 +24,9 @@ export class AppEventsCrudComponent implements OnInit {
         { id: 'localidad', nombre: 'Localidades' },
         { id: 'provincia', nombre: 'Provincias' },
     ];
-
+    public hasOcurrences = false;
     public event: Event = {
+        id: '',
         categoria: '',
         nombre: '',
         activo: true,
@@ -46,7 +48,8 @@ export class AppEventsCrudComponent implements OnInit {
         private location: Location,
         private route: ActivatedRoute,
         private auth: AuthService,
-        private router: Router
+        private router: Router,
+        private ocurrenceEventsService: OcurrenceEventsService
     ) { }
 
     ngOnInit() {
@@ -62,6 +65,9 @@ export class AppEventsCrudComponent implements OnInit {
                     indicador.recurso = this.selectList.find(t => t.id === indicador.recurso) as any;
                 }
             });
+            this.ocurrenceEventsService.search({ eventKey: event.categoria }).subscribe(response => {
+                this.hasOcurrences = response.length > 0;
+            })
         }
     }
 

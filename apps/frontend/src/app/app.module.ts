@@ -1,3 +1,4 @@
+import { OcurrenceEventsService } from './ocurrence-events/services/ocurrence-events.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -20,18 +21,18 @@ import { SelectSearchService } from './shared/select-search.service';
 import { AyudaComponent } from './home/ayuda.component';
 
 @NgModule({
-  declarations: [AppComponent, AppHomeComponent, AyudaComponent],
-  imports: [
-    BrowserModule,
-    PlexModule,
-    FormsModule,
-    HttpClientModule,
-    AppRouting,
-    NgxObserveModule,
-    InstitutionProvidersModule,
-    ChartModule
-  ],
-  providers: [Plex, Server, AuthService, RoutingNavBar, RoutingGuard, LocationService, SelectSearchService, UserService],
-  bootstrap: [AppComponent]
+    declarations: [AppComponent, AppHomeComponent, AyudaComponent],
+    imports: [
+        BrowserModule,
+        PlexModule,
+        FormsModule,
+        HttpClientModule,
+        AppRouting,
+        NgxObserveModule,
+        InstitutionProvidersModule,
+        ChartModule
+    ],
+    providers: [Plex, Server, AuthService, RoutingNavBar, RoutingGuard, LocationService, SelectSearchService, UserService, OcurrenceEventsService],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

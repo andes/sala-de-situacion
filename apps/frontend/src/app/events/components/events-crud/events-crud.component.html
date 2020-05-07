@@ -11,7 +11,8 @@
             </plex-title>
             <plex-wrapper>
                 <plex-text label="Nombre" [required]="true" name="nombre" [(ngModel)]="event.nombre"></plex-text>
-                <plex-text label="Categoría/Clave" [required]="true" name="categoria" [(ngModel)]="event.categoria">
+                <plex-text label="Categoría/Clave" required name="categoria" [(ngModel)]="event.categoria"
+                           [readonly]="hasOcurrences">
                 </plex-text>
                 <plex-bool label="Activo" type="slide" name="activo" [(ngModel)]="event.activo"></plex-bool>
             </plex-wrapper>
