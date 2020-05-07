@@ -1,42 +1,46 @@
 <plex-layout>
-  <plex-layout-main>
-    <plex-title titulo="Registrar nuevo evento ocurrido">
-      <plex-button size="sm" type="success" (click)="onSave($event)" [validateForm]="formulario">
-        GUARDAR
-      </plex-button>
-    </plex-title>
-    <form #formulario="ngForm">
-      <plex-wrapper>
-        <plex-select label="Institucion" grow="full" [(ngModel)]="institutionSelected" name="institution-selected"
-                     [data]="institutions" [readonly]="show"></plex-select>
-        <plex-datetime label="Fecha y hora" required [(ngModel)]="eventDate" name="event-date"></plex-datetime>
-        <plex-select label="Evento" required [(ngModel)]="eventSelected" name="event-selected"
-                     [data]="eventos" [readonly]="show"></plex-select>
-      </plex-wrapper>
-      <plex-title titulo="Indicadores"></plex-title>
+    <plex-layout-main>
+        <plex-title titulo="Registrar nuevo evento ocurrido">
+            <plex-button size="sm" type="success" (click)="onSave($event)" [validateForm]="formulario">
+                GUARDAR
+            </plex-button>
+        </plex-title>
+        <form #formulario="ngForm">
+            <plex-wrapper>
+                <plex-select label="Institucion" grow="full" [(ngModel)]="institutionSelected"
+                             name="institution-selected" [data]="institutions" [readonly]="show"
+                             (change)="loadMinDate()"></plex-select>
+                <plex-datetime label="Fecha y hora" required [(ngModel)]="eventDate" name="event-date" [min]="minDate">
+                </plex-datetime>
+                <plex-select label="Evento" required [(ngModel)]="eventSelected" name="event-selected" [data]="events"
+                             [readonly]="show" (change)="loadMinDate()"></plex-select>
+            </plex-wrapper>
+            <plex-title titulo="Indicadores"></plex-title>
 
-      <ng-container *ngIf="eventSelected; else noEventSelected">
-        <plex-wrapper>
-          <ng-container *ngFor="let indicador of eventSelected.indicadores" [ngSwitch]="indicador.type">
-            <plex-text *ngSwitchCase="'string'" [label]="indicador.label" grow="full" name="{{ indicador.key }}"
-                       [(ngModel)]="indicadores[indicador.key]" [required]="indicador.required">
-            </plex-text>
+            <ng-container *ngIf="eventSelected; else noEventSelected">
+                <plex-wrapper>
+                    <ng-container *ngFor="let indicador of eventSelected.indicadores" [ngSwitch]="indicador.type">
+                        <plex-text *ngSwitchCase="'string'" [label]="indicador.label" grow="full"
+                                   name="{{ indicador.key }}" [(ngModel)]="indicadores[indicador.key]"
+                                   [required]="indicador.required">
+                        </plex-text>
 
-            <plex-int *ngSwitchCase="'int'" [label]="indicador.label" grow="full" name="{{ indicador.key }}"
-                      [(ngModel)]="indicadores[indicador.key]" [required]="indicador.required" [min]="indicador.min"
-                      [max]="indicador.max">
-            </plex-int>
+                        <plex-int *ngSwitchCase="'int'" [label]="indicador.label" grow="full" name="{{ indicador.key }}"
+                                  [(ngModel)]="indicadores[indicador.key]" [required]="indicador.required"
+                                  [min]="indicador.min" [max]="indicador.max">
+                        </plex-int>
 
-            <plex-select *ngSwitchCase="'select'" [label]="indicador.label" grow="full" name="{{ indicador.key }}"
-                         [(ngModel)]="indicadores[indicador.key]" [required]="indicador.required"
-                         [ssSearch]="indicador.recurso" [preload]="indicador.preload"></plex-select>
+                        <plex-select *ngSwitchCase="'select'" [label]="indicador.label" grow="full"
+                                     name="{{ indicador.key }}" [(ngModel)]="indicadores[indicador.key]"
+                                     [required]="indicador.required" [ssSearch]="indicador.recurso"
+                                     [preload]="indicador.preload"></plex-select>
 
-          </ng-container>
-        </plex-wrapper>
-      </ng-container>
-      <ng-template #noEventSelected>
-        <h5>Seleccione un tipo tipo de evento para poder ver sus indicadores</h5>
-      </ng-template>
-    </form>
-  </plex-layout-main>
+                    </ng-container>
+                </plex-wrapper>
+            </ng-container>
+            <ng-template #noEventSelected>
+                <h5>Seleccione un tipo tipo de evento para poder ver sus indicadores</h5>
+            </ng-template>
+        </form>
+    </plex-layout-main>
 </plex-layout>
