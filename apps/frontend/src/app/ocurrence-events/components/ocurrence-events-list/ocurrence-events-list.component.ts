@@ -16,6 +16,7 @@ export class OcurrenceEventsListComponent implements OnInit {
     indicadores = {};
     events = [];
     arrayInstituciones = [];
+    arrayPorEvento = [];
     // Filtros
     public fechaDesde;
     public fechaHasta;
@@ -23,6 +24,8 @@ export class OcurrenceEventsListComponent implements OnInit {
     public labelsIndicadores = [];
     public subfiltros = [];
     public eventos = [];
+    public eventosLabels = [];
+
     public selectedInstitution;
     public selectedSubfiltros = [];
     public selectedEvent;
@@ -31,7 +34,7 @@ export class OcurrenceEventsListComponent implements OnInit {
         private ocurrenceEventsService: OcurrenceEventsService,
         private eventService: EventsService,
         private institutionService: InstitutionService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.ocurrenceEvents$ = this.ocurrenceEventsService.search().pipe(cache());
@@ -43,14 +46,13 @@ export class OcurrenceEventsListComponent implements OnInit {
         });
         this.eventService.search({}).subscribe(rta => {
             this.eventos = rta;
+            this.eventos.map(x => (this.eventosLabels[x.categoria] = { label: x.nombre }));
             this.events = rta.map(r => {
                 this.indicadores[r.categoria] = {
                     subfiltros: r.indicadores.filter(v => v.subfiltro).map(x => x.key),
                     evento: r
                 };
-                r.indicadores.map(x =>
-                    this.labelsIndicadores[x.key] = { label: x.label }
-                )
+                r.indicadores.map(x => (this.labelsIndicadores[x.key] = { label: x.label }));
             });
             this.filtrarResultados();
         });
@@ -58,6 +60,7 @@ export class OcurrenceEventsListComponent implements OnInit {
 
     filtrarResultados() {
         this.arrayInstituciones = [];
+        this.arrayPorEvento = [];
         this.ocurrenceEvents$.subscribe(ocurrenceEvents => {
             if (this.fechaDesde) {
                 ocurrenceEvents = ocurrenceEvents.filter(
@@ -83,12 +86,16 @@ export class OcurrenceEventsListComponent implements OnInit {
             if (this.selectedEvent) {
                 ocurrenceEvents = ocurrenceEvents.filter(e => e.eventKey === this.selectedEvent.categoria);
                 this.subfiltros = [];
-                this.selectedEvent.indicadores.filter(e => e.subfiltro).map(r => {
-                    this.subfiltros.push({
-                        key: r.key,
-                        values: ocurrenceEvents.filter(e => e.indicadores[r.key]).map(x => ({ id: x.indicadores[r.key], nombre: x.indicadores[r.key] }))
+                this.selectedEvent.indicadores
+                    .filter(e => e.subfiltro)
+                    .map(r => {
+                        this.subfiltros.push({
+                            key: r.key,
+                            values: ocurrenceEvents
+                                .filter(e => e.indicadores[r.key])
+                                .map(x => ({ id: x.indicadores[r.key], nombre: x.indicadores[r.key] }))
+                        });
                     });
-                });
                 this.indicadores[this.selectedEvent.categoria].subfiltros.forEach(subfiltro => {
                     if (this.selectedSubfiltros[subfiltro]) {
                         let value = this.selectedSubfiltros[subfiltro];
@@ -104,8 +111,17 @@ export class OcurrenceEventsListComponent implements OnInit {
                     groupBy(occurrence => occurrence.institucion.id),
                     mergeMap(group => group.pipe(toArray()))
                 )
-                .subscribe(arrayEventos => {
-                    this.arrayInstituciones.push(arrayEventos);
+                .subscribe(ocurrences => {
+                    this.arrayPorEvento = [];
+                    from(ocurrences)
+                        .pipe(
+                            groupBy(occurrence => occurrence.eventKey),
+                            mergeMap(group => group.pipe(toArray()))
+                        )
+                        .subscribe(ev => {
+                            this.arrayPorEvento.push(ev);
+                        });
+                    this.arrayInstituciones.push(this.arrayPorEvento);
                 });
         });
     }

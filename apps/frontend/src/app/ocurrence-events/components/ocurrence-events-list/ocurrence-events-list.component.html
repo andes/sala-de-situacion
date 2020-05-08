@@ -37,52 +37,56 @@
         <br>
         <div *ngxObserve="ocurrenceEvents$ as ocurrenceEvents; before: loadingTemplate; error: errorTemplate">
             <plex-accordion>
-                <plex-panel class="hover" icon="chevron-double-down" *ngFor=" let institucion of arrayInstituciones"
-                            tituloPrincipal="{{institucion[0].institucion.nombre}}">
+                <plex-panel class="hover" icon="chevron-double-down" *ngFor="let institucion of arrayInstituciones"
+                            tituloPrincipal="{{institucion[0][0].institucion.nombre}}">
                     <plex-accordion>
-                        <ng-container *ngFor="let inst of institucion">
-                            <ng-container *ngIf="indicadores[inst.eventKey] && indicadores[inst.eventKey].subfiltros">
-                                <plex-panel class="hover"
-                                            *ngFor="let subfiltro of indicadores[inst.eventKey].subfiltros"
-                                            tituloPrincipal="{{ inst.indicadores[subfiltro] }}">
-                                    <plex-title size="sm"
-                                                titulo="{{indicadores[inst.eventKey].evento.nombre}}: {{ inst.fecha | date: 'dd/MM/yyyy  HH:mm' }}">
-                                        <plex-button size="sm" icon="pencil" type="info" [routerLink]="[inst.id]">
-                                        </plex-button>
-                                    </plex-title>
-                                    <ng-container *ngFor="let item of inst.indicadores | keyvalue">
-                                        <plex-detail size="sm"
-                                                     *ngIf="item.value !== inst.indicadores[subfiltro] && !item.key.startsWith('id_')">
-                                            <div title
-                                                 [innerHTML]="(labelsIndicadores[item.key])? labelsIndicadores[item.key].label : item.key">
-                                            </div>
-                                            <div subtitle>{{ item.value }}</div>
-                                        </plex-detail>
+                        <plex-panel class="hover" icon="chevron-double-down" *ngFor=" let evento of institucion"
+                                    tituloPrincipal="{{eventosLabels[evento[0].eventKey].label}}">
+                            <plex-accordion>
+                                <ng-container *ngFor="let unEvento of evento">
+                                    <ng-container *ngIf="indicadores[unEvento.eventKey] && indicadores[unEvento.eventKey].subfiltros">
+                                        <plex-panel class="hover"
+                                                    *ngFor="let subfiltro of indicadores[unEvento.eventKey].subfiltros"
+                                                    tituloPrincipal="{{ unEvento.indicadores[subfiltro] }}">
+                                            <plex-title size="sm"
+                                                        titulo="{{indicadores[unEvento.eventKey].evento.nombre}}: {{ unEvento.fecha | date: 'dd/MM/yyyy  HH:mm' }}">
+                                                <plex-button size="sm" icon="pencil" type="info" [routerLink]="[unEvento.id]">
+                                                </plex-button>
+                                            </plex-title>
+                                            <ng-container *ngFor="let item of unEvento.indicadores | keyvalue">
+                                                <plex-detail size="sm"
+                                                             *ngIf="item.value !== unEvento.indicadores[subfiltro] && !item.key.startsWith('id_')">
+                                                    <div title
+                                                         [innerHTML]="(labelsIndicadores[item.key])? labelsIndicadores[item.key].label : item.key">
+                                                    </div>
+                                                    <div subtitle>{{ item.value }}</div>
+                                                </plex-detail>
+                                            </ng-container>
+                                        </plex-panel>
                                     </ng-container>
-                                </plex-panel>
-                            </ng-container>
-                            <plex-panel *ngIf="indicadores[inst.eventKey] && indicadores[inst.eventKey].subfiltros.length === 0"
-                                        tituloPrincipal="{{indicadores[inst.eventKey].evento.nombre}}">
-                                <plex-title size="sm" titulo="{{ inst.fecha | date: 'dd/MM/yyyy  HH:mm' }}">
-                                    <plex-button size="sm" icon="pencil" type="info" [routerLink]="[inst.id]">
-                                    </plex-button>
-                                </plex-title>
-                                <ng-container *ngFor="let item of inst.indicadores | keyvalue">
-                                    <plex-detail size="sm" *ngIf="!item.key.startsWith('id_')">
-                                        <div title
-                                             [innerHTML]="(labelsIndicadores[item.key])? labelsIndicadores[item.key].label : item.key">
-                                        </div>
-                                        <div subtitle>{{ item.value }}</div>
-                                    </plex-detail>
+                                    <plex-panel *ngIf="indicadores[unEvento.eventKey] && indicadores[unEvento.eventKey].subfiltros.length === 0"
+                                                tituloPrincipal="{{indicadores[unEvento.eventKey].evento.nombre}}">
+                                        <plex-title size="sm" titulo="{{ unEvento.fecha | date: 'dd/MM/yyyy  HH:mm' }}">
+                                            <plex-button size="sm" icon="pencil" type="info" [routerLink]="[unEvento.id]">
+                                            </plex-button>
+                                        </plex-title>
+                                        <ng-container *ngFor="let item of unEvento.indicadores | keyvalue">
+                                            <plex-detail size="sm" *ngIf="!item.key.startsWith('id_')">
+                                                <div title
+                                                     [innerHTML]="(labelsIndicadores[item.key])? labelsIndicadores[item.key].label : item.key">
+                                                </div>
+                                                <div subtitle>{{ item.value }}</div>
+                                            </plex-detail>
+                                        </ng-container>
+                                    </plex-panel>
                                 </ng-container>
-                            </plex-panel>
-                        </ng-container>
+                            </plex-accordion>
+                        </plex-panel>
                     </plex-accordion>
                 </plex-panel>
             </plex-accordion>
-
         </div>
-
+   
         <ng-template #loadingTemplate>
             <p>Loading ...</p>
         </ng-template>
