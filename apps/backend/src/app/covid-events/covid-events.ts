@@ -46,7 +46,7 @@ async function importCasesPerPage(token, page: string) {
     };
     const params = new URLSearchParams({
         offset: page,
-        fullview: 'true'
+        fullView: 'true'
     });
     try {
         const response = await fetch(url + params, {
@@ -61,23 +61,20 @@ async function importCasesPerPage(token, page: string) {
     }
 }
 
-async function saveCases(casos) {
+function saveCases(casos) {
     try {
-        const lista = [];
-        casos.forEach((caso: any) => {
+        casos.forEach(async (caso: any) => {
             if (caso.ideventocaso) {
                 caso.min_FTM = transformDate(caso.min_FTM);
                 caso.fecha_APERTURA = transformDate(caso.fecha_APERTURA);
                 caso.fecha_INTERNACION = transformDate(caso.fecha_INTERNACION);
                 caso.fecha_CUI_INTENSIVOS = transformDate(caso.fecha_CUI_INTENSIVOS);
                 caso.fecha_ALTA_MEDICA = transformDate(caso.fecha_ALTA_MEDICA);
-                let casoReportado = CovidEvents.findOne({ ideventocaso: caso.ideventocaso });
-                casoReportado = caso;
-                caso = new CovidEvents(casoReportado);
-                lista.push(caso.save());
+                caso.fecha_MOD_EVENTO = transformDate(caso.fecha_MOD_EVENTO);
+                caso.fecha_MOD_DIAG = transformDate(caso.fecha_MOD_DIAG);
+                await CovidEvents.update({ ideventocaso: caso.ideventocaso }, caso, { upsert: true });
             }
         });
-        await Promise.all(lista);
     } catch (err) {
         return err;
     }
@@ -95,7 +92,7 @@ export async function importCasesCovid(done) {
         try {
             const casos = await importCasesPerPage(token, page.toString());
             if (casos.length > 0) {
-                await saveCases(casos);
+                saveCases(casos);
                 page++;
             } else {
                 if (casos.status === 401) {
