@@ -38,6 +38,32 @@
                 </div>
             </div>
             <hr>
+            <plex-title size="sm" titulo="Instituciones relacionadas">
+                <plex-button type="success" icon="plus" size="sm" (click)="addRelatedToInstitution()"
+                             [disabled]="!selectedInstitution?._id">
+                </plex-button>
+            </plex-title>
+            <div class="row mt-3" justify>
+                <div class="col-md-12 col-sm-12">
+                    <plex-select placeholder="Seleccionar institución..." [(ngModel)]="selectedInstitution"
+                                 labelField="nombre" [data]="instituciones" [ngModelOptions]="{standalone: true}">
+                    </plex-select>
+                </div>
+            </div>
+            <div class="row mt-3" justify>
+                <div class="col-12 col-md-12">
+                    <plex-list>
+                        <plex-item *ngFor="let related of institution.institutions">
+                            <plex-label titulo="{{ related.nombre }}" size="sm">
+                            </plex-label>
+                            <plex-button type="danger" icon="minus" size="sm"
+                                         (click)="deleteRelatedFromInstitution(related)">
+                            </plex-button>
+                        </plex-item>
+                    </plex-list>
+                </div>
+            </div>
+            <hr>
             <plex-title size="sm" titulo="Referente"></plex-title>
             <div class="row">
                 <div class="col-md-4 col-sm-12">

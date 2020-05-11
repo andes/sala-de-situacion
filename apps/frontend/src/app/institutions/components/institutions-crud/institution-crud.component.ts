@@ -38,6 +38,7 @@ export class AppInstitutionCrudComponent implements OnInit {
             telefono: ''
         },
         activo: false,
+        institutions: [],
         users: []
     };
     neuquen = true;
@@ -47,8 +48,10 @@ export class AppInstitutionCrudComponent implements OnInit {
     institutionParam = null;
     geoReferenciaAux = []; // Coordenadas para la vista del mapa.
     infoMarcador: String = null;
+    public instituciones = [];
     public isAdmin;
     public disableGuardar = false;
+    public selectedInstitution: any = {};
 
     constructor(
         public route: ActivatedRoute, // Permite obtener objetos o datos por parámetro.
@@ -82,6 +85,7 @@ export class AppInstitutionCrudComponent implements OnInit {
         this.locationService.getProvincias({}).subscribe(rta => {
             this.provincias = rta;
         });
+        this.loadInstituciones();
     }
 
     loadInstitution(institucion) {
@@ -93,6 +97,7 @@ export class AppInstitutionCrudComponent implements OnInit {
         this.institution.referente.nombre = institucion.referente ? institucion.referente.nombre : '';
         this.institution.referente.apellido = institucion.referente ? institucion.referente.apellido : '';
         this.institution.referente.telefono = institucion.referente ? institucion.referente.telefono : '';
+        this.institution.institutions = institucion.institutions;
         this.institution.users = institucion.users;
         this.institution.location.direccion = institucion.direccion ? institucion.direccion : '';
         this.institution.location.barrio = institucion.barrio
@@ -144,6 +149,12 @@ export class AppInstitutionCrudComponent implements OnInit {
         }
     }
 
+    loadInstituciones() {
+        this.institutionService.search({}).subscribe(resultado => {
+            this.instituciones = this.institution.id ? resultado.filter(item => item.id != this.institution.id) : resultado;
+        });
+    }
+
     guardar($event) {
         if ($event.formValid) {
             try {
@@ -160,6 +171,7 @@ export class AppInstitutionCrudComponent implements OnInit {
                         apellido: this.institution.referente.apellido,
                         telefono: this.institution.referente.telefono
                     },
+                    institutions: this.institution.institutions,
                     direccion: this.institution.location.direccion,
                     barrio: this.institution.location.barrio.nombre ? this.institution.location.barrio.nombre : '',
                     localidad: this.institution.location.localidad.nombre,
@@ -217,6 +229,21 @@ export class AppInstitutionCrudComponent implements OnInit {
     changeCoordenadas(coordenadas) {
         this.geoReferenciaAux = coordenadas;    // Se actualiza vista del mapa
         this.institution.location.coordenadas = coordenadas;    // Se asigna nueva georeferencia al paciente
+    }
+
+    addRelatedToInstitution() {
+        let existeRelacionado = this.institution.institutions.filter(item => item.id === this.selectedInstitution.id).length > 0;
+        if (existeRelacionado) {
+            this.plex.toast('danger', `La institución ya poseé la relación.`);
+        } else {
+            this.institution.institutions.push(this.selectedInstitution);
+            this.selectedInstitution = {};
+        }
+    }
+
+    deleteRelatedFromInstitution(related) {
+        var index = this.institution.institutions.indexOf(related);
+        this.institution.institutions.splice(index, 1);
     }
 
 }
