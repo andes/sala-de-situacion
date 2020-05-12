@@ -1,8 +1,8 @@
 import { application } from '../application';
 import { UsersCtr } from '../users/user.controller';
 import { Request } from '@andes/api-tool';
-import { sendEmailNotification } from '../services/mail/mail';
-import { sendEmailSuggestion } from '../services/mail/mail';
+import { sendUserEmail } from '../services/mail/mail';
+import { sendAdminEmail } from '../services/mail/mail';
 import { Types } from 'mongoose';
 import { environment } from '../../environments/environment';
 
@@ -33,10 +33,16 @@ AuthRouter.post('/auth/login', async (req: Request, res, next) => {
 
 AuthRouter.post('/auth/create', async (req: Request, res, next) => {
     try {
-        const user = req.body;
-        const createdUser = await UsersCtr.create(user, req);
-        const url = `${environment.app_host}/auth/activacion-cuenta/${createdUser.validationToken}`;
-        await sendEmailNotification(user.email, user.nombre, 'SALA DE SITUACIÓN :: Verificación de cuenta', `${user.nombre}, gracias por registrar tu cuenta. Para activarla haz click aquí ${url}`);
+
+        const createdUser = await UsersCtr.create(req.body, req);
+        const data = {
+            user: createdUser,
+            url: `${environment.app_host}/auth/activacion-cuenta/${createdUser.validationToken}`,
+            subject: 'Activación de cuenta'
+        }
+
+        await sendUserEmail(data, 'account-activation');
+
         return res.json({ status: 'ok' });
     } catch (err) {
         return next(403);
@@ -47,8 +53,15 @@ AuthRouter.post('/auth/regenerate/:email', async (req: Request, res, next) => {
     try {
         const email = req.params.email;
         const updatedUser = await UsersCtr.setNewToken(email, req);
-        const url = `${environment.app_host}/auth/regenerate-password/${updatedUser.validationToken}`;
-        await sendEmailNotification(email, updatedUser.nombre, 'SALA DE SITUACIÓN :: Regenerar contraseña', `Hola ${updatedUser.nombre}, para regenerar la contraseña de tu cuenta por favor hacer clic aquí: ${url}`);
+
+        const data = {
+            user: updatedUser,
+            url: `${environment.app_host}/auth/regenerate-password/${updatedUser.validationToken}`,
+            subject: 'Regenerar contraseña'
+        }
+
+        await sendUserEmail(data, 'password-reset');
+
         return res.json({ status: 'ok' });
     } catch (err) {
         return next(403);
@@ -57,7 +70,7 @@ AuthRouter.post('/auth/regenerate/:email', async (req: Request, res, next) => {
 
 AuthRouter.post('/auth/suggestions', application.authenticate(), async (req: Request, res, next) => {
     try {
-        await sendEmailSuggestion(req.body);
+        await sendAdminEmail(req.body);
         return res.json({ status: 'ok' });
     } catch (err) {
         return next(403);
