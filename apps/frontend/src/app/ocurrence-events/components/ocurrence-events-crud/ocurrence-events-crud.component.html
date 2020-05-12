@@ -9,11 +9,11 @@
             <plex-wrapper>
                 <plex-select label="Institucion" grow="full" [(ngModel)]="institutionSelected"
                              name="institution-selected" [data]="institutions" [readonly]="show"
-                             (change)="loadMinDate()"></plex-select>
+                             (change)="updateMinDate();loadEventos()"></plex-select>
                 <plex-datetime label="Fecha y hora" required [(ngModel)]="eventDate" name="event-date" [min]="minDate">
                 </plex-datetime>
                 <plex-select label="Evento" required [(ngModel)]="eventSelected" name="event-selected" [data]="events"
-                             [readonly]="show" (change)="loadMinDate()"></plex-select>
+                             [readonly]="show" (change)="updateMinDate()"></plex-select>
             </plex-wrapper>
             <plex-title titulo="Indicadores"></plex-title>
 
