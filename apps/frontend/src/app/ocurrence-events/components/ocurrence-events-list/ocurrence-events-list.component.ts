@@ -6,6 +6,7 @@ import { cache } from '@andes/shared';
 import { EventsService } from '../../../events/service/events.service';
 import { groupBy, mergeMap, toArray } from 'rxjs/operators';
 import * as moment from 'moment';
+import { AuthService } from '../../../login/services/auth.services';
 
 @Component({
     selector: 'ocurrence-events-list',
@@ -33,7 +34,8 @@ export class OcurrenceEventsListComponent implements OnInit {
     constructor(
         private ocurrenceEventsService: OcurrenceEventsService,
         private eventService: EventsService,
-        private institutionService: InstitutionService
+        private institutionService: InstitutionService,
+        private auth: AuthService
     ) {}
 
     ngOnInit() {
@@ -56,6 +58,15 @@ export class OcurrenceEventsListComponent implements OnInit {
             });
             this.filtrarResultados();
         });
+    }
+
+    tienePermiso(institution, event) {
+        if (!this.auth.checkPermisos('admin:true')) {
+            let eventosInstitucion = this.institutions.filter(institucion => institucion.id === institution.id)[0].events.map(event => event.id);
+            return eventosInstitucion.includes(event.id);
+        } else {
+            return true;
+        }
     }
 
     filtrarResultados() {
@@ -106,6 +117,9 @@ export class OcurrenceEventsListComponent implements OnInit {
                 this.subfiltros = [];
                 this.selectedSubfiltros = [];
             }
+            ocurrenceEvents.forEach(event => {
+                event['canEdit'] = this.tienePermiso(event.institucion, this.indicadores[event.eventKey].evento);
+            });
             from(ocurrenceEvents)
                 .pipe(
                     groupBy(occurrence => occurrence.institucion.id),
