@@ -33,8 +33,7 @@ class ChartsResource extends ResourceBase {
             const urls = [];
             charts.forEach((chart: any) => {
                 const timestamp = Math.floor(Date.now() / 1000);
-                const expiry = 300
-                let payload = `id=${chart.chart_id}&tenant=${chart.tenant}&timestamp=${timestamp}&expires-in=${expiry}`;
+                let payload = `id=${chart.chart_id}&tenant=${chart.tenant}&timestamp=${timestamp}`;
                 if (chart.filter && filtros) {
                     const query = {};
                     const op = {};
