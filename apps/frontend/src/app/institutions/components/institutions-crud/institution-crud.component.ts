@@ -37,6 +37,11 @@ export class AppInstitutionCrudComponent implements OnInit {
             apellido: '',
             telefono: ''
         },
+        representante: {
+            nombre: '',
+            apellido: '',
+            telefono: ''
+        },
         activo: false,
         institutions: [],
         users: []
@@ -97,6 +102,9 @@ export class AppInstitutionCrudComponent implements OnInit {
         this.institution.referente.nombre = institucion.referente ? institucion.referente.nombre : '';
         this.institution.referente.apellido = institucion.referente ? institucion.referente.apellido : '';
         this.institution.referente.telefono = institucion.referente ? institucion.referente.telefono : '';
+        this.institution.representante.nombre = institucion.representante ? institucion.representante.nombre : '';
+        this.institution.representante.apellido = institucion.representante ? institucion.representante.apellido : '';
+        this.institution.representante.telefono = institucion.representante ? institucion.representante.telefono : '';
         this.institution.institutions = institucion.institutions;
         this.institution.users = institucion.users;
         this.institution.location.direccion = institucion.direccion ? institucion.direccion : '';
@@ -170,6 +178,11 @@ export class AppInstitutionCrudComponent implements OnInit {
                         nombre: this.institution.referente.nombre,
                         apellido: this.institution.referente.apellido,
                         telefono: this.institution.referente.telefono
+                    },
+                    representante: {
+                        nombre: this.institution.representante.nombre,
+                        apellido: this.institution.representante.apellido,
+                        telefono: this.institution.representante.telefono
                     },
                     institutions: this.institution.institutions,
                     direccion: this.institution.location.direccion,

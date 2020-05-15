@@ -64,6 +64,26 @@
                 </div>
             </div>
             <hr>
+            <plex-title size="sm" titulo="Representante/Director"></plex-title>
+            <div class="row">
+                <div class="col-md-4 col-sm-12">
+                    <plex-text label="Nombre" [(ngModel)]="institution.representante.nombre" name="nombreRepresentante"
+                               [required]="false">
+                    </plex-text>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <plex-text label="Apellido" [(ngModel)]="institution.representante.apellido"
+                               name="apellidoRepresentante" [required]="false">
+                    </plex-text>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <!-- reemplazar por plex-phone -->
+                    <plex-phone label="Teléfono" [(ngModel)]="institution.representante.telefono"
+                                name="telefonoRepresentante" [required]="false" placeholder="Ej: 2990000000">
+                    </plex-phone>
+                </div>
+            </div>
+            <hr>
             <plex-title size="sm" titulo="Referente"></plex-title>
             <div class="row">
                 <div class="col-md-4 col-sm-12">
