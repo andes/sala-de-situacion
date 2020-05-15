@@ -25,6 +25,12 @@ export const InstitutionsSchema = new mongoose.Schema({
         apellido: String,
         telefono: String
     },
+    institutions: [
+        {
+            id: String,
+            nombre: String
+        }
+    ],
     users: [
         {
             id: String,
