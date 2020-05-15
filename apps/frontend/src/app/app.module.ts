@@ -1,3 +1,4 @@
+import { DisclaimerService } from './login/services/disclaimer.services';
 import { OcurrenceEventsService } from './ocurrence-events/services/ocurrence-events.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -32,7 +33,7 @@ import { AyudaComponent } from './home/ayuda.component';
         InstitutionProvidersModule,
         ChartModule
     ],
-    providers: [Plex, Server, AuthService, RoutingNavBar, RoutingGuard, LocationService, SelectSearchService, UserService, OcurrenceEventsService],
+    providers: [Plex, Server, AuthService, RoutingNavBar, RoutingGuard, LocationService, SelectSearchService, UserService, OcurrenceEventsService, DisclaimerService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -44,13 +44,15 @@
                                     tituloPrincipal="{{eventosLabels[evento[0].eventKey].label}}">
                             <plex-accordion>
                                 <ng-container *ngFor="let unEvento of evento">
-                                    <ng-container *ngIf="indicadores[unEvento.eventKey] && indicadores[unEvento.eventKey].subfiltros">
+                                    <ng-container
+                                                  *ngIf="indicadores[unEvento.eventKey] && indicadores[unEvento.eventKey].subfiltros">
                                         <plex-panel class="hover"
                                                     *ngFor="let subfiltro of indicadores[unEvento.eventKey].subfiltros"
                                                     tituloPrincipal="{{ unEvento.indicadores[subfiltro] }}">
                                             <plex-title size="sm"
                                                         titulo="{{indicadores[unEvento.eventKey].evento.nombre}}: {{ unEvento.fecha | date: 'dd/MM/yyyy  HH:mm' }}">
-                                                <plex-button size="sm" icon="pencil" type="info" [routerLink]="[unEvento.id]">
+                                                <plex-button size="sm" icon="pencil" type="info"
+                                                             [routerLink]="[unEvento.id]">
                                                 </plex-button>
                                             </plex-title>
                                             <ng-container *ngFor="let item of unEvento.indicadores | keyvalue">
@@ -67,7 +69,8 @@
                                     <plex-panel *ngIf="indicadores[unEvento.eventKey] && indicadores[unEvento.eventKey].subfiltros.length === 0"
                                                 tituloPrincipal="{{indicadores[unEvento.eventKey].evento.nombre}}">
                                         <plex-title size="sm" titulo="{{ unEvento.fecha | date: 'dd/MM/yyyy  HH:mm' }}">
-                                            <plex-button size="sm" icon="pencil" type="info" [routerLink]="[unEvento.id]">
+                                            <plex-button size="sm" icon="pencil" type="info"
+                                                         [routerLink]="[unEvento.id]">
                                             </plex-button>
                                         </plex-title>
                                         <ng-container *ngFor="let item of unEvento.indicadores | keyvalue">
@@ -86,7 +89,7 @@
                 </plex-panel>
             </plex-accordion>
         </div>
-   
+
         <ng-template #loadingTemplate>
             <p>Loading ...</p>
         </ng-template>
@@ -95,3 +98,6 @@
         </ng-template>
     </plex-layout-main>
 </plex-layout>
+
+<modal-disclaimer [show]="showModalDisclaimer">
+</modal-disclaimer>

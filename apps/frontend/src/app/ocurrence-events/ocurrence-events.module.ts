@@ -11,13 +11,15 @@ import { OccurrenceEventsCrudComponent } from './components/ocurrence-events-cru
 import { OcurrenceEventsListComponent } from './components/ocurrence-events-list/ocurrence-events-list.component';
 import { OcurrenceEventsResolver } from './resolver/ocurrence-events.resolver';
 import { SelectSearchDirective } from '../shared/directives/select-search.directive';
+import { ModalDisclaimerComponent } from '../login/components/disclaimer/modal-disclaimer.component';
 
 @NgModule({
     // prettier-ignore
     declarations: [
         OccurrenceEventsCrudComponent,
         OcurrenceEventsListComponent,
-        SelectSearchDirective
+        SelectSearchDirective,
+        ModalDisclaimerComponent
     ],
     // prettier-ignore
     imports: [

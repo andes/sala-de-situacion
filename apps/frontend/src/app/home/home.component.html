@@ -1,16 +1,17 @@
 <plex-layout>
-  <plex-layout-main>
-    <plex-title titulo="¡Bienvenido!">
-      <!-- Se muestra mensaje de bienvenida y ayuda en plex-help sólo cuando SI hay gráficos/datos -->
-      <plex-help *ngIf="!ayuda" icon="help" type="help" titulo="Ayuda para el usuario" subtitulo="Sala de Situación">
-        <ayuda></ayuda>
-      </plex-help>
-    </plex-title>
+    <plex-layout-main>
+        <plex-title titulo="¡Bienvenido!">
+            <!-- Se muestra mensaje de bienvenida y ayuda en plex-help sólo cuando SI hay gráficos/datos -->
+            <plex-help *ngIf="!ayuda" icon="help" type="help" titulo="Ayuda para el usuario"
+                       subtitulo="Sala de Situación">
+                <ayuda></ayuda>
+            </plex-help>
+        </plex-title>
 
-    <!-- Se muestra mensaje de bienvenida y ayuda en la página principal sólo si NO hay gráficos/datos -->
-    <ayuda *ngIf="ayuda"></ayuda>
+        <!-- Se muestra mensaje de bienvenida y ayuda en la página principal sólo si NO hay gráficos/datos -->
+        <ayuda *ngIf="ayuda"></ayuda>
 
-    <!-- Charts deshabilitados -->
-    <!-- <chart *ngIf="!ayuda"></chart> -->
-  </plex-layout-main>
+        <!-- Charts deshabilitados -->
+        <!-- <chart *ngIf="!ayuda"></chart> -->
+    </plex-layout-main>
 </plex-layout>
