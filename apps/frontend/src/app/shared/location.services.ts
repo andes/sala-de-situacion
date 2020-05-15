@@ -12,13 +12,15 @@ export class LocationService {
     private localidadURL = '/localidad'; // URL to web api
     private barrioURL = '/barrio'; // URL to web api
 
-    constructor(private server: Server) { }
+    constructor(private server: Server) {}
 
     getProvincias(params: any): Observable<any[]> {
         return this.server.get(this.provinciaURL, { params, showError: true });
     }
 
     getLocalidades(params: any): Observable<any[]> {
+        params.skip = 0;
+        params.limit = 500;
         return this.server.get(this.localidadURL, { params, showError: true });
     }
 
