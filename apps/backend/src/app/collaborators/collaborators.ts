@@ -1,13 +1,10 @@
-import { OcurrenceEvent } from './../ocurrence-events/ocurrence-events.schema';
 import { Collaborator } from './collaborator.schema';
-
 import { environment } from '../../environments/environment';
-import * as moment from 'moment';
 const fetch = require('node-fetch');
 
 
 export async function getToken(email, password) {
-    const url = `${environment.exportadorEndpoints}/auth/login`;
+    const url = `${environment.exportadorHost}/auth/login`;
     const headers = {
         "Content-Type": "application/json"
     }
@@ -23,95 +20,58 @@ export async function getToken(email, password) {
     return null;
 }
 
+async function generarReport(type, institution) {
+    const servicio = type === 'adult' ? 'UNIDAD DE TERAPIA INTENSIVA' : 'UNIDAD DE TERAPIA INTENSIVA PEDIATRICA';
+    const report = {};
+
+    const ocurrenciaDotacion = await this.OcurrenceEvent.find({ 'eventKey': 'camas_dotacion', 'institucion.id': institution, 'indicadores.servicio_dotacion': servicio }).sort([['date', -1]])[0];
+    const ocurrenciaEgresos = await this.OcurrenceEvent.find({ 'eventKey': 'egresos', 'institucion.id': institution, 'indicadores.servicio_egresos': servicio }).sort([['date', -1]]);[0]
+    const ocurrenciaOcupacion = await this.OcurrenceEvent.find({ 'eventKey': 'ocupacion_camas', 'institucion.id': institution, 'indicadores.servicio_ocupa': servicio }).sort([['date', -1]])[0];
+
+    if (ocurrenciaDotacion || ocurrenciaEgresos || ocurrenciaOcupacion) {
+        report[`respirators_allocated_${type}`] = 0;  // cantidad total de respiradores 
+        report[`respirators_available_${type}_count`] = 0;  // Cantidad de respiradores liberados desde la última carga
+        report[`respirators_unavailable_${type}_count`] = ocurrenciaOcupacion['indicadores.con_respirador'] || 0;  // Cantidad de respiradores ocupados
+        report[`uti_allocated_${type}`] = ocurrenciaDotacion['indicadores.total_dotacion'] || 0; // Dotación: Total de camas
+        report[`uti_allocated_${type}_gas`] = ocurrenciaDotacion['indicadores.total_c_oxigeno'] || 0; // Dotacion: total de camas con oxígenos en la UTI
+        report[`uti_discharged_${type}_count`] = ocurrenciaEgresos['indicadores.egresos_alta_medica'] || 0;  //Cantidad de egresos por alta médica desde la última carga  UTI
+        report[`uti_discharged_dead_${type}_count`] = ocurrenciaEgresos['indicadores.egresos_defuncion'] || 0; // Cantidad de Egresos por fallecimiento en la UTI
+        report[`uti_discharged_derivative_${type}_count`] = ocurrenciaEgresos['indicadores.egresos_derivados'] || 0; // Cantidad de Egresos derivados desde la UTI
+        report[`uti_gas_available_${type}_count`] = ocurrenciaOcupacion['indicadores.disponibles_c_oxigeno'] || 0; // Camas disponibles con oxígeno UTI
+        report[`uti_gas_unavailable_${type}_count`] = ocurrenciaOcupacion['indicadores.ocupadas_c_oxigeno'] || 0; // Camas ocupadas con oxígeno de UTI
+        report[`uti_hospitalized_${type}_count`] = (ocurrenciaOcupacion['indicadores.ocupadas_c_oxigeno'] || 0) + (ocurrenciaOcupacion['indicadores.ocupadas_s_oxigeno'] || 0);  // Cantidad de Internados total en el servicio
+        return report;
+    } else {
+        return null
+    }
+
+}
+
 export async function exportReports(done) {
-    const postReportUrl = `${environment.exportadorEndpoints}/api/v1/reports`;
+    const postReportUrl = `${environment.exportadorHost}/api/v1/reports?validation_type=`;
     const collaborators: any[] = await Collaborator.find({});
     for (const collaborator of collaborators) {
-        let token = await getToken(collaborator.email, collaborator.password);
-        let institution = collaborator.institution;
-        let report = {
-            "air_filter_machine": true,
-            "created": "string",
-            "defibrillators_adults": true,
-            "defibrillators_children": true,
-            "multi_monitor_adults": true,
-            "multi_monitor_children": true,
-            "other": "string",
-            "respirators_adults": true,
-            "respirators_allocated_adult": 0,
-            "respirators_allocated_children": 0,
-            "respirators_available_adult_count": 0,
-            "respirators_available_children_count": 0,
-            "respirators_children": true,
-            "respirators_unavailable_adult_count": 0,
-            "respirators_unavailable_children_count": 0,
-            "success_report_salesforce": true,
-            "uti_allocated_adult": 0,
-            "uti_allocated_adult_gas": 0,
-            "uti_allocated_children": 0,
-            "uti_allocated_children_gas": 0,
-            "uti_discharged_adult_count": 0,
-            "uti_discharged_children_count": 0,
-            "uti_discharged_dead_adult_count": 0,
-            "uti_discharged_dead_children_count": 0,
-            "uti_discharged_derivative_adult_count": 0,
-            "uti_discharged_derivative_children_count": 0,
-            "uti_gas_available_adult_count": 0,
-            "uti_gas_available_children_count": 0,
-            "uti_gas_unavailable_adult_count": 0,
-            "uti_gas_unavailable_children_count": 0,
-            "uti_hospitalized_adult_count": 0,
-            "uti_hospitalized_children_count": 0,
-            "uti_intensive": true,
-            "validation_type": "string",
-            "vol_inf_pumps": true
-        }
-        let ocurrenciaDotacion = await this.OcurrenceEvent.find({ 'eventKey': 'dotacion', 'institucion.id': institution }).sort([['date', -1]])[0];
-        let ocurrenciaInsumos = await this.OcurrenceEvent.find({ 'eventKey': 'insumos', 'institucion.id': institution }).sort([['date', -1]]);[0]
-        let ocurrenciaOcupacion = await this.OcurrenceEvent.find({ 'eventKey': 'ocupacion', 'institucion.id': institution }).sort([['date', -1]])[0];
-        //mapeo de indicadores de dotacion pediatria
-        report.respirators_allocated_children = 0;
-        report.uti_allocated_children = 0;
-        report.uti_allocated_children_gas = 0;
-        //mapeo de indicadores de ocupación pediatria
-        report.respirators_available_children_count = 0;
-        report.respirators_unavailable_children_count = 0;
-        report.uti_discharged_children_count = 0;
-        report.uti_discharged_dead_children_count = 0;
-        report.uti_discharged_derivative_children_count = 0;
-        report.uti_gas_available_children_count = 0;
-        report.uti_gas_unavailable_children_count = 0;
-        report.uti_hospitalized_children_count = 0;
-        //mapeo de indicadores de ocupación adultos
-        report.respirators_available_adult_count = 0;
-        report.respirators_unavailable_adult_count = 0;
-        report.uti_discharged_adult_count = 0;
-        report.uti_discharged_dead_adult_count = 0;
-        report.uti_discharged_derivative_adult_count = 0;
-        report.uti_gas_available_adult_count = 0;
-        report.uti_gas_unavailable_adult_count = 0;
-        report.uti_hospitalized_adult_count = 0;
-        //mapeo de indicadores de dotacion adultos
-        report.respirators_allocated_adult = 0;
-        report.uti_allocated_adult = 0;
-        report.uti_allocated_adult_gas = 0;
-        //mapeo de insumos pediatria
-        report.respirators_children = true;
-        report.defibrillators_children = true;
-        report.multi_monitor_children = true;
-        //mapeo de insumos adultos
-        report.defibrillators_adults = true;
-        report.respirators_adults = true;
-        report.multi_monitor_adults = true;
-        report.uti_intensive = true;
-        report.vol_inf_pumps = true;
-        report.air_filter_machine = true;
+        const token = await getToken(collaborator.email, collaborator.password);
+        const institution = collaborator.institution.id;
+        const reportAdult = generarReport('adult', institution);
         const headers = {
             'Authorization': `Bearer ${token}`,
             'Content-type': 'application/json',
             'Accept': 'application/json'
         };
-        const reportResponse = await fetch(postReportUrl, { method: 'POST', headers: headers, body: JSON.stringify(report) });
+        //Start guard
+        await fetch(`${environment.exportadorHost}/api/v1/guards`, { method: 'POST', headers: headers });
+
+        // Se envian los reportes
+        if (reportAdult) {
+            await fetch(`${postReportUrl}adults`, { method: 'POST', headers: headers, body: JSON.stringify(reportAdult) });
+        }
+        const reportChildren = generarReport('children', institution);
+        if (reportChildren) {
+            await fetch(`${postReportUrl}children`, { method: 'POST', headers: headers, body: JSON.stringify(reportChildren) });
+        }
+        //End guard
+        await fetch(`${environment.exportadorHost}/api/v1/guards`, { method: 'POST', headers: headers });
     }
     done();
 }

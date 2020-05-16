@@ -14,6 +14,7 @@ export const environment = {
       user: process.env.MAIL_USER || 'mail@mail.gob.ar',
       pass: process.env.MAIL_PASSWORD || 'somePass'
     }
-  }
+  },
+  exportadorHost: process.env.HOST_EXPORTADOR || ''
 
 };
