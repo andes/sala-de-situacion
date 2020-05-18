@@ -1,7 +1,8 @@
 import { Collaborator } from './collaborator.schema';
 import { environment } from '../../environments/environment';
 const fetch = require('node-fetch');
-
+import * as debug from 'debug';
+const log = debug('roboSender');
 
 export async function getToken(email, password) {
     const url = `${environment.exportadorHost}/auth/login`;
@@ -29,7 +30,7 @@ async function generarReport(type, institution) {
     const ocurrenciaOcupacion = await this.OcurrenceEvent.find({ 'eventKey': 'ocupacion_camas', 'institucion.id': institution, 'indicadores.servicio_ocupa': servicio }).sort([['date', -1]])[0];
 
     if (ocurrenciaDotacion || ocurrenciaEgresos || ocurrenciaOcupacion) {
-        report[`respirators_allocated_${type}`] = 0;  // cantidad total de respiradores 
+        report[`respirators_allocated_${type}`] = 0;  // cantidad total de respiradores
         report[`respirators_available_${type}_count`] = 0;  // Cantidad de respiradores liberados desde la última carga
         report[`respirators_unavailable_${type}_count`] = ocurrenciaOcupacion['indicadores.con_respirador'] || 0;  // Cantidad de respiradores ocupados
         report[`uti_allocated_${type}`] = ocurrenciaDotacion['indicadores.total_dotacion'] || 0; // Dotación: Total de camas
@@ -50,6 +51,7 @@ async function generarReport(type, institution) {
 export async function exportReports(done) {
     const postReportUrl = `${environment.exportadorHost}/api/v1/reports?validation_type=`;
     const collaborators: any[] = await Collaborator.find({});
+    log('Encuentro ', collaborators.length, 'colaboradores.');
     for (const collaborator of collaborators) {
         const token = await getToken(collaborator.email, collaborator.password);
         const institution = collaborator.institution.id;
