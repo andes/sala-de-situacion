@@ -19,7 +19,15 @@ export const UsersSchema = new mongoose.Schema({
     telefono: String,
     password: String,
     permisos: [String],
-    validationToken: String
+    validationToken: String,
+    disclaimers:
+        [{
+            createdAt: Date,
+            _id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'dislaimer'
+            }
+        }]
 });
 
 UsersSchema.pre('save', async function (this: any, next) {

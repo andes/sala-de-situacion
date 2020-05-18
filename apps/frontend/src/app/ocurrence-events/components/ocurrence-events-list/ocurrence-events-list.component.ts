@@ -6,6 +6,9 @@ import { cache } from '@andes/shared';
 import { EventsService } from '../../../events/service/events.service';
 import { groupBy, mergeMap, toArray } from 'rxjs/operators';
 import * as moment from 'moment';
+import { AuthService } from '../../../login/services/auth.services';
+import { DisclaimerService } from '../../../login/services/disclaimer.services';
+import { UserService } from '../../../login/services/user.services';
 
 @Component({
     selector: 'ocurrence-events-list',
@@ -25,7 +28,7 @@ export class OcurrenceEventsListComponent implements OnInit {
     public subfiltros = [];
     public eventos = [];
     public eventosLabels = [];
-
+    public showModalDisclaimer = false;
     public selectedInstitution;
     public selectedSubfiltros = [];
     public selectedEvent;
@@ -33,8 +36,11 @@ export class OcurrenceEventsListComponent implements OnInit {
     constructor(
         private ocurrenceEventsService: OcurrenceEventsService,
         private eventService: EventsService,
-        private institutionService: InstitutionService
-    ) {}
+        private institutionService: InstitutionService,
+        private auth: AuthService,
+        public disclaimerService: DisclaimerService,
+        public userService: UserService
+    ) { }
 
     ngOnInit() {
         this.ocurrenceEvents$ = this.ocurrenceEventsService.search().pipe(cache());
@@ -55,6 +61,22 @@ export class OcurrenceEventsListComponent implements OnInit {
                 r.indicadores.map(x => (this.labelsIndicadores[x.key] = { label: x.label }));
             });
             this.filtrarResultados();
+        });
+
+        this.consultarDisclaimers();
+    }
+
+    private consultarDisclaimers() {
+        this.disclaimerService.search({ activo: true }).subscribe(disclaimers => {
+            if (disclaimers && disclaimers.length > 0) {
+                let disclaimer = disclaimers[0];
+                this.userService.get(this.auth.user_id).subscribe(rta => {
+                    const user = rta;
+                    if (!user.disclaimers.some(item => item.id === disclaimer.id)) {
+                        this.showModalDisclaimer = true;
+                    }
+                });
+            }
         });
     }
 
