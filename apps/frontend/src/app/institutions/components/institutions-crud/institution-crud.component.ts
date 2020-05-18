@@ -270,4 +270,19 @@ export class AppInstitutionCrudComponent implements OnInit {
         var index = this.institution.events.indexOf(related);
         this.institution.events.splice(index, 1);
     }
+
+    addRelatedToInstitution() {
+        let existeRelacionado = this.institution.institutions.filter(item => item.id === this.selectedInstitution.id).length > 0;
+        if (existeRelacionado) {
+            this.plex.toast('danger', `La institución ya poseé la relación.`);
+        } else {
+            this.institution.institutions.push(this.selectedInstitution);
+            this.selectedInstitution = {};
+        }
+    }
+
+    deleteRelatedFromInstitution(related) {
+        var index = this.institution.institutions.indexOf(related);
+        this.institution.institutions.splice(index, 1);
+    }
 }
