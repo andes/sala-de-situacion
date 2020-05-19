@@ -87,7 +87,7 @@ class Scheduler {
                     const child: any = spawn('node', ['jobs/manual.js', job.action], { env: process.env });
 
                     child.on('close', (code, signal) => {
-                        log(`${job.action} finish`);
+                        log(`${job.action} ${code} ${signal} finish`);
                         _self.removeJob(job, child);
                     });
 
