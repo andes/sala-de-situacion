@@ -1,32 +1,37 @@
 import { environment } from '../../../src/environments/environment';
 import * as moment from 'moment';
 import { CovidEvents } from './covid-events.schema';
+import { covidEventsLog } from './logs/covid-events.log';
 const fetch = require('node-fetch');
 
 export async function getToken(user: string, pass: string) {
-    const url = `${environment.snvs.host}/auth/realms/sisa/protocol/openid-connect/token`;
-    const formData = new URLSearchParams();
-    formData.append('grant_type', 'password');
-    formData.append('client_id', 'snvs-token');
-    formData.append('username', user);
-    formData.append('password', pass);
-    const options = {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: formData.toString(),
-        json: true,
+    try {
+        const url = `${environment.snvs.host}/auth/realms/sisa/protocol/openid-connect/token`;
+        const formData = new URLSearchParams();
+        formData.append('grant_type', 'password');
+        formData.append('client_id', 'snvs-token');
+        formData.append('username', user);
+        formData.append('password', pass);
+        const options = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: formData.toString(),
+            json: true,
+        }
+        const response = await fetch(
+            url,
+            options
+        );
+        const responseJson = await response.json();
+        if (responseJson.access_token) {
+            return responseJson.access_token
+        }
+        return null;
+    } catch (err) {
+        covidEventsLog.error('getToken', user, err);
     }
-    const response = await fetch(
-        url,
-        options
-    );
-    const responseJson = await response.json();
-    if (responseJson.access_token) {
-        return responseJson.access_token
-    }
-    return null;
 }
 
 function transformDate(fecha: string) {
@@ -57,6 +62,7 @@ async function importCasesPerPage(token, page: string) {
         return body;
 
     } catch (err) {
+        covidEventsLog.error('importCasesPerPage', page, err);
         return [];
     }
 }
@@ -76,6 +82,7 @@ function saveCases(casos) {
             }
         });
     } catch (err) {
+        covidEventsLog.error('saveCases', casos, err);
         return err;
     }
 }

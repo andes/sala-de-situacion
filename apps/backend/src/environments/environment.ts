@@ -6,6 +6,16 @@ export const environment = {
     google_map_key: process.env.GOOGLE_KEY || 'unacalve',
     key: process.env.JWT_KEY || 'jpfg1oayB2p7iaTAh7s790GuSsgal/mEF7A8jpnqpQQ=',
     mongo_host: process.env.MONGO_HOST || 'mongodb://localhost:27017/sala-situacion',
+    logDatabase: {
+        log: {
+            host: process.env.MONGO_LOGS || 'mongodb://localhost:27017/andesLogs',
+            options: {
+                reconnectTries: Number.MAX_VALUE,
+                reconnectInterval: 1500,
+                useNewUrlParser: true
+            }
+        }
+    },
     mail: {
         host: process.env.MAIL_HOST || 'smtp.gmail.com',
         port: process.env.MAIL_PORT || 587,

@@ -12,7 +12,7 @@ function schemaDefaults(schema) {
 
 export class Connections {
     static main: mongoose.Connection;
-
+    static logs: mongoose.Connection;
     /**
      * Inicializa las conexiones a MongoDB
      *
@@ -34,6 +34,9 @@ export class Connections {
             );
         }
 
+        // LOGS
+        this.logs = mongoose.createConnection(environment.logDatabase.log.host, environment.logDatabase.log.options);
+
         // Conecta y configura conexiones
         // 1. PRINCIPAL
 
@@ -45,6 +48,7 @@ export class Connections {
 
         // Configura eventos
         this.configEvents('main', this.main);
+        this.configEvents('logs', this.logs);
     }
 
     private static configEvents(name: string, connection: mongoose.Connection) {
