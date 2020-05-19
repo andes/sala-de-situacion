@@ -23,7 +23,8 @@
         "update": "nx migrate latest",
         "workspace-schematic": "nx workspace-schematic",
         "dep-graph": "nx dep-graph",
-        "help": "nx help"
+        "help": "nx help",
+        "jobs": "npx tsc apps/backend/jobs/*.ts --outDir dist/apps/backend"
     },
     "private": true,
     "dependencies": {

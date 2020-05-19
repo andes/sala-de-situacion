@@ -19,7 +19,8 @@ export const environment = {
         host: process.env.HOST_SNVS || 'prueba',
         user: process.env.USER_SNVS || 'user',
         pass: process.env.PASS_SNVS || 'unapass'
-    }
+    },
+    exportadorHost: process.env.HOST_EXPORTADOR || ''
 };
 
 export const jobs = [
