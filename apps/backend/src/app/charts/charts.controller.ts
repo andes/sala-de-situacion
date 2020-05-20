@@ -47,7 +47,7 @@ class ChartsResource extends ResourceBase {
                 const hmac = crypto.createHmac('sha256', chart.embedding_signing_key);
                 hmac.update(payload);
                 const signature = hmac.digest('hex');
-                urls.push(`${chart.base_url}/embed/charts?${payload}&signature=${signature}`);
+                urls.push({ url: `${chart.base_url}/embed/charts?${payload}&signature=${signature}`, cols: chart.cols });
             })
             return res.json(urls);
 

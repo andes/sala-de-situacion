@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose';
 export const ChartsSchema = new mongoose.Schema({
     chart_id: String,
     nombre: String,
+    cols: String,
     base_url: String,
     tenant: String,
     permisos: [String],
