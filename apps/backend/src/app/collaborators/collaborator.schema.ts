@@ -5,12 +5,13 @@ export const CollaboratorSchema = new mongoose.Schema({
     email: String,
     password: String,
     user: String,  // idColaboradorNación
-    institucion: {
+    institution: {
         _id: false,
         id: mongoose.SchemaTypes.ObjectId,
         nombre: String
     },
-    codigoNacion: Number // IdInstitucion Nación
+    codigoNacion: Number, // IdInstitucion Nación
+    activo: Boolean
 });
 
 

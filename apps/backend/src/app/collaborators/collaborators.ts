@@ -79,7 +79,7 @@ export async function exportReports(done) {
     for (const collaborator of collaborators) {
         const token = await getToken(collaborator.email, collaborator.password);
         if (token) {
-            const institution = collaborator.institucion.id;
+            const institution = collaborator.institution.id;
             let servicio_uti = await Servicio.find({ nombre: 'UNIDAD DE TERAPIA INTENSIVA' });
             const reportAdult = await generarReport('adult', institution, servicio_uti[0]);
             console.log('Reporte', reportAdult);
@@ -97,7 +97,7 @@ export async function exportReports(done) {
                 const reporteNacionAdult = {
                     fecha: new Date(),
                     type: 'adults',
-                    institucion: collaborator.institucion,
+                    institucion: collaborator.institution,
                     servicio: servicio_uti,
                     report: reportAdult
                 };
@@ -112,7 +112,7 @@ export async function exportReports(done) {
                 const reporteNacionChildren = {
                     fecha: new Date(),
                     type: 'children',
-                    institucion: collaborator.institucion,
+                    institucion: collaborator.institution,
                     servicio: servicio_uti,
                     report: reportChildren
                 };
