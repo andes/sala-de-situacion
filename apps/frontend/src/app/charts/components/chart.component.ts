@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartsService } from '../service/charts.service';
-import { Observable, of, combineLatest } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { InstitutionService } from '../../institutions/service/institution.service';
 import { AuthService } from '../../login/services/auth.services';
 import { map, switchMap } from 'rxjs/operators';
@@ -16,6 +16,13 @@ export class AppChartComponent implements OnInit {
     public instituciones$: Observable<any>;
     private admin: Boolean;
     public institucionesNombres$: Observable<any>;
+    charts: any;
+    chart: any;
+    baseURL: any;
+    public institutions = [];
+    public selectedInstitutions = [];
+    public urls = [];
+    public title = "";
 
     constructor(
         private chartService: ChartsService,
@@ -26,14 +33,27 @@ export class AppChartComponent implements OnInit {
     ngOnInit() {
         this.admin = this.auth.checkPermisos('admin:true');
         if (this.admin) {
-            this.instituciones$ = of(null);
+            this.instituciones$ = this.institutionService
+                .search({})
+                .pipe(cache());
         } else {
             this.instituciones$ = this.institutionService
                 .search({ user: this.auth.user_id, fields: '-permisos' })
                 .pipe(cache());
         }
+        this.instituciones$.subscribe(rtaInstitutions => {
+            this.institutions = rtaInstitutions;
+        });
+        this.filtrarResultados();
+    }
+
+    filtrarResultados() {
         this.institucionesNombres$ = this.instituciones$.pipe(
             map(instituciones => {
+                if (this.selectedInstitutions != null && this.selectedInstitutions.length > 0) {
+                    let selectedNames = this.selectedInstitutions.map(item => item.nombre);
+                    instituciones = instituciones.filter(item => selectedNames.includes(item.nombre));
+                }
                 return instituciones ? instituciones.map(item => item.nombre) : null;
             })
         );
@@ -45,6 +65,9 @@ export class AppChartComponent implements OnInit {
                 return urls;
             }),
             cache());
+        this.urls$.subscribe(urls => {
+            this.urls = urls;
+        });
     }
 
 

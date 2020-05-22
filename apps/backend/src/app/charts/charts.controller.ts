@@ -28,13 +28,12 @@ class ChartsResource extends ResourceBase {
             const filtros = req.query.filter;
             delete req.query.filter;
             const select = req.query;
-            const charts = await Charts.find(select);
+            const charts = await Charts.find(select).sort([['index', 1]]);
 
             const urls = [];
             charts.forEach((chart: any) => {
                 const timestamp = Math.floor(Date.now() / 1000);
-                const expiry = 300
-                let payload = `id=${chart.chart_id}&tenant=${chart.tenant}&timestamp=${timestamp}&expires-in=${expiry}`;
+                let payload = `id=${chart.chart_id}&tenant=${chart.tenant}&timestamp=${timestamp}`;
                 if (chart.filter && filtros) {
                     const query = {};
                     const op = {};
@@ -48,7 +47,7 @@ class ChartsResource extends ResourceBase {
                 const hmac = crypto.createHmac('sha256', chart.embedding_signing_key);
                 hmac.update(payload);
                 const signature = hmac.digest('hex');
-                urls.push(`${chart.base_url}/embed/charts?${payload}&signature=${signature}`);
+                urls.push({ url: `${chart.base_url}/embed/charts?${payload}&signature=${signature}`, cols: chart.cols });
             })
             return res.json(urls);
 
