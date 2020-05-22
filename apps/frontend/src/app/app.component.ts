@@ -47,6 +47,9 @@ export class AppComponent implements OnInit {
         if ((this.auth.checkPermisos('covid19:indicators:write')) || this.auth.checkPermisos('admin:true')) {
             this.accessList.push({ label: 'Dashboards', icon: 'chart-pie', route: '/chart/dashboard' });
         }
+        if (this.auth.checkPermisos('admin:true')) {
+            this.menuList.push({ label: 'Colaboradores', icon: 'account-circle', route: '/collaborator/list' });
+        }
         this.accessList.forEach(element => {
             this.menuList.push(element);
         });

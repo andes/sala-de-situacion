@@ -1,0 +1,40 @@
+<plex-layout>
+    <plex-layout-main>
+        <plex-title titulo="Listado de colaboradores">
+            <plex-button label="Nuevo colaborador" type="info" (click)="create()"></plex-button>
+        </plex-title>
+        <div class="row">
+            <div class="col-md-6">
+                <plex-select label="Estado" [(ngModel)]="estado" name="estado" [data]="estados"
+                             (change)="filtrarResultados()">
+                </plex-select>
+            </div>
+            <div class="col-md-6">
+                <plex-select label="Institución" [(ngModel)]="institution" name="institution" [data]="institutions"
+                             (change)="filtrarResultados()">
+                </plex-select>
+            </div>
+        </div>
+        <br>
+        <plex-list>
+            <plex-heading>
+                <b label>Email</b>
+                <b label>Código nación</b>
+                <b label>ID Colaborador</b>
+                <b label>Institución</b>
+                <b label></b>
+            </plex-heading>
+            <ng-container *ngFor="let collaborator of collaborators">
+                <plex-item class="hover" [botonera]="true" [selected]="collaborator.selected">
+                    <plex-label>{{ collaborator.email }}</plex-label>
+                    <plex-label>{{ collaborator.codigoNacion }}</plex-label>
+                    <plex-label>{{ collaborator.user }}</plex-label>
+                    <plex-label>{{ collaborator.institution.nombre }}</plex-label>
+                    <plex-badge *ngIf="collaborator.activo" type="success">Habilitado</plex-badge>
+                    <plex-badge *ngIf="!collaborator.activo" type="danger">Deshabilitado</plex-badge>
+                    <plex-button type="info" size="sm" icon="pencil" (click)="edit(collaborator)"></plex-button>
+                </plex-item>
+            </ng-container>
+        </plex-list>
+    </plex-layout-main>
+</plex-layout>

@@ -1,3 +1,4 @@
+import { CollaboratorService } from './collaborators/service/collaborator.service';
 import { DisclaimerService } from './login/services/disclaimer.services';
 import { OcurrenceEventsService } from './ocurrence-events/services/ocurrence-events.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -18,6 +19,7 @@ import { UserService } from './login/services/user.services';
 import { LocationService } from './shared/location.services';
 import { InstitutionProvidersModule } from './institutions/institution.provider';
 import { ChartModule } from './charts/chart.module';
+import { CollaboratorModule } from './collaborators/collaborator.module';
 import { SelectSearchService } from './shared/select-search.service';
 import { AyudaComponent } from './home/ayuda.component';
 
@@ -31,9 +33,10 @@ import { AyudaComponent } from './home/ayuda.component';
         AppRouting,
         NgxObserveModule,
         InstitutionProvidersModule,
-        ChartModule
+        ChartModule,
+        CollaboratorModule
     ],
-    providers: [Plex, Server, AuthService, RoutingNavBar, RoutingGuard, LocationService, SelectSearchService, UserService, OcurrenceEventsService, DisclaimerService],
+    providers: [Plex, Server, AuthService, RoutingNavBar, RoutingGuard, LocationService, SelectSearchService, UserService, OcurrenceEventsService, DisclaimerService, CollaboratorService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

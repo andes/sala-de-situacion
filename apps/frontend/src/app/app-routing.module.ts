@@ -33,6 +33,11 @@ const appRoutes: Routes = [
         loadChildren: './charts/chart.module#ChartModule',
         canActivate: [RoutingGuard, RoutingNavBar]
     },
+    {
+        path: 'collaborator',
+        loadChildren: './collaborators/collaborator.module#CollaboratorModule',
+        canActivate: [RoutingNavBar, RoutingGuard]
+    },
 
     { path: '**', redirectTo: '/' }
 ];

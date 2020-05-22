@@ -1,0 +1,52 @@
+<plex-layout>
+    <plex-layout-main>
+        <plex-title titulo="{{ collaborator?.email ? collaborator?.email : 'Nuevo colaborador' }}">
+            <plex-button label="Cancelar" type="danger" (click)="cancelar()"> </plex-button>
+            <plex-button label="Guardar" type="success" class="ml-2" [disabled]="disableGuardar"
+                         [validateForm]="formulario" (click)="guardar($event)">
+            </plex-button>
+        </plex-title>
+
+        <form #formulario="ngForm">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <plex-text label="Email" prefix="<i class='mdi mdi-email'></i>" [(ngModel)]="collaborator.email"
+                               name="email" (change)="verificarFormatoEmail()" [required]="true">
+                    </plex-text>
+                    <span *ngIf="disableGuardar" class="text-danger mt-1">Formato incorrecto</span>
+                    <div class="w-25 d-flex justify-between aling-end">
+                        <plex-bool [(ngModel)]="collaborator.activo" type="slide" name="slide">
+                        </plex-bool>
+                        <plex-badge type="{{ collaborator.activo ? 'success' : 'danger' }}" class="ml-2">
+                            {{ collaborator.activo ? 'Habilitado' : 'Deshabilitado' }}
+                        </plex-badge>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <plex-text label="Contraseña" [(ngModel)]="collaborator.password" name="password" [required]="true"
+                               placeholder="">
+                    </plex-text>
+                </div>
+            </div>
+            <div class="row mt-3" justify>
+                <div class="col-md-4 col-sm-12">
+                    <plex-select label="institución" placeholder="Seleccionar institución..." name="institution"
+                                 [(ngModel)]="collaborator.institution" labelField="nombre" [data]="instituciones"
+                                 [required]="true">
+                    </plex-select>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <plex-text label="Código nación" [(ngModel)]="collaborator.codigoNacion" name="codigoNacion"
+                               [required]="true" placeholder="">
+                    </plex-text>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <plex-text label="ID Colaborador" [(ngModel)]="collaborator.user" name="user" [required]="true"
+                               placeholder="">
+                    </plex-text>
+                </div>
+            </div>
+            <hr>
+        </form>
+    </plex-layout-main>
+</plex-layout>
