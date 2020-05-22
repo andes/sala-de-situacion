@@ -6,6 +6,16 @@ export const environment = {
   app_host: process.env.APP_HOST || 'https://salasituacion.andes.gob.ar',
   key: process.env.JWT_KEY || null,
   mongo_host: process.env.MONGO_HOST || 'mongodb://localhost:27017/sala-situacion',
+  logDatabase: {
+    log: {
+      host: process.env.MONGO_LOGS || 'mongodb://localhost:27017/sala-situacion-logs',
+      options: {
+        reconnectTries: Number.MAX_VALUE,
+        reconnectInterval: 1500,
+        useNewUrlParser: true
+      }
+    }
+  },
   mail: {
     host: 'smtp.gmail.com',
     port: 587,
