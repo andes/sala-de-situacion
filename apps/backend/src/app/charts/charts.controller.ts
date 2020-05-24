@@ -3,6 +3,7 @@ import { Charts } from './charts.schema';
 import { authenticate } from '../application';
 const crypto = require('crypto');
 import { Request, Response } from '@andes/api-tool';
+import { environment } from '../../environments/environment';
 
 class ChartsResource extends ResourceBase {
     Model = Charts;
@@ -54,6 +55,31 @@ class ChartsResource extends ResourceBase {
         } catch (err) {
             next(err);
         }
+    }
+
+    public async getAPIToken() {
+        const url = `${environment.grafana.host}/api/auth/keys`;
+        const formData = new URLSearchParams();
+        formData.append('name', 'keysala');
+        formData.append('role', 'Viewer');
+        const options = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: formData.toString(),
+            json: true,
+        };
+        const response = await fetch(
+            url,
+            options
+        );
+        const responseJson = await response.json();
+        if (responseJson.key) {
+            return responseJson.key
+        }
+        return null;
+
     }
 }
 

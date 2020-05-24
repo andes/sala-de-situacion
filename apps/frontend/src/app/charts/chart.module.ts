@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { PlexModule } from '@andes/plex';
 import { SafePipe } from './safe.pipe';
 import { AppChartComponent } from './components/chart.component';
+import { EpidemiologiaComponent } from './components/epidemiologia.component';
 import { ChartRouting } from './chart.routing';
 import { ChartsService } from './service/charts.service';
 @NgModule({
@@ -16,10 +17,12 @@ import { ChartsService } from './service/charts.service';
         ChartRouting
     ],
     exports: [
-        AppChartComponent
+        AppChartComponent,
+        EpidemiologiaComponent
     ],
     declarations: [
         AppChartComponent,
+        EpidemiologiaComponent,
         SafePipe,
     ],
     providers: [

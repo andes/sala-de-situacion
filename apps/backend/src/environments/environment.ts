@@ -30,6 +30,11 @@ export const environment = {
         user: process.env.USER_SNVS || 'user',
         pass: process.env.PASS_SNVS || 'unapass'
     },
+    grafana: {
+        host: process.env.HOST_GRAFANA || 'http://localhost',
+        user: process.env.USER_GRAFANA || 'admin',
+        pass: process.env.PASS_GRAFANA || 'admin'
+    },
     exportadorHost: process.env.HOST_EXPORTADOR || ''
 };
 
