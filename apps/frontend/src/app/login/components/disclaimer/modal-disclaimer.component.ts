@@ -9,7 +9,6 @@ import * as moment from 'moment';
 @Component({
     selector: 'modal-disclaimer',
     templateUrl: 'modal-disclaimer.html',
-    styleUrls: ['modal-disclaimer.scss']
 })
 
 export class ModalDisclaimerComponent implements OnInit {
