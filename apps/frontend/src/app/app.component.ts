@@ -4,6 +4,7 @@ import { Server } from '@andes/shared';
 import { Plex } from '@andes/plex';
 import { Location } from '@angular/common';
 import { AuthService } from './login/services/auth.services';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'sala-de-situacion-root',
@@ -14,15 +15,22 @@ export class AppComponent implements OnInit {
     private menuList = [];
     private accessList = [];
 
-    constructor(private server: Server, private plex: Plex, private location: Location, private auth: AuthService) {
+    constructor(
+        private server: Server,
+        private plex: Plex,
+        private location: Location,
+        private auth: AuthService,
+        private router: Router) {
+
         this.server.setBaseURL(environment.API);
         this.plex.updateTitle('SALA DE SITUACIÓN');
         this.auth.getSession().subscribe(() => {
             this.crearMenu();
-        })
+        });
     }
 
     ngOnInit() {
+        this.plex.navVisible(false);
         const token = this.auth.getToken();
 
         if (token) {
@@ -31,7 +39,20 @@ export class AppComponent implements OnInit {
     }
 
     back() {
-        this.location.back();
+        if (this.router.url !== '/') {
+            this.location.back();
+        }
+        if (this.plex.navbarVisible) {
+            this.plex.navVisible(false);
+        }
+    }
+
+    public get isHome() {
+        return this.router.url === '/';
+    }
+
+    public get isLogin() {
+        return this.router.url === '/auth/login';
     }
 
     public crearMenu() {
