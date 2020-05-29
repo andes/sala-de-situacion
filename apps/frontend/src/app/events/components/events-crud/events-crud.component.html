@@ -22,9 +22,9 @@
                 </plex-button>
             </plex-title>
 
-            <div class="mt-4">
-                <div class="row mb-4 mb-2-md" id="wrapper-{{ i }}"
-                     *ngFor="let indicador of event.indicadores; let i = index">
+            <div class="mt-4 d-flex flex-column-reverse" *ngFor="let indicador of event.indicadores; let i = index">
+                <div class="row indicador mb-4 mb-2-md mx-0 py-3 w-100" id="wrapper-{{ i }}">
+
                     <div class="col-md col-sm-12">
                         <b>Clave</b>
 
@@ -90,9 +90,11 @@
                         </div>
                     </div>
 
-                    <div class="col-md-1 col-sm-4" justify="center justify-content-sm-start">
-                        <plex-button size="sm" class="mt-2 mt-0-md" title="Borrar" type="danger" label="Eliminar"
-                                     (click)="onRemove(i)">
+                </div>
+                <div class="row">
+                    <div class="col-md-1 col-sm-4" justify>
+                        <div class="d-sm-none"><b>{{ i + 1 }}</b></div>
+                        <plex-button size="sm" class="mt-2 mt-0-md" type="danger" icon="delete" (click)="onRemove(i)">
                         </plex-button>
                     </div>
                 </div>

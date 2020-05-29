@@ -1,7 +1,7 @@
 <plex-layout>
   <plex-layout-main>
     <plex-title titulo="Tipos de Eventos">
-      <plex-button type="info" [routerLink]="['create']"> Registar evento </plex-button>
+      <plex-button type="info" [routerLink]="['create']"> Registrar evento </plex-button>
     </plex-title>
 
     <div *ngxObserve="events$ as events; before: loadingTemplate; error: errorTemplate">
@@ -10,13 +10,12 @@
           <b label>Nombre</b>
           <b label>Categoría/Clave</b>
           <b label>Cant. Variables</b>
-
           <b button></b>
         </plex-heading>
         <plex-item *ngFor="let event of events" class="mb-4 mb-0-md">
-          <plex-label>{{ event.nombre }}</plex-label>
-          <plex-label>{{ event.categoria }}</plex-label>
-          <plex-label> {{ event.indicadores.length }} </plex-label>
+          <plex-label [titulo]="event.nombre"></plex-label>
+          <plex-label>Categoría/Clave: {{ event.categoria }}</plex-label>
+          <plex-label>Cant. Variables: {{ event.indicadores.length }} </plex-label>
           <plex-badge [type]="event.activo ? 'success' : 'danger'">
             {{ event.activo ? 'HABILITADO' : 'DESHABILITADO' }}
           </plex-badge>
