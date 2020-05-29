@@ -1,7 +1,7 @@
 <plex-layout>
     <plex-layout-main>
         <plex-title titulo="Registrar nuevo evento ocurrido">
-            <plex-button size="sm" type="success" (click)="onSave($event)" [validateForm]="formulario">
+            <plex-button type="success" (click)="onSave($event)" [validateForm]="formulario">
                 GUARDAR
             </plex-button>
         </plex-title>
@@ -39,7 +39,7 @@
                 </plex-wrapper>
             </ng-container>
             <ng-template #noEventSelected>
-                <h5>Seleccione un tipo tipo de evento para poder ver sus indicadores</h5>
+                <h5>Seleccione un tipo de evento para poder ver sus indicadores</h5>
             </ng-template>
         </form>
     </plex-layout-main>
