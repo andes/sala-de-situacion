@@ -4,29 +4,29 @@
             <plex-button type="info" [routerLink]="['create']"> Registrar nuevo </plex-button>
         </plex-title>
         <div class="row">
-            <div class="col-3">
+            <div class="col-12 col-md-3">
                 <plex-datetime type="date" [(ngModel)]="fechaDesde" name="fechaDesde" (change)="filtrarResultados()"
                                label="Fecha Desde" [required]="false">
                 </plex-datetime>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-md-3">
                 <plex-datetime type="date" [(ngModel)]="fechaHasta" name="fechaHasta" (change)="filtrarResultados()"
                                label="Fecha Hasta" [required]="false">
                 </plex-datetime>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-md-3">
                 <plex-select [(ngModel)]="selectedInstitution" name="institucion" (change)="filtrarResultados()"
-                             label="Institucion" [data]="institutions" [required]="false">
+                             label="Institución" [data]="institutions" [required]="false">
                 </plex-select>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-md-3">
                 <plex-select [(ngModel)]="selectedEvent" name="evento" (change)="filtrarResultados()" label="Evento"
                              [data]="eventos" [required]="false">
                 </plex-select>
             </div>
         </div>
         <div class="row" *ngIf="this.subfiltros.length > 0">
-            <div class="col-3" *ngFor="let subfilter of this.subfiltros">
+            <div class="col-12 col-md-3" *ngFor="let subfilter of this.subfiltros">
                 <plex-select [(ngModel)]="selectedSubfiltros[subfilter.key]" name="{{subfilter.key}}"
                              (change)="filtrarResultados()"
                              [label]="(labelsIndicadores[subfilter.key])? labelsIndicadores[subfilter.key].label : subfilter.key"
