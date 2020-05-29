@@ -55,7 +55,6 @@ p.lead {
 }
 
 
-
 // Accordions
 plex-panel {
     .card {
@@ -82,5 +81,12 @@ plex-panel {
                 }
             }
         }
+    }
+}
+
+// Mover a PLEX
+@include media-breakpoint-down(xs) {
+    ::-webkit-scrollbar {
+        width: 0 !important;
     }
 }
