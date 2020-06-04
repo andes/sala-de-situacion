@@ -4,7 +4,8 @@ import { Server } from '@andes/shared';
 import { Plex } from '@andes/plex';
 import { Location } from '@angular/common';
 import { AuthService } from './login/services/auth.services';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
     selector: 'sala-de-situacion-root',
@@ -14,6 +15,7 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit {
     private menuList = [];
     private accessList = [];
+    currentRoute: string;
 
     constructor(
         private server: Server,
@@ -23,14 +25,25 @@ export class AppComponent implements OnInit {
         private router: Router) {
 
         this.server.setBaseURL(environment.API);
-        this.plex.updateTitle('SALA DE SITUACIÓN');
+        this.plex.navVisible(false);
+        this.plex.updateTitle('Sala de Situación COVID-19');
         this.auth.getSession().subscribe(() => {
             this.crearMenu();
         });
+
+        this.router.events
+            .pipe(
+                filter(e => e instanceof NavigationEnd)
+            )
+            .subscribe((navEnd: NavigationEnd) => {
+                this.currentRoute = navEnd.urlAfterRedirects;
+                if (this.currentRoute !== '/auth/login') {
+                    this.plex.navVisible(true);
+                }
+            });
     }
 
     ngOnInit() {
-        this.plex.navVisible(false);
         const token = this.auth.getToken();
 
         if (token) {
@@ -39,20 +52,17 @@ export class AppComponent implements OnInit {
     }
 
     back() {
-        if (this.router.url !== '/') {
+        if (this.currentRoute !== '/') {
             this.location.back();
-        }
-        if (this.plex.navbarVisible) {
-            this.plex.navVisible(false);
         }
     }
 
     public get isHome() {
-        return this.router.url === '/';
+        return this.currentRoute === '/';
     }
 
     public get isLogin() {
-        return this.router.url === '/auth/login';
+        return this.currentRoute === '/auth/login';
     }
 
     public crearMenu() {
