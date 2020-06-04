@@ -12,10 +12,11 @@
                 <div class="col-md-3 col-sm-12">
                     <plex-text label="Nombre" [(ngModel)]="institution.nombre" name="nombre" [required]="true">
                     </plex-text>
-                    <div class="w-25 d-flex justify-between aling-end">
-                        <plex-bool *ngIf="isAdmin" [(ngModel)]="institution.activo" type="slide" name="slide">
+                    <div class="d-flex justify-between align-end">
+                        <plex-bool *ngIf="isAdmin" [(ngModel)]="institution.activo" type="slide" name="slide"
+                                   class="mr-2">
                         </plex-bool>
-                        <plex-badge type="{{ institution.activo ? 'success' : 'danger' }}" class="ml-2">
+                        <plex-badge type="{{ institution.activo ? 'success' : 'danger' }}">
                             {{ institution.activo ? 'Habilitada' : 'Deshabilitada' }}
                         </plex-badge>
                     </div>
