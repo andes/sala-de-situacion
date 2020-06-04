@@ -90,9 +90,20 @@ export class AppEventsCrudComponent implements OnInit {
         }, 100);
     }
 
-    onRemove(i) {
-        this.event.indicadores.splice(i, 1);
-        this.event.indicadores = [...this.event.indicadores];
+    onRemove(i, indicador) {
+        if (indicador.key !== '' && indicador.label !== '') {
+            this.plex.confirm(`Clave: ${indicador.key}<br>Nombre: ${indicador.label}`, '¿Eliminar Indicador?', 'Confirmar').then(
+                respuesta => {
+                    if (respuesta === true) {
+                        this.event.indicadores.splice(i, 1);
+                        this.event.indicadores = [...this.event.indicadores];
+                    }
+                }
+            )
+        } else {
+            this.event.indicadores.splice(i, 1);
+            this.event.indicadores = [...this.event.indicadores];
+        }
     }
 
     save($event) {
