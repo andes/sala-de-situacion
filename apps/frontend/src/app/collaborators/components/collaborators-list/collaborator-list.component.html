@@ -3,6 +3,7 @@
         <plex-title titulo="Listado de colaboradores">
             <plex-button label="Nuevo colaborador" type="info" (click)="create()"></plex-button>
         </plex-title>
+        <p class="lead d-sm-none mb-0 mt-2">Filtros</p>
         <div class="row">
             <div class="col-md-6">
                 <plex-select label="Estado" [(ngModel)]="estado" name="estado" [data]="estados"

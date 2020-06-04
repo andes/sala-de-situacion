@@ -26,7 +26,7 @@ export class RoutingNavBar implements CanActivate {
 
     canActivate() {
         this.plex.clearNavbar();
-        this.plex.updateTitle('SALA DE SITUACIÓN');
+        this.plex.updateTitle('Sala de Situación COVID-19');
         return true;
     }
 }

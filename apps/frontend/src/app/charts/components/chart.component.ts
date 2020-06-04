@@ -22,7 +22,7 @@ export class AppChartComponent implements OnInit {
     public institutions = [];
     public selectedInstitutions = [];
     public urls = [];
-    public title = "";
+    public title = 'Gráficos de Situación';
 
     constructor(
         private chartService: ChartsService,

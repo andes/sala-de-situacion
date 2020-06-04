@@ -10,10 +10,6 @@ export class AppHomeComponent implements OnInit {
     public ayuda = true;
 
     constructor(public plex: Plex) { }
-    ngOnInit() {
-        // Se oculta navbar durante login
-        this.plex.navVisible(true);
-    }
 
 }
 

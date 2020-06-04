@@ -3,6 +3,7 @@
         <plex-title titulo="Listado de eventos">
             <plex-button type="info" [routerLink]="['create']"> Registrar nuevo </plex-button>
         </plex-title>
+        <p class="lead d-sm-none mb-0 mt-2">Filtros</p>
         <div class="row">
             <div class="col-12 col-md-3">
                 <plex-datetime type="date" [(ngModel)]="fechaDesde" name="fechaDesde" (change)="filtrarResultados()"
