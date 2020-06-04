@@ -1,8 +1,9 @@
+import { NgModule } from '@angular/core';
 import { CollaboratorService } from './collaborators/service/collaborator.service';
 import { DisclaimerService } from './login/services/disclaimer.services';
 import { OcurrenceEventsService } from './ocurrence-events/services/ocurrence-events.service';
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule, } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { Server } from '@andes/shared';
@@ -27,6 +28,7 @@ import { AyudaComponent } from './home/ayuda.component';
     declarations: [AppComponent, AppHomeComponent, AyudaComponent],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         PlexModule,
         FormsModule,
         HttpClientModule,
