@@ -5,7 +5,7 @@ import { Plex } from '@andes/plex';
     selector: 'app-home',
     templateUrl: './home.component.html'
 })
-export class AppHomeComponent implements OnInit {
+export class AppHomeComponent {
 
     public ayuda = true;
 
