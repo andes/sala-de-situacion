@@ -22,6 +22,7 @@ import { ChartModule } from './charts/chart.module';
 import { CollaboratorModule } from './collaborators/collaborator.module';
 import { SelectSearchService } from './shared/select-search.service';
 import { AyudaComponent } from './home/ayuda.component';
+import { ImporterModule } from './importer/importer.module';
 
 @NgModule({
     declarations: [AppComponent, AppHomeComponent, AyudaComponent],
@@ -34,7 +35,8 @@ import { AyudaComponent } from './home/ayuda.component';
         NgxObserveModule,
         InstitutionProvidersModule,
         ChartModule,
-        CollaboratorModule
+        CollaboratorModule,
+        ImporterModule
     ],
     providers: [Plex, Server, AuthService, RoutingNavBar, RoutingGuard, LocationService, SelectSearchService, UserService, OcurrenceEventsService, DisclaimerService, CollaboratorService],
     bootstrap: [AppComponent]

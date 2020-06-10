@@ -1,0 +1,78 @@
+<plex-layout>
+    <plex-layout-main>
+        <plex-title titulo="Importador">
+            <plex-button label="Guardar" type="success" class="ml-2" [disabled]="disableGuardar"
+                         (click)="guardarImportacion()"></plex-button>
+        </plex-title>
+        <div class="row mb-2">
+            <div class="col-6">
+                <label class="form-control-label">Archivo CSV</label>
+                <input #inputFile type="file" class="upload form-control" (change)="changeListener($event.target.files)"
+                       accept=".csv">
+            </div>
+            <div class="col-6">
+                <plex-select [(ngModel)]="institution" name="institucion" label="Institucion" [data]="institutions"
+                             [required]="false">
+                </plex-select>
+            </div>
+        </div>
+        <plex-tabs [activeIndex]="0">
+            <plex-tab label="Ocupaciones">
+                <plex-list>
+                    <plex-heading>
+                        <b label>Ingreso</b>
+                        <b label>Paciente</b>
+                        <b label>DNI</b>
+                        <b label>Habitacion</b>
+                        <b label>Servicio</b>
+                        <b label>Cama</b>
+                        <b label>Tipo</b>
+                        <b label>Covid</b>
+                        <b label>Estado</b>
+                        <b></b>
+                    </plex-heading>
+                    <plex-item *ngFor="let entrada of ingresos;" class="mb-4 mb-0-md">
+                        <plex-label>{{ entrada.fechadeingreso }} {{ entrada.horadeingreso }} </plex-label>
+                        <plex-label>{{ entrada.apellido }}, {{ entrada.nombre }}</plex-label>
+                        <plex-label>{{ entrada.dni }}</plex-label>
+                        <plex-label>{{ entrada.habitacion }}<br><b>{{ entrada.piso }}</b></plex-label>
+                        <plex-label>{{ entrada.servicio }}</plex-label>
+                        <plex-label>{{ entrada.cama }}</plex-label>
+                        <plex-label>{{ entrada.tipo }}<br><small>Respirador:
+                                {{ entrada.respirador? entrada.respirador : 'No indica' }}</small>
+                        </plex-label>
+                        <plex-label>{{ entrada.covid }}</plex-label>
+                        <plex-label>{{ entrada.estado}}</plex-label>
+                    </plex-item>
+                </plex-list>
+            </plex-tab>
+            <plex-tab label="Egresos">
+                <plex-list>
+                    <plex-heading>
+                        <b label>Fecha de ingreso</b>
+                        <b label>Hora de ingreso</b>
+                        <b label>DNI</b>
+                        <b label>Apellido</b>
+                        <b label>Nombre</b>
+                        <b label>Fecha de egreso</b>
+                        <b label>Hora de egreso</b>
+                        <b label>Tipo de egreso</b>
+                        <b></b>
+                    </plex-heading>
+                    <ng-container *ngFor="let entrada of egresos">
+                        <plex-item class="hover">
+                            <plex-label>{{ entrada.fechadeingreso }} </plex-label>
+                            <plex-label>{{ entrada.horadeingreso }} </plex-label>
+                            <plex-label>{{ entrada.dni }}</plex-label>
+                            <plex-label>{{ entrada.apellido }}</plex-label>
+                            <plex-label>{{ entrada.nombre }}</plex-label>
+                            <plex-label>{{ entrada.fechadeegreso }} </plex-label>
+                            <plex-label>{{ entrada.horadeegreso }} </plex-label>
+                            <plex-label>{{ entrada.tipodeegreso }} </plex-label>
+                        </plex-item>
+                    </ng-container>
+                </plex-list>
+            </plex-tab>
+        </plex-tabs>
+    </plex-layout-main>
+</plex-layout>
