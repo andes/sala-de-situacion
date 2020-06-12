@@ -13,12 +13,14 @@ import { InstitutionService } from '../../institutions/service/institution.servi
 export class ImporterComponent implements OnInit {
     @ViewChild('inputFile', null) inputFile;
 
-    public egresos;
-    public ingresos;
+    public egresos = [];
+    public ingresos = [];
     public disableGuardar = true;
     private user;
     public institution = {};
     public institutions = [];
+    public tiposEgresosValidos = ['alta', 'defuncion', 'derivacion'];
+    public estadosValidos = ['disponible', 'ocupada', 'bloqueada'];
 
     constructor(
         private auth: AuthService,
@@ -36,7 +38,7 @@ export class ImporterComponent implements OnInit {
         });
     }
 
-    public changeListener(files: FileList) {
+    public changeListenerIngresos(files: FileList) {
         this.disableGuardar = true;
         if (files && files.length > 0) {
             let file: File = files.item(0);
@@ -44,16 +46,32 @@ export class ImporterComponent implements OnInit {
             reader.readAsText(file);
             reader.onload = (e) => {
                 let csv = reader.result;
-                var result = this.csvParse(csv);
-                this.ingresos = result.filter(data => data.fechadeingreso);
-                this.egresos = result.filter(data => data.fechadeegreso);
+                var result = this.csvParseIngresos(csv);
+                this.ingresos = result;
                 if (this.ingresos.length > 0 || this.egresos.length > 0)
                     this.disableGuardar = false;
             }
         }
     }
 
-    public csvParse(csv) {
+    public changeListenerEgresos(files: FileList) {
+        this.disableGuardar = true;
+        if (files && files.length > 0) {
+            let file: File = files.item(0);
+            let reader: FileReader = new FileReader();
+            reader.readAsText(file);
+            reader.onload = (e) => {
+                let csv = reader.result;
+                var result = this.csvParseEgresos(csv);
+                this.egresos = result;
+                if ((this.ingresos && this.ingresos.length > 0) || (this.egresos && this.egresos.length > 0)) {
+                    this.disableGuardar = false;
+                }
+            }
+        }
+    }
+
+    public csvParseIngresos(csv) {
         var lines = csv.split("\n");
         var result = [];
         var headers = lines[0].split(",");
@@ -67,7 +85,32 @@ export class ImporterComponent implements OnInit {
                 if (headers[j]) {
                     headers[j] = headers[j].replace(/['" ]+/g, '');
                 }
-                obj[headers[j].toLowerCase()] = currentline[j];
+                if (!(headers[j].toLowerCase() === 'estado' && !this.estadosValidos.includes(currentline[j]))) {
+                    obj[headers[j].toLowerCase()] = currentline[j];
+                }
+            }
+            result.push(obj);
+        }
+        return result;
+    }
+
+    public csvParseEgresos(csv) {
+        var lines = csv.split("\n");
+        var result = [];
+        var headers = lines[0].split(",");
+        for (var i = 1; i < lines.length; i++) {
+            var obj = {};
+            var currentline = lines[i].split(",");
+            for (var j = 0; j < headers.length; j++) {
+                if (currentline[j]) {
+                    currentline[j] = currentline[j].replace(/['"]+/g, '');
+                }
+                if (headers[j]) {
+                    headers[j] = headers[j].replace(/['" ]+/g, '');
+                }
+                if (!(headers[j].toLowerCase() === 'tipodeegreso' && !this.tiposEgresosValidos.includes(currentline[j]))) {
+                    obj[headers[j].toLowerCase()] = currentline[j];
+                }
             }
             result.push(obj);
         }
@@ -87,7 +130,6 @@ export class ImporterComponent implements OnInit {
             this.resetInput();
             this.plex.toast('success', `Los datos han sido importados correctamente`);
         } catch (err) {
-            console.log(err);
             this.plex.info('danger', 'Error al importar los datos');
         }
     }
@@ -103,9 +145,9 @@ export class ImporterComponent implements OnInit {
             piso: dataIngreso.piso,
             servicio: dataIngreso.servicio,
             cama: dataIngreso.cama,
-            tipo: dataIngreso.tipo,
             respirador: dataIngreso.respirador,
             covid: dataIngreso.covid,
+            oxigeno: dataIngreso.oxigeno,
             estado: dataIngreso.estado,
             user: this.user,
             institution: this.institution

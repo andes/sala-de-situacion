@@ -10,10 +10,22 @@ const OcupationSchema = new mongoose.Schema({
     piso: String,
     servicio: String,
     cama: String,
-    tipo: String,
-    repirador: String,
-    covid: String,
-    estado: String,
+    respirador: {
+        type: String,
+        enum: ['Si', 'No']
+    },
+    covid: {
+        type: String,
+        enum: ['Si', 'No']
+    },
+    oxigeno: {
+        type: String,
+        enum: ['Si', 'No']
+    },
+    estado: {
+        type: String,
+        enum: ['disponible', 'bloqueda', 'ocupada']
+    },
     user: {
         id: String,
         nombre: String,

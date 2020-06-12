@@ -10,7 +10,10 @@ export interface Checkout {
     dni: String;
     fechaIngreso: Date;
     horaIngreso: String;
-    tipo: String;
+    tipo: {
+        type: String,
+        enum: ['defuncion', 'alta', 'derivacion']
+    };
     user: {
         id: String,
         nombre: String,

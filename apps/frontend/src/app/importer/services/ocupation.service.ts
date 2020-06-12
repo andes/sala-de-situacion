@@ -16,10 +16,19 @@ export interface Ocupation {
     estado: {
         type: String,
         enum: ['disponible', 'bloqueda', 'ocupada']
-    },
-    repirador: String;
-    covid: String;
-    tipo: String;
+    };
+    respirador: {
+        type: String,
+        enum: ['Si', 'No']
+    };
+    covid: {
+        type: String,
+        enum: ['Si', 'No']
+    };
+    oxigeno: {
+        type: String,
+        enum: ['Si', 'No']
+    };
     user: {
         id: String,
         nombre: String,

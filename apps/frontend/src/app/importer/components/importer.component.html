@@ -5,12 +5,17 @@
                          (click)="guardarImportacion()"></plex-button>
         </plex-title>
         <div class="row mb-2">
-            <div class="col-6">
-                <label class="form-control-label">Archivo CSV</label>
-                <input #inputFile type="file" class="upload form-control" (change)="changeListener($event.target.files)"
-                       accept=".csv">
+            <div class="col-4">
+                <label class="form-control-label">Archivo ocupaciones (.csv)</label>
+                <input #inputFile type="file" class="upload form-control"
+                       (change)="changeListenerIngresos($event.target.files)" accept=".csv">
             </div>
-            <div class="col-6">
+            <div class="col-4">
+                <label class="form-control-label">Archivo egresos (.csv)</label>
+                <input #inputFile type="file" class="upload form-control"
+                       (change)="changeListenerEgresos($event.target.files)" accept=".csv">
+            </div>
+            <div class="col-4">
                 <plex-select [(ngModel)]="institution" name="institucion" label="Institucion" [data]="institutions"
                              [required]="false">
                 </plex-select>
@@ -26,7 +31,7 @@
                         <b label>Habitacion</b>
                         <b label>Servicio</b>
                         <b label>Cama</b>
-                        <b label>Tipo</b>
+                        <b label>Oxigeno</b>
                         <b label>Covid</b>
                         <b label>Estado</b>
                         <b></b>
@@ -38,11 +43,12 @@
                         <plex-label>{{ entrada.habitacion }}<br><b>{{ entrada.piso }}</b></plex-label>
                         <plex-label>{{ entrada.servicio }}</plex-label>
                         <plex-label>{{ entrada.cama }}</plex-label>
-                        <plex-label>{{ entrada.tipo }}<br><small>Respirador:
+                        <plex-label>Oxígeno: {{ entrada.oxigeno }}<br><small>Respirador:
                                 {{ entrada.respirador? entrada.respirador : 'No indica' }}</small>
                         </plex-label>
                         <plex-label>{{ entrada.covid }}</plex-label>
-                        <plex-label>{{ entrada.estado}}</plex-label>
+                        <plex-label>{{ entrada.estado? entrada.estado : 'No se indica o el dato no es válido' }}
+                        </plex-label>
                     </plex-item>
                 </plex-list>
             </plex-tab>
@@ -68,7 +74,9 @@
                             <plex-label>{{ entrada.nombre }}</plex-label>
                             <plex-label>{{ entrada.fechadeegreso }} </plex-label>
                             <plex-label>{{ entrada.horadeegreso }} </plex-label>
-                            <plex-label>{{ entrada.tipodeegreso }} </plex-label>
+                            <plex-label>
+                                {{ entrada.tipodeegreso? entrada.tipodeegreso : 'No se indica o el dato no es válido' }}
+                            </plex-label>
                         </plex-item>
                     </ng-container>
                 </plex-list>
