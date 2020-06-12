@@ -62,7 +62,7 @@ export class AppCollaboratorListComponent implements OnInit {
     }
 
     loadInstituciones() {
-        this.institutionService.search({}).subscribe(resultado => {
+        this.institutionService.getInstituciones({}).subscribe(resultado => {
             this.institutions = resultado;
         });
     }

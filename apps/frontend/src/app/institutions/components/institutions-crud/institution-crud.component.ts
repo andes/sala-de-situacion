@@ -158,7 +158,7 @@ export class AppInstitutionCrudComponent implements OnInit {
     }
 
     loadInstituciones() {
-        this.institutionService.search({}).subscribe(resultado => {
+        this.institutionService.getInstituciones({}).subscribe(resultado => {
             this.instituciones = this.institution.id ? resultado.filter(item => item.id != this.institution.id) : resultado;
         });
     }

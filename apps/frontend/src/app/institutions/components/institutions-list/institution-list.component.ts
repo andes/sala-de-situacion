@@ -30,7 +30,7 @@ export class AppInstitutionListComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.institutions$ = this.institutionService.search().pipe(cache());
+        this.institutions$ = this.institutionService.getInstituciones({}).pipe(cache());
         this.locationService.getProvincias({}).subscribe(rta => {
             this.provincias = rta;
         });

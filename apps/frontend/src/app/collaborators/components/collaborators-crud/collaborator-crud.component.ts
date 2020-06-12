@@ -61,7 +61,7 @@ export class AppCollaboratorCrudComponent implements OnInit {
     }
 
     loadInstituciones() {
-        this.institutionService.search({}).subscribe(resultado => {
+        this.institutionService.getInstituciones({}).subscribe(resultado => {
             this.instituciones = resultado;
         });
     }

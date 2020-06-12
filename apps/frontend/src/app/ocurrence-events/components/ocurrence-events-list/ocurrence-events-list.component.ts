@@ -44,7 +44,7 @@ export class OcurrenceEventsListComponent implements OnInit {
 
     ngOnInit() {
         this.ocurrenceEvents$ = this.ocurrenceEventsService.search().pipe(cache());
-        this.institutionService.search({}).subscribe(rtaInstitutions => {
+        this.institutionService.getInstituciones({}).subscribe(rtaInstitutions => {
             this.institutions = rtaInstitutions;
             if (this.institutions && this.institutions.length === 1) {
                 this.selectedInstitution = this.institutions[0];

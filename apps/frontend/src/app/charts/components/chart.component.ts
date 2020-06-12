@@ -34,7 +34,7 @@ export class AppChartComponent implements OnInit {
         this.admin = this.auth.checkPermisos('admin:true');
         if (this.admin) {
             this.instituciones$ = this.institutionService
-                .search({})
+                .getInstituciones({})
                 .pipe(cache());
         } else {
             this.instituciones$ = this.institutionService
