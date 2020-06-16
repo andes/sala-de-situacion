@@ -1,5 +1,3 @@
-import { CollaboratorRouter } from './app/collaborators/collaborator.controller';
-
 require('dotenv').config();
 const { Connections } = require('./app/connection');
 const { application } = require('./app/application');
@@ -21,6 +19,8 @@ const GeoreferenciasRouter = require('./app/georeferencia/georeferencia.routes')
 const ChartsRouter = require('./app/charts/charts.controller').ChartsRouter;
 const CollaboratorsRouter = require('./app/collaborators/collaborator.controller').CollaboratorRouter;
 const ServiciosRouter = require('./app/servicios/servicios.routes').ServiciosRouter;
+const CheckoutsRouter = require('./app/hospitalizations/checkout.controller').CheckoutsRouter;
+const OcupationsRouter = require('./app/hospitalizations/ocupation.controller').OcupationsRouter;
 
 
 // Rutas
@@ -38,5 +38,7 @@ application.add({ path: '/api', router: GeoreferenciasRouter });
 application.add({ path: '/api', router: ChartsRouter });
 application.add({ path: '/api', router: CollaboratorsRouter });
 application.add({ path: '/api', router: ServiciosRouter });
+application.add({ path: '/api', router: CheckoutsRouter });
+application.add({ path: '/api', router: OcupationsRouter });
 
 application.start();

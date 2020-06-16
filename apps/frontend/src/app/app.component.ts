@@ -56,6 +56,9 @@ export class AppComponent implements OnInit {
         if (!this.auth.checkPermisos('admin:true')) {
             this.menuList.push({ label: 'Mi Perfil', icon: 'account-circle', route: '/auth/user-profile' });
         }
+        if (this.auth.checkPermisos('importer:write')) {
+            this.menuList.push({ label: 'Importar CSV', icon: 'table-arrow-left', route: '/importer' });
+        }
         this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/auth/logout' });
         this.plex.updateMenu(this.menuList);
     }
