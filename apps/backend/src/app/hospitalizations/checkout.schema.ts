@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { AuditPlugin } from '@andes/mongoose-plugin-audit';
 
 const CheckoutSchema = new mongoose.Schema({
     fechaEgreso: Date,
@@ -10,14 +11,7 @@ const CheckoutSchema = new mongoose.Schema({
     horaIngreso: String,
     tipo: {
         type: String,
-        enum: ['defuncion', 'alta', 'derivacion']
-    },
-    user: {
-        id: String,
-        nombre: String,
-        apellido: String,
-        documento: String,
-        email: String
+        enum: ['DEFUNCION', 'ALTA', 'DERIVACION']
     },
     institution: {
         _id: false,
@@ -25,5 +19,6 @@ const CheckoutSchema = new mongoose.Schema({
         nombre: String
     }
 });
+CheckoutSchema.plugin(AuditPlugin);
 export const Checkout = mongoose.model('checkout', CheckoutSchema, 'checkouts');
 

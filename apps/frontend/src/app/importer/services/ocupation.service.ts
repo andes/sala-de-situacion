@@ -15,26 +15,19 @@ export interface Ocupation {
     cama: String;
     estado: {
         type: String,
-        enum: ['disponible', 'bloqueda', 'ocupada']
+        enum: ['DISPONIBLE', 'BLOQUEADA', 'OCUPADA']
     };
     respirador: {
         type: String,
-        enum: ['Si', 'No']
+        enum: ['SI', 'NO']
     };
     covid: {
         type: String,
-        enum: ['Si', 'No']
+        enum: ['SI', 'NO']
     };
     oxigeno: {
         type: String,
-        enum: ['Si', 'No']
-    };
-    user: {
-        id: String,
-        nombre: String,
-        apellido: String,
-        documento: String,
-        email: String
+        enum: ['SI', 'NO']
     };
     institution: {
         _id: false,

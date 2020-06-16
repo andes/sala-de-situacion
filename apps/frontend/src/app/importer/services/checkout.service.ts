@@ -12,14 +12,7 @@ export interface Checkout {
     horaIngreso: String;
     tipo: {
         type: String,
-        enum: ['defuncion', 'alta', 'derivacion']
-    };
-    user: {
-        id: String,
-        nombre: String,
-        apellido: String,
-        documento: String,
-        email: String
+        enum: ['DEFUNCION', 'ALTA', 'DERIVACION']
     };
     institution: {
         _id: false,

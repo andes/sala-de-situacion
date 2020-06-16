@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { AuditPlugin } from '@andes/mongoose-plugin-audit';
 
 const OcupationSchema = new mongoose.Schema({
     fechaIngreso: Date,
@@ -12,26 +13,19 @@ const OcupationSchema = new mongoose.Schema({
     cama: String,
     respirador: {
         type: String,
-        enum: ['Si', 'No']
+        enum: ['SI', 'NO']
     },
     covid: {
         type: String,
-        enum: ['Si', 'No']
+        enum: ['SI', 'NO']
     },
     oxigeno: {
         type: String,
-        enum: ['Si', 'No']
+        enum: ['SI', 'NO']
     },
     estado: {
         type: String,
-        enum: ['disponible', 'bloqueda', 'ocupada']
-    },
-    user: {
-        id: String,
-        nombre: String,
-        apellido: String,
-        documento: String,
-        email: String
+        enum: ['DISPONIBLE', 'BLOQUEADA', 'OCUPADA']
     },
     institution: {
         _id: false,
@@ -39,4 +33,5 @@ const OcupationSchema = new mongoose.Schema({
         nombre: String
     }
 });
+OcupationSchema.plugin(AuditPlugin);
 export const Ocupation = mongoose.model('ocupation', OcupationSchema, 'ocupations');

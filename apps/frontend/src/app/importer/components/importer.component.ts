@@ -3,8 +3,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../login/services/auth.services';
 import { Plex } from '@andes/plex';
 import { OcupationsService } from '../services/ocupation.service';
-import { Router } from '@angular/router';
 import { InstitutionService } from '../../institutions/service/institution.service';
+import * as moment from 'moment';
 
 @Component({
     selector: 'chart',
@@ -25,7 +25,6 @@ export class ImporterComponent implements OnInit {
     constructor(
         private auth: AuthService,
         public plex: Plex,
-        private router: Router,
         public ocupationsService: OcupationsService,
         public checkoutsService: CheckoutsService,
         private institutionService: InstitutionService
@@ -80,7 +79,7 @@ export class ImporterComponent implements OnInit {
             var currentline = lines[i].split(",");
             for (var j = 0; j < headers.length; j++) {
                 if (currentline[j]) {
-                    currentline[j] = currentline[j].replace(/['"]+/g, '');
+                    currentline[j] = currentline[j].replace(/['"]+/g, '').toUpperCase();
                 }
                 if (headers[j]) {
                     headers[j] = headers[j].replace(/['" ]+/g, '');
@@ -103,7 +102,7 @@ export class ImporterComponent implements OnInit {
             var currentline = lines[i].split(",");
             for (var j = 0; j < headers.length; j++) {
                 if (currentline[j]) {
-                    currentline[j] = currentline[j].replace(/['"]+/g, '');
+                    currentline[j] = currentline[j].replace(/['"]+/g, '').toUpperCase();;
                 }
                 if (headers[j]) {
                     headers[j] = headers[j].replace(/['" ]+/g, '');
@@ -138,7 +137,7 @@ export class ImporterComponent implements OnInit {
         let ingreso = {
             nombre: dataIngreso.nombre,
             apellido: dataIngreso.apellido,
-            fechaIngreso: new Date(dataIngreso.fechadeingreso),
+            fechaIngreso: moment(dataIngreso.fechadeingreso, 'DD/MM/YYYY').toDate(),
             horaIngreso: dataIngreso.horadeingreso,
             dni: dataIngreso.dni,
             habitacion: dataIngreso.habitacion,
@@ -149,7 +148,6 @@ export class ImporterComponent implements OnInit {
             covid: dataIngreso.covid,
             oxigeno: dataIngreso.oxigeno,
             estado: dataIngreso.estado,
-            user: this.user,
             institution: this.institution
         };
         this.ocupationsService.save(ingreso).subscribe();
@@ -159,13 +157,12 @@ export class ImporterComponent implements OnInit {
         let egreso = {
             nombre: dataEgreso.nombre,
             apellido: dataEgreso.apellido,
-            fechaIngreso: new Date(dataEgreso.fechadeingreso),
+            fechaIngreso: moment(dataEgreso.fechadeingreso, 'DD/MM/YYYY').toDate(),
             horaIngreso: dataEgreso.horadeingreso,
             dni: dataEgreso.dni,
-            fechaEgreso: new Date(dataEgreso.fechadeegreso),
+            fechaEgreso: moment(dataEgreso.fechadeegreso, 'DD/MM/YYYY').toDate(),
             horaEgreso: dataEgreso.horadeegreso,
             tipo: dataEgreso.tipodeegreso,
-            user: this.user,
             institution: this.institution
         };
         this.checkoutsService.save(egreso).subscribe();
