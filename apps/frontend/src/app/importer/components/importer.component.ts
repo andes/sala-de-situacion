@@ -148,7 +148,8 @@ export class ImporterComponent implements OnInit {
             covid: dataIngreso.covid,
             oxigeno: dataIngreso.oxigeno,
             estado: dataIngreso.estado,
-            institution: this.institution
+            institution: this.institution,
+            exportado: false
         };
         this.ocupationsService.save(ingreso).subscribe();
     }
@@ -163,7 +164,8 @@ export class ImporterComponent implements OnInit {
             fechaEgreso: moment(dataEgreso.fechadeegreso, 'DD/MM/YYYY').toDate(),
             horaEgreso: dataEgreso.horadeegreso,
             tipo: dataEgreso.tipodeegreso,
-            institution: this.institution
+            institution: this.institution,
+            exportado: false
         };
         this.checkoutsService.save(egreso).subscribe();
     }

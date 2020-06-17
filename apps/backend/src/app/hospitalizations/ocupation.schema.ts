@@ -31,7 +31,8 @@ const OcupationSchema = new mongoose.Schema({
         _id: false,
         id: mongoose.Schema.Types.ObjectId,
         nombre: String
-    }
+    },
+    exportado: Boolean
 });
 OcupationSchema.plugin(AuditPlugin);
 export const Ocupation = mongoose.model('ocupation', OcupationSchema, 'ocupations');

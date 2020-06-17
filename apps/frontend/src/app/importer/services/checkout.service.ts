@@ -19,6 +19,7 @@ export interface Checkout {
         id: mongoose.Schema.Types.ObjectId,
         nombre: String
     };
+    exportado: boolean;
 }
 
 @Injectable()
