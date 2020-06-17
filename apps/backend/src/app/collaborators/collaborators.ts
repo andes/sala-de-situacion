@@ -43,12 +43,12 @@ async function generarReport(type, institution, servicio) {
 
     if (ocurrenciaDotacion || ocurrenciaEgresos || ocurrenciaOcupacion) {
         const totalRespiradores = ocurrenciaDotacion['camas_con_respirador'] || 0;  // cantidad total de respiradores
-        const respiradoresOcupados = ocurrenciaOcupacion['con_respirador'] || 0;  // Cantidad de respiradores ocupados
+        const respiradoresOcupados = ocurrenciaOcupacion['ocupadas_c_respirador'] || 0;  // Cantidad de respiradores ocupados
         if (!lastReport || (lastReport && (ocupacion.fecha > lastReport['fecha']))) {
-            respiradoresLiberados = totalRespiradores - respiradoresOcupados;  // Cantidad de respiradores liberados desde la última carga
+            respiradoresLiberados = ocurrenciaOcupacion['disponibles_c_respirador'];  // Cantidad de respiradores liberados desde la última carga
         }
         report[`respirators_allocated_${type}`] = totalRespiradores;  // cantidad total de respiradores
-        report[`respirators_available_${type}_count`] = Math.abs(respiradoresLiberados);  // Cantidad de respiradores liberados desde la última carga
+        report[`respirators_available_${type}_count`] = respiradoresLiberados;  // Cantidad de respiradores liberados desde la última carga
         report[`respirators_unavailable_${type}_count`] = respiradoresOcupados;
         report[`uti_allocated_${type}`] = ocurrenciaDotacion['total_dotacion'] || 0; // Dotación: Total de camas
         report[`uti_allocated_${type}_gas`] = ocurrenciaDotacion['total_c_oxigeno'] || 0; // Dotacion: total de camas con oxígenos en la UTI
@@ -64,7 +64,7 @@ async function generarReport(type, institution, servicio) {
 
         report[`uti_gas_available_${type}_count`] = ocurrenciaOcupacion['disponibles_c_oxigeno'] || 0; // Camas disponibles con oxígeno UTI
         report[`uti_gas_unavailable_${type}_count`] = ocurrenciaOcupacion['ocupadas_c_oxigeno'] || 0; // Camas ocupadas con oxígeno de UTI
-        report[`uti_hospitalized_${type}_count`] = (ocurrenciaOcupacion['ocupadas_c_oxigeno'] || 0) + (ocurrenciaOcupacion['indicadores.ocupadas_s_oxigeno'] || 0);  // Cantidad de Internados total en el servicio
+        report[`uti_hospitalized_${type}_count`] = (ocurrenciaOcupacion['ocupadas_c_oxigeno'] || 0) + (ocurrenciaOcupacion['ocupadas_s_oxigeno'] || 0) + (ocurrenciaOcupacion['ocupadas_c_respirador'] || 0);  // Cantidad de Internados total en el servicio
         return report;
     } else {
         return null
