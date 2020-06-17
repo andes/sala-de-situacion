@@ -19,8 +19,8 @@ export class ImporterComponent implements OnInit {
     private user;
     public institution = {};
     public institutions = [];
-    public tiposEgresosValidos = ['alta', 'defuncion', 'derivacion'];
-    public estadosValidos = ['disponible', 'ocupada', 'bloqueada'];
+    public tiposEgresosValidos = ['ALTA', 'DEFUNCION', 'DERIVACION', 'RETIRO VOLUNTARIO'];
+    public estadosValidos = ['DISPONIBLE', 'OCUPADA', 'BLOQUEADA'];
 
     constructor(
         private auth: AuthService,
@@ -74,7 +74,7 @@ export class ImporterComponent implements OnInit {
         var lines = csv.split("\n");
         var result = [];
         var headers = lines[0].split(",");
-        for (var i = 1; i < lines.length; i++) {
+        for (var i = 1; i < lines.length - 1; i++) {
             var obj = {};
             var currentline = lines[i].split(",");
             for (var j = 0; j < headers.length; j++) {
@@ -97,17 +97,17 @@ export class ImporterComponent implements OnInit {
         var lines = csv.split("\n");
         var result = [];
         var headers = lines[0].split(",");
-        for (var i = 1; i < lines.length; i++) {
+        for (var i = 1; i < lines.length - 1; i++) {
             var obj = {};
             var currentline = lines[i].split(",");
             for (var j = 0; j < headers.length; j++) {
                 if (currentline[j]) {
-                    currentline[j] = currentline[j].replace(/['"]+/g, '').toUpperCase();;
+                    currentline[j] = currentline[j].replace(/['"]+/g, '').toUpperCase();
                 }
                 if (headers[j]) {
                     headers[j] = headers[j].replace(/['" ]+/g, '');
                 }
-                if (!(headers[j].toLowerCase() === 'tipodeegreso' && !this.tiposEgresosValidos.includes(currentline[j]))) {
+                if (!(headers[j].toLowerCase() === 'tipo de egreso') || headers[j].toLowerCase() === 'tipo de egreso' && this.tiposEgresosValidos.includes(currentline[j])) {
                     obj[headers[j].toLowerCase()] = currentline[j];
                 }
             }

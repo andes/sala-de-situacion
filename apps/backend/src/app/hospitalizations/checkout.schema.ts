@@ -11,7 +11,7 @@ const CheckoutSchema = new mongoose.Schema({
     horaIngreso: String,
     tipo: {
         type: String,
-        enum: ['DEFUNCION', 'ALTA', 'DERIVACION']
+        enum: ['DEFUNCION', 'ALTA', 'DERIVACION', 'RETIRO VOLUNTARIO']
     },
     institution: {
         _id: false,
