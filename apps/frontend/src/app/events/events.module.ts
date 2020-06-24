@@ -1,3 +1,4 @@
+import { ResourcesService } from './service/resources.service';
 import { NgModule } from '@angular/core';
 import { NgxObserveModule } from 'ngx-observe';
 import { CommonModule } from '@angular/common';
@@ -18,18 +19,19 @@ import { EventsResolver } from './resolver/events.resolver';
     ],
     // prettier-ignore
     imports: [
-        CommonModule, 
-        FormsModule, 
-        HttpClientModule, 
+        CommonModule,
+        FormsModule,
+        HttpClientModule,
         RouterModule,
         PlexModule,
-        NgxObserveModule, 
+        NgxObserveModule,
         EventsRouting
     ],
     // prettier-ignore
     providers: [
-        EventsResolver
+        EventsResolver,
+        ResourcesService
     ],
     bootstrap: []
 })
-export class EventsModule {}
+export class EventsModule { }

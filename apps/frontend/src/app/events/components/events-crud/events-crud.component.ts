@@ -1,3 +1,4 @@
+import { ResourcesService } from './../../service/resources.service';
 import { Component, OnInit } from '@angular/core';
 import { Event, EventsService } from '../../service/events.service';
 import { Plex } from '@andes/plex';
@@ -17,13 +18,7 @@ export class AppEventsCrudComponent implements OnInit {
         { id: 'int', nombre: 'Numerico' },
         { id: 'select', nombre: 'Selección' }
     ];
-
-    /** Eso podria ser configurable */
-    public selectList = [
-        { id: 'servicios', nombre: 'Servicios' },
-        { id: 'localidad', nombre: 'Localidades' },
-        { id: 'provincia', nombre: 'Provincias' },
-    ];
+    public recursos = [];
     public hasOcurrences = false;
     public event: Event = {
         id: '',
@@ -49,26 +44,30 @@ export class AppEventsCrudComponent implements OnInit {
         private route: ActivatedRoute,
         private auth: AuthService,
         private router: Router,
-        private ocurrenceEventsService: OcurrenceEventsService
+        private ocurrenceEventsService: OcurrenceEventsService,
+        private resourcesService: ResourcesService
     ) { }
 
     ngOnInit() {
         if (!this.auth.checkPermisos('admin:true')) {
             this.router.navigate(['/']);
         }
-        const event = this.route.snapshot.data.event;
-        if (event) {
-            this.event = event;
-            this.event.indicadores.forEach(indicador => {
-                indicador.type = this.tiposList.find(t => t.id === indicador.type) as any;
-                if ((indicador.type as any).id === 'select') {
-                    indicador.recurso = this.selectList.find(t => t.id === indicador.recurso) as any;
-                }
-            });
-            this.ocurrenceEventsService.search({ eventKey: event.categoria }).subscribe(response => {
-                this.hasOcurrences = response.length > 0;
-            })
-        }
+        this.resourcesService.search({}).subscribe(resultado => {
+            this.recursos = resultado;
+            const event = this.route.snapshot.data.event;
+            if (event) {
+                this.event = event;
+                this.event.indicadores.forEach(indicador => {
+                    indicador.type = this.tiposList.find(t => t.id === indicador.type) as any;
+                    if ((indicador.type as any).id === 'select') {
+                        indicador.recurso = this.recursos.find(t => t.key === indicador.recurso) as any;
+                    }
+                });
+                this.ocurrenceEventsService.search({ eventKey: event.categoria }).subscribe(response => {
+                    this.hasOcurrences = response.length > 0;
+                })
+            }
+        });
     }
 
     onAdd() {
@@ -106,7 +105,7 @@ export class AppEventsCrudComponent implements OnInit {
                     const indicador: any = { ...i };
                     indicador.type = indicador.type.id;
                     if (indicador.type === 'select') {
-                        indicador.recurso = indicador.recurso.id;
+                        indicador.recurso = indicador.recurso.key;
                     } else {
                         indicador.recurso = null;
                     }
