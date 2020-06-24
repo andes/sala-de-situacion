@@ -34,6 +34,7 @@ export interface Ocupation {
         id: mongoose.Schema.Types.ObjectId,
         nombre: String
     };
+    exportado: boolean;
 }
 
 @Injectable()
