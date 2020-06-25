@@ -31,7 +31,20 @@ export const environment = {
         pass: process.env.PASS_SNVS || 'unapass'
     },
     exportadorHost: process.env.HOST_EXPORTADOR || '',
-    bi_query_host: process.env.BI_QUERY_HOST || 'http://localhost:4000'
+    bi_query_host: process.env.BI_QUERY_HOST || 'http://localhost:4000',
+    conSql: {
+        auth: {
+            user: process.env.USER_SQL || 'prueba',
+            password: process.env.PASS_SQL || 'unapass'
+        },
+        serverSql: {
+            server: process.env.HOST_SQL || 'prueba',
+            database: process.env.DB_SQL || 'db'
+        },
+        pool: {
+            acquireTimeoutMillis: 15000
+        }
+    }
 };
 
 export const jobs = [
