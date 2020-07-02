@@ -20,6 +20,7 @@ export interface Checkout {
         nombre: String
     };
     exportado: boolean;
+    nroArchivo: number;
 }
 
 @Injectable()

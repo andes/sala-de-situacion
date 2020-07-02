@@ -18,7 +18,8 @@ const CheckoutSchema = new mongoose.Schema({
         id: mongoose.Schema.Types.ObjectId,
         nombre: String
     },
-    exportado: Boolean
+    exportado: Boolean,
+    nroArchivo: Number
 });
 CheckoutSchema.plugin(AuditPlugin);
 export const Checkout = mongoose.model('checkout', CheckoutSchema, 'checkouts');

@@ -14,7 +14,8 @@ class OcupationResource extends ResourceBase {
         dni: MongoQuery.partialString,
         respirador: MongoQuery.equalMatch,
         covid: MongoQuery.equalMatch,
-        tipo: MongoQuery.equalMatch
+        tipo: MongoQuery.equalMatch,
+        nroArchivo: MongoQuery.equalMatch
     };
 }
 
