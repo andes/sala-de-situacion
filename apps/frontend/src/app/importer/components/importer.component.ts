@@ -16,7 +16,8 @@ export class ImporterComponent implements OnInit {
     public egresos = [];
     public ingresos = [];
     public disableGuardar = true;
-    private user;
+    public ultimoNroArchivoIngreso: number;
+    public ultimoNroArchivoEgreso: number;
     public institution = {};
     public institutions = [];
     public tiposEgresosValidos = ['ALTA', 'DEFUNCION', 'DERIVACION', 'RETIRO VOLUNTARIO'];
@@ -32,8 +33,9 @@ export class ImporterComponent implements OnInit {
 
     ngOnInit() {
         this.auth.getSession().subscribe((sessionUser) => {
-            this.user = sessionUser;
             this.loadInstitutions();
+            this.getUltimoNumeroArchivoIngreso();
+            this.getUltimoNumeroArchivoEgreso();
         });
     }
 
@@ -118,14 +120,20 @@ export class ImporterComponent implements OnInit {
 
     guardarImportacion() {
         try {
-            this.ingresos.forEach(element => {
-                this.guardarIngreso(element);
-            });
-            this.ingresos = [];
-            this.egresos.forEach(element => {
-                this.guardarEgreso(element);
-            });
-            this.egresos = [];
+            if (this.ingresos.length > 0) {
+                this.ultimoNroArchivoIngreso = this.ultimoNroArchivoIngreso + 1;
+                this.ingresos.forEach(element => {
+                    this.guardarIngreso(element);
+                });
+                this.ingresos = [];
+            }
+            if (this.egresos.length > 0) {
+                this.ultimoNroArchivoEgreso = this.ultimoNroArchivoEgreso + 1;
+                this.egresos.forEach(element => {
+                    this.guardarEgreso(element);
+                });
+                this.egresos = [];
+            }
             this.resetInput();
             this.plex.toast('success', `Los datos han sido importados correctamente`);
         } catch (err) {
@@ -149,7 +157,8 @@ export class ImporterComponent implements OnInit {
             oxigeno: dataIngreso.oxigeno,
             estado: dataIngreso.estado,
             institution: this.institution,
-            exportado: false
+            exportado: false,
+            nroArchivo: this.ultimoNroArchivoIngreso
         };
         this.ocupationsService.save(ingreso).subscribe();
     }
@@ -165,9 +174,30 @@ export class ImporterComponent implements OnInit {
             horaEgreso: dataEgreso.horadeegreso,
             tipo: dataEgreso.tipodeegreso,
             institution: this.institution,
-            exportado: false
+            exportado: false,
+            nroArchivo: this.ultimoNroArchivoEgreso
         };
         this.checkoutsService.save(egreso).subscribe();
+    }
+
+    getUltimoNumeroArchivoIngreso() {
+        this.ocupationsService.search({ sort: '-nroArchivo', limit: '1' }).subscribe(elements => {
+            if (elements[0] && elements[0].nroArchivo) {
+                this.ultimoNroArchivoIngreso = elements[0].nroArchivo;
+            } else {
+                this.ultimoNroArchivoIngreso = 0;
+            }
+        });
+    }
+
+    getUltimoNumeroArchivoEgreso() {
+        this.checkoutsService.search({ sort: '-nroArchivo', limit: '1' }).subscribe(elements => {
+            if (elements[0] && elements[0].nroArchivo) {
+                this.ultimoNroArchivoEgreso = elements[0].nroArchivo;
+            } else {
+                this.ultimoNroArchivoEgreso = 0;
+            }
+        });
     }
 
     resetInput() {

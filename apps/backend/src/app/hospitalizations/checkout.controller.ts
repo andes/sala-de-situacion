@@ -13,7 +13,8 @@ class CheckoutResource extends ResourceBase {
         apellido: MongoQuery.partialString,
         nombre: MongoQuery.partialString,
         dni: MongoQuery.partialString,
-        tipo: MongoQuery.equalMatch
+        tipo: MongoQuery.equalMatch,
+        nroArchivo: MongoQuery.equalMatch
     };
 }
 

@@ -35,6 +35,7 @@ export interface Ocupation {
         nombre: String
     };
     exportado: boolean;
+    nroArchivo: number;
 }
 
 @Injectable()
