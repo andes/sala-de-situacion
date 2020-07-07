@@ -1,12 +1,9 @@
 import { environment } from '../../../src/environments/environment';
 import * as moment from 'moment';
 import { CovidEvents } from './covid-events.schema';
-import { covidEventsLog } from './logs/covid-events.log';
 const fetch = require('node-fetch');
-const covidLog = covidEventsLog.startTrace();
 
 export async function getToken(user: string, pass: string) {
-    try {
         const url = `${environment.snvs.host}/auth/realms/sisa/protocol/openid-connect/token`;
         const formData = new URLSearchParams();
         formData.append('grant_type', 'password');
@@ -30,9 +27,6 @@ export async function getToken(user: string, pass: string) {
             return responseJson.access_token
         }
         return null;
-    } catch (err) {
-        covidLog.error('getToken', user, err);
-    }
 }
 
 function transformDate(fecha: string) {
@@ -63,7 +57,6 @@ async function importCasesPerPage(token, page: string) {
         return body;
 
     } catch (err) {
-        covidEventsLog.error('importCasesPerPage', {}, err);
         return [];
     }
 }
@@ -83,8 +76,7 @@ function saveCases(casos) {
             }
         });
     } catch (err) {
-        covidEventsLog.error('saveCases', {}, err);
-        return err;
+         return err;
     }
 }
 
@@ -97,7 +89,6 @@ export async function importCasesCovid(done) {
     let retry = true;
     let page = 0;
     let cantidad = 0;
-    try {
         while (retry) {
             try {
                 const casos = await importCasesPerPage(token, page.toString());
@@ -117,11 +108,6 @@ export async function importCasesCovid(done) {
                 return err;
             }
         }
-        await covidLog.info('importCovid', { countPage: cantidad });
-    }
-    catch (err) {
-        covidEventsLog.error('importCasesCovid', {}, err);
-    }
     done();
 
 }
