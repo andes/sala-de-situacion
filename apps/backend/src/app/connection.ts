@@ -12,7 +12,6 @@ function schemaDefaults(schema) {
 
 export class Connections {
     static main: mongoose.Connection;
-    static logs: mongoose.Connection;
 
     /**
      * Inicializa las conexiones a MongoDB
@@ -43,12 +42,9 @@ export class Connections {
             reconnectInterval: 500
         });
 
-        // LOGS
-        this.logs = mongoose.createConnection(environment.logDatabase.log.host, environment.logDatabase.log.options);
         this.main = mongoose.connection;
 
         // Configura eventos
-        this.configEvents('logs', this.logs);
         this.configEvents('main', this.main);
     }
 
