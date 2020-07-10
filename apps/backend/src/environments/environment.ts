@@ -30,7 +30,8 @@ export const environment = {
         user: process.env.USER_SNVS || 'user',
         pass: process.env.PASS_SNVS || 'unapass'
     },
-    exportadorHost: process.env.HOST_EXPORTADOR || ''
+    exportadorHost: process.env.HOST_EXPORTADOR || '',
+    bi_query_host: process.env.BI_QUERY_HOST || 'http://localhost:4000'
 };
 
 export const jobs = [

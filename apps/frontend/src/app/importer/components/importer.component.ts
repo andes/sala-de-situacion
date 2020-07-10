@@ -126,6 +126,7 @@ export class ImporterComponent implements OnInit {
                     this.guardarIngreso(element);
                 });
                 this.ingresos = [];
+                this.ocupationsService.export(this.ultimoNroArchivoIngreso).subscribe();
             }
             if (this.egresos.length > 0) {
                 this.ultimoNroArchivoEgreso = this.ultimoNroArchivoEgreso + 1;
@@ -133,6 +134,7 @@ export class ImporterComponent implements OnInit {
                     this.guardarEgreso(element);
                 });
                 this.egresos = [];
+                this.checkoutsService.export(this.ultimoNroArchivoIngreso).subscribe();
             }
             this.resetInput();
             this.plex.toast('success', `Los datos han sido importados correctamente`);

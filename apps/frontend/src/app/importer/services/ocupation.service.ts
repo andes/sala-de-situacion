@@ -45,4 +45,8 @@ export class OcupationsService extends ResourceBaseHttp<Ocupation> {
     constructor(protected server: Server) {
         super(server);
     }
+
+    export(archivo) {
+        return this.server.get(`${this.url}/export/${archivo}`);
+    }
 }
