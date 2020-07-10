@@ -23,10 +23,7 @@ const OcupationSchema = new mongoose.Schema({
         type: String,
         enum: ['SI', 'NO']
     },
-    estado: {
-        type: String,
-        enum: ['DISPONIBLE', 'BLOQUEADA', 'OCUPADA']
-    },
+    estado: String,
     institution: {
         _id: false,
         id: mongoose.Schema.Types.ObjectId,

@@ -9,10 +9,7 @@ const CheckoutSchema = new mongoose.Schema({
     dni: String,
     fechaIngreso: Date,
     horaIngreso: String,
-    tipo: {
-        type: String,
-        enum: ['DEFUNCION', 'ALTA', 'DERIVACION', 'RETIRO VOLUNTARIO']
-    },
+    tipo: String,
     institution: {
         _id: false,
         id: mongoose.Schema.Types.ObjectId,

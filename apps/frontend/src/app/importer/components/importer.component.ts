@@ -73,21 +73,20 @@ export class ImporterComponent implements OnInit {
     }
 
     public csvParseIngresos(csv) {
-        var lines = csv.split("\n");
-        var result = [];
-        var headers = lines[0].split(",");
-        for (var i = 1; i < lines.length - 1; i++) {
-            var obj = {};
-            var currentline = lines[i].split(",");
-            for (var j = 0; j < headers.length; j++) {
+
+        let lines = csv.split("\n");
+        let result = [];
+        let headers = lines[0].split(/[;,]+/);
+        headers = headers.map(h => h.replace(/['" ]+/g, '').toLowerCase().trim());
+        for (let i = 1; i < lines.length; i++) {
+            let obj = {};
+            let currentline = lines[i].split(/(?=[;,])/);
+            for (let j = 0; j < headers.length; j++) {
                 if (currentline[j]) {
-                    currentline[j] = currentline[j].replace(/['"]+/g, '').toUpperCase();
+                    currentline[j] = currentline[j].replace(/['";,]+/g, '').toUpperCase().trim();
                 }
-                if (headers[j]) {
-                    headers[j] = headers[j].replace(/['" ]+/g, '');
-                }
-                if (!(headers[j].toLowerCase() === 'estado' && !this.estadosValidos.includes(currentline[j]))) {
-                    obj[headers[j].toLowerCase()] = currentline[j];
+                if (!(headers[j] === 'estado' && !this.estadosValidos.includes(currentline[j]))) {
+                    obj[headers[j]] = currentline[j];
                 }
             }
             result.push(obj);
@@ -96,21 +95,19 @@ export class ImporterComponent implements OnInit {
     }
 
     public csvParseEgresos(csv) {
-        var lines = csv.split("\n");
-        var result = [];
-        var headers = lines[0].split(",");
-        for (var i = 1; i < lines.length - 1; i++) {
-            var obj = {};
-            var currentline = lines[i].split(",");
-            for (var j = 0; j < headers.length; j++) {
+        let lines = csv.split("\n");
+        let result = [];
+        let headers = lines[0].split(/[;,]+/);
+        headers = headers.map(h => h.replace(/['" ]+/g, '').toLowerCase().trim());
+        for (let i = 1; i < lines.length; i++) {
+            let obj = {};
+            let currentline = lines[i].split(/[;,]+/);
+            for (let j = 0; j < headers.length; j++) {
                 if (currentline[j]) {
-                    currentline[j] = currentline[j].replace(/['"]+/g, '').toUpperCase();
+                    currentline[j] = currentline[j].replace(/['"]+/g, '').toUpperCase().trim();
                 }
-                if (headers[j]) {
-                    headers[j] = headers[j].replace(/['" ]+/g, '');
-                }
-                if (!(headers[j].toLowerCase() === 'tipo de egreso') || headers[j].toLowerCase() === 'tipo de egreso' && this.tiposEgresosValidos.includes(currentline[j])) {
-                    obj[headers[j].toLowerCase()] = currentline[j];
+                if (!(headers[j] === 'tipodeegreso') || headers[j] === 'tipodeegreso' && this.tiposEgresosValidos.includes(currentline[j])) {
+                    obj[headers[j]] = currentline[j];
                 }
             }
             result.push(obj);
