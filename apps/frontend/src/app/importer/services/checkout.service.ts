@@ -30,4 +30,8 @@ export class CheckoutsService extends ResourceBaseHttp<Checkout> {
     constructor(protected server: Server) {
         super(server);
     }
+
+    export(archivo) {
+        return this.server.get(`${this.url}/export/${archivo}`);
+    }
 }
