@@ -5,6 +5,7 @@ import { Plex } from '@andes/plex';
 import { OcupationsService } from '../services/ocupation.service';
 import { InstitutionService } from '../../institutions/service/institution.service';
 import * as moment from 'moment';
+import { IfStmt } from '@angular/compiler';
 
 @Component({
     selector: 'chart',
@@ -49,8 +50,6 @@ export class ImporterComponent implements OnInit {
                 let csv = reader.result;
                 var result = this.csvParseIngresos(csv);
                 this.ingresos = result;
-                if (this.ingresos.length > 0 || this.egresos.length > 0)
-                    this.disableGuardar = false;
             }
         }
     }
@@ -65,20 +64,70 @@ export class ImporterComponent implements OnInit {
                 let csv = reader.result;
                 var result = this.csvParseEgresos(csv);
                 this.egresos = result;
-                if ((this.ingresos && this.ingresos.length > 0) || (this.egresos && this.egresos.length > 0)) {
-                    this.disableGuardar = false;
-                }
             }
         }
     }
 
-    public csvParseIngresos(csv) {
+    private comprobarOcupacion(ocupacion, linea) {
+        let mensaje = "";
 
+        if (Object.keys(ocupacion).length != 13) {
+            mensaje += `La cantidad de campos obtenidos no corresponde. (linea ${linea}).`;
+        }
+
+        if (!ocupacion.cama) {
+            mensaje += `Debe completar el dato cama. (linea ${linea}). `;
+        }
+        if (!ocupacion.servicio) {
+            mensaje += `Debe completar el dato servicio. (linea ${linea}). `;
+        }
+        if (!ocupacion.estado) {
+            mensaje += `Debe completar el dato estado. (linea ${linea}). `;
+        } else {
+            if (ocupacion.estado === 'OCUPADA') {
+                if (!ocupacion.nombre && !ocupacion.nombre && !ocupacion.dni) {
+                    mensaje += `Debe completar al menos un dato de paciente. (linea ${linea}). `;
+                }
+            }
+        }
+        return mensaje;
+    }
+
+    private comprobarEgresos(egreso, linea) {
+        let mensaje = "";
+
+        if (Object.keys(egreso).length != 8) {
+            mensaje += `La cantidad de campos obtenidos no corresponde. (linea ${linea}).`;
+        }
+        if (!egreso.tipodeegreso) {
+            mensaje += `Debe completar el tipo de egreso. (linea ${linea}). `;
+        }
+
+        if (!egreso.fechadeegreso) {
+            mensaje += `Debe completar la fecha de egreso. (linea ${linea}). `;
+        }
+
+        if (!egreso.fechadeingreso) {
+            mensaje += `Debe completar la fecha de egreso. (linea ${linea}). `;
+        }
+
+        if (!egreso.nombre && !egreso.nombre && !egreso.dni) {
+            mensaje += `Debe completar al menos un dato de paciente. (linea ${linea}). `;
+        }
+        return mensaje;
+    }
+
+    public csvParseIngresos(csv) {
         let lines = csv.split("\n");
         let result = [];
-        let headers = lines[0].split(/[;,]+/);
-        headers = headers.map(h => h.replace(/['" ]+/g, '').toLowerCase().trim());
-        for (let i = 1; i < lines.length; i++) {
+        let inicio = 0;
+        let headers = ['fechadeingreso', 'horadeingreso', 'dni', 'apellido', 'nombre', 'piso', 'habitacion', 'servicio', 'cama', 'oxigeno', 'respirador', 'covid', 'estado'];
+        if (lines[0].toLowerCase().includes("fecha")) {
+            inicio = 1;
+            headers = lines[0].split(/[;,]+/);
+            headers = headers.map(h => h.replace(/['" ]+/g, '').toLowerCase().trim());
+        }
+        for (let i = inicio; i < lines.length; i++) {
             let obj = {};
             let currentline = lines[i].split(/(?=[;,])/);
             for (let j = 0; j < headers.length; j++) {
@@ -89,7 +138,16 @@ export class ImporterComponent implements OnInit {
                     obj[headers[j]] = currentline[j];
                 }
             }
-            result.push(obj);
+            let mensaje = '';
+            if (mensaje = this.comprobarOcupacion(obj, i)) {
+                this.disableGuardar = true;
+                this.plex.toast('danger', `Archivo ocupaciones: ${mensaje}`);
+                return [];
+            } else {
+                this.disableGuardar = false;
+                result.push(obj);
+            }
+
         }
         return result;
     }
@@ -97,8 +155,13 @@ export class ImporterComponent implements OnInit {
     public csvParseEgresos(csv) {
         let lines = csv.split("\n");
         let result = [];
-        let headers = lines[0].split(/[;,]+/);
-        headers = headers.map(h => h.replace(/['" ]+/g, '').toLowerCase().trim());
+        let inicio = 0;
+        let headers = ['fechadeingreso', 'horadeingreso', 'dni', 'apellido', 'nombre', 'fechadeegreso', 'horadeegreso', 'tipodeegreso'];
+        if (lines[0].toLowerCase().includes("fecha")) {
+            inicio = 1;
+            headers = lines[0].split(/[;,]+/);
+            headers = headers.map(h => h.replace(/['" ]+/g, '').toLowerCase().trim());
+        }
         for (let i = 1; i < lines.length; i++) {
             let obj = {};
             let currentline = lines[i].split(/[;,]+/);
@@ -110,7 +173,15 @@ export class ImporterComponent implements OnInit {
                     obj[headers[j]] = currentline[j];
                 }
             }
-            result.push(obj);
+            let mensaje = '';
+            if (mensaje = this.comprobarEgresos(obj, i)) {
+                this.disableGuardar = true;
+                this.plex.toast('danger', `Archivo egresos: ${mensaje}`);
+                return [];
+            } else {
+                this.disableGuardar = false;
+                result.push(obj);
+            }
         }
         return result;
     }
