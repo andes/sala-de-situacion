@@ -85,7 +85,7 @@ export class ImporterComponent implements OnInit {
             mensaje += `Debe completar el dato estado. (linea ${linea}). `;
         } else {
             if (ocupacion.estado === 'OCUPADA') {
-                if (!ocupacion.nombre && !ocupacion.nombre && !ocupacion.dni) {
+                if (!ocupacion.nombre && !ocupacion.apellido && !ocupacion.dni) {
                     mensaje += `Debe completar al menos un dato de paciente. (linea ${linea}). `;
                 }
             }
@@ -111,7 +111,7 @@ export class ImporterComponent implements OnInit {
             mensaje += `Debe completar la fecha de egreso. (linea ${linea}). `;
         }
 
-        if (!egreso.nombre && !egreso.nombre && !egreso.dni) {
+        if (!egreso.nombre && !egreso.apellido && !egreso.dni) {
             mensaje += `Debe completar al menos un dato de paciente. (linea ${linea}). `;
         }
         return mensaje;
