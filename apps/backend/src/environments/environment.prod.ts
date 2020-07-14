@@ -25,6 +25,7 @@ export const environment = {
       pass: process.env.MAIL_PASSWORD || 'somePass'
     }
   },
-  exportadorHost: process.env.HOST_EXPORTADOR || ''
+  exportadorHost: process.env.HOST_EXPORTADOR || '',
+  bi_query_host: process.env.BI_QUERY_HOST || 'http://localhost:4000'
 
 };
