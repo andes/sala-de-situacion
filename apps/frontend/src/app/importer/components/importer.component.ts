@@ -131,7 +131,7 @@ export class ImporterComponent implements OnInit {
                     this.guardarEgreso(element);
                 });
                 this.egresos = [];
-                this.checkoutsService.export(this.ultimoNroArchivoIngreso).subscribe();
+                this.checkoutsService.export(this.ultimoNroArchivoEgreso).subscribe();
             }
             this.resetInput();
             this.plex.toast('success', `Los datos han sido importados correctamente`);
