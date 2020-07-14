@@ -74,12 +74,8 @@ export class ImporterComponent implements OnInit {
         if (Object.keys(ocupacion).length != 13) {
             mensaje += `La cantidad de campos obtenidos no corresponde. (linea ${linea}).`;
         }
-
         if (!ocupacion.cama) {
             mensaje += `Debe completar el dato cama. (linea ${linea}). `;
-        }
-        if (!ocupacion.servicio) {
-            mensaje += `Debe completar el dato servicio. (linea ${linea}). `;
         }
         if (!ocupacion.estado) {
             mensaje += `Debe completar el dato estado. (linea ${linea}). `;
@@ -126,6 +122,11 @@ export class ImporterComponent implements OnInit {
             inicio = 1;
             headers = lines[0].split(/[;,]+/);
             headers = headers.map(h => h.replace(/['" ]+/g, '').toLowerCase().trim());
+            headers = headers.map(h => {
+                h = h === 'fechaingreso' ? 'fechadeingreso' : h;
+                h = h === 'horaingreso' ? 'horadeingreso' : h;
+                return h;
+            });
         }
         for (let i = inicio; i < lines.length; i++) {
             let obj = {};
@@ -161,6 +162,14 @@ export class ImporterComponent implements OnInit {
             inicio = 1;
             headers = lines[0].split(/[;,]+/);
             headers = headers.map(h => h.replace(/['" ]+/g, '').toLowerCase().trim());
+            headers = headers.map(h => {
+                h = h === "fechaingreso" ? 'fechadeingreso' : h;
+                h = h === "horaingreso" ? 'horadeingreso' : h;
+                h = h === "fechaegreso" ? 'fechadeegreso' : h;
+                h = h === "horadeegreso" ? 'horadeegreso' : h;
+                h = h === "tipoegreso" ? 'tipodeegreso' : h;
+                return h;
+            });
         }
         for (let i = 1; i < lines.length; i++) {
             let obj = {};
@@ -185,6 +194,7 @@ export class ImporterComponent implements OnInit {
         }
         return result;
     }
+
 
     guardarImportacion() {
         try {
