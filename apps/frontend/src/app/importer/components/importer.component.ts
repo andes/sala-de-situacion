@@ -5,7 +5,6 @@ import { Plex } from '@andes/plex';
 import { OcupationsService } from '../services/ocupation.service';
 import { InstitutionService } from '../../institutions/service/institution.service';
 import * as moment from 'moment';
-import { IfStmt } from '@angular/compiler';
 
 @Component({
     selector: 'chart',
@@ -129,7 +128,7 @@ export class ImporterComponent implements OnInit {
                 return h;
             });
         }
-        for (let i = inicio; i < lines.length; i++) {
+        for (let i = inicio; i < lines.length - 1; i++) {
             let obj = {};
             let currentline = lines[i].split(/(?=[;,])/);
             for (let j = 0; j < headers.length; j++) {
@@ -173,7 +172,7 @@ export class ImporterComponent implements OnInit {
                 return h;
             });
         }
-        for (let i = 1; i < lines.length; i++) {
+        for (let i = inicio; i < lines.length - 1; i++) {
             let obj = {};
             let currentline = lines[i].split(/[;,]+/);
             for (let j = 0; j < headers.length; j++) {
