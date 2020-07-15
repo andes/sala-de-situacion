@@ -21,6 +21,7 @@ export class ImporterComponent implements OnInit {
     public ultimoNroArchivoEgreso: number;
     public institution = {};
     public institutions = [];
+    public verAyuda = false;
     public tiposEgresosValidos = ['ALTA', 'DEFUNCION', 'DERIVACION', 'RETIRO VOLUNTARIO'];
     public estadosValidos = ['DISPONIBLE', 'OCUPADA', 'BLOQUEADA'];
 
@@ -142,7 +143,8 @@ export class ImporterComponent implements OnInit {
             let mensaje = '';
             if (mensaje = this.comprobarOcupacion(obj, i)) {
                 this.disableGuardar = true;
-                this.plex.toast('danger', `Archivo ocupaciones: ${mensaje}`);
+                this.plex.info('danger', `Archivo ocupaciones: ${mensaje}`);
+                this.resetInput();
                 return [];
             } else {
                 this.disableGuardar = false;
@@ -185,7 +187,8 @@ export class ImporterComponent implements OnInit {
             let mensaje = '';
             if (mensaje = this.comprobarEgresos(obj, i)) {
                 this.disableGuardar = true;
-                this.plex.toast('danger', `Archivo egresos: ${mensaje}`);
+                this.plex.info('danger', `Archivo egresos: ${mensaje}`);
+                this.resetInput();
                 return [];
             } else {
                 this.disableGuardar = false;
@@ -282,6 +285,10 @@ export class ImporterComponent implements OnInit {
 
     resetInput() {
         this.inputFile.nativeElement.value = '';
+    }
+
+    cambiarVerAyuda(mostrar) {
+        this.verAyuda = mostrar;
     }
 
     loadInstitutions() {
