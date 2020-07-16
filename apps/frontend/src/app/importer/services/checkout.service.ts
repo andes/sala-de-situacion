@@ -21,6 +21,7 @@ export interface Checkout {
     };
     exportado: boolean;
     nroArchivo: number;
+    createdAt: Date;
 }
 
 @Injectable()
