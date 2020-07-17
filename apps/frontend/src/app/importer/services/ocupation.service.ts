@@ -36,6 +36,7 @@ export interface Ocupation {
     };
     exportado: boolean;
     nroArchivo: number;
+    createdAt: Date;
 }
 
 @Injectable()

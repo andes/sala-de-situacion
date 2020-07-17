@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { PlexModule } from '@andes/plex';
 import { ImporterComponent } from './components/importer.component';
 import { OcupationsService } from './services/ocupation.service';
+import { ImportsComponent } from './components/imports/imports.component';
 
 @NgModule({
     imports: [
@@ -17,10 +18,12 @@ import { OcupationsService } from './services/ocupation.service';
         ImporterRouting
     ],
     exports: [
-        ImporterComponent
+        ImporterComponent,
+        ImportsComponent
     ],
     declarations: [
-        ImporterComponent
+        ImporterComponent,
+        ImportsComponent
     ],
     providers: [
         OcupationsService,
