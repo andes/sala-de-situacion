@@ -1,6 +1,8 @@
 <plex-layout>
     <plex-layout-main>
         <plex-title titulo="Importador">
+            <plex-button type="info" class="ml-2" (click)="cambiarVerAyuda(true)" icon="help-circle">
+            </plex-button>
             <plex-button label="Guardar" type="success" class="ml-2" [disabled]="disableGuardar"
                          (click)="guardarImportacion()"></plex-button>
         </plex-title>
@@ -85,3 +87,27 @@
         </plex-tabs>
     </plex-layout-main>
 </plex-layout>
+<plex-modal *ngIf="verAyuda" [allowClose]="true" [allowEscClose]="false" #modal [startOpen]="true"
+            (closed)="cambiarVerAyuda(false)">
+    <plex-icon name="help-circle" type="info"></plex-icon>
+    <plex-modal-title type="info">¿Cómo deben ser los archivos?</plex-modal-title>
+    <main>
+        <div class="pr-5 pl-5">
+            <plex-title size="sm" titulo="Ocupaciones"></plex-title>
+            Los encabezados del archivo cvs deberá tener el siguiente formato:<br>
+            Fecha de Ingreso | Hora de Ingreso | DNI | Apellido | Nombre | Piso | Habitacion | Servicio | Cama | Oxigeno
+            | Respirador | Covid | Estado<br><br>
+            <b>Estado:</b> disponible, ocupada, bloqueada<br>
+            <b>Covid:</b> SI, NO<br>
+            <b>Respirador:</b> SI, NO<br>
+            <b>Oxigeno:</b> SI, NO<br>
+            <br>
+            <plex-title size="sm" titulo="Egresos"></plex-title>
+            Los encabezados del archivo cvs deberá tener el siguiente formato:<br>
+            Fecha de Ingreso | Hora de Ingreso | DNI | Apellido | Nombre | Fecha de Egreso | Hora de Egreso | Tipo de
+            Egreso<br><br>
+            <b>Tipo de egreso:</b> defuncion, alta, derivacion<br>
+            <br>
+        </div>
+    </main>
+</plex-modal>
