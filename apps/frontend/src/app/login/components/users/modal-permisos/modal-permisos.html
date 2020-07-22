@@ -1,0 +1,37 @@
+<plex-modal [allowBackdropClose]="false" [allowEscClose]="false" [allowClose]="false" #modalPermisos>
+    <plex-icon name="key" type="info"></plex-icon>
+    <plex-modal-title type="info">Permisos de usuario</plex-modal-title>
+    <plex-modal-subtitle type="">{{ user.apellido }}, {{ user.nombre }}</plex-modal-subtitle>
+    <main>
+        <div class="w-100">
+            <div>
+                <plex-title size="sm" titulo="Eventos permitidos">
+                    <plex-button type="success" size="sm" (click)="addEventToUser()" [disabled]="!selectedEvent?.id">
+                        Agregar
+                    </plex-button>
+                    <plex-button modal center type="warning" size="sm" (click)="cerrarPermisos()">
+                        Cerrar
+                    </plex-button>
+                </plex-title>
+                <div class="row mt-3" justify>
+                    <div class="col-md-12 col-sm-12">
+                        <plex-select label="Sumar nuevo evento" name="evento" [(ngModel)]="selectedEvent"
+                                     [data]="eventos" labelField="nombre" idField="nombre">
+                        </plex-select>
+                    </div>
+                </div>
+                <plex-list>
+                    <ng-container *ngFor="let permiso of eventosUsuario">
+                        <plex-item class="hover">
+                            <plex-label titulo="{{ permiso.nombre }}" size="sm">
+                            </plex-label>
+                            <plex-button type="danger" icon="minus" size="sm" (click)="deleteEventFromUser(permiso.id)">
+                            </plex-button>
+                        </plex-item>
+                    </ng-container>
+                </plex-list>
+                <hr>
+            </div>
+        </div>
+    </main>
+</plex-modal>

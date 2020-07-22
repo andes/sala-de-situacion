@@ -1,3 +1,4 @@
+import { ModalPermisosComponent } from './components/users/modal-permisos/modal-permisos.component';
 import { SugerenciasComponent } from './components/sugerencias/sugerencias.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -16,6 +17,7 @@ import { ActivacionCuentaComponent } from './components/activacion-cuenta/activa
 import { RegeneratePasswordComponent } from './components/regenerate-password/regenerate-password';
 import { UserProfileComponent } from './components/perfil/user-profile.component';
 import { RouterModule } from '@angular/router';
+import { UsersComponent } from './components/users/users.component';
 
 @NgModule({
     imports: [CommonModule, FormsModule, HttpClientModule, RouterModule, PlexModule, LoginRoutingModule],
@@ -28,7 +30,9 @@ import { RouterModule } from '@angular/router';
         VerifyEmailComponent,
         ActivacionCuentaComponent,
         UserProfileComponent,
-        SugerenciasComponent
+        SugerenciasComponent,
+        ModalPermisosComponent,
+        UsersComponent
     ],
     providers: []
 })

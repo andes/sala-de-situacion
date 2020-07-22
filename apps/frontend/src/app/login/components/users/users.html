@@ -1,0 +1,44 @@
+<plex-layout>
+    <plex-layout-main>
+        <plex-title main titulo="Gestor de usuarios">
+        </plex-title>
+        <div class="row">
+            <div class="col-4">
+                <plex-text [(ngModel)]="documento" name="documento" (change)="filtrarResultados()" label="Documento"
+                           [required]="false">
+                </plex-text>
+            </div>
+            <div class="col-4">
+                <plex-text [(ngModel)]="email" name="email" (change)="filtrarResultados()" label="Email"
+                           [required]="false">
+                </plex-text>
+            </div>
+            <div class="col-4">
+                <plex-select [(ngModel)]="selectedInstitution" name="institucion" (change)="filtrarResultados()"
+                             label="Institucion" [data]="institutions" [required]="false">
+                </plex-select>
+            </div>
+        </div>
+        <hr>
+        <plex-list>
+            <plex-heading>
+                <b label>Nombre completo</b>
+                <b label>Documento</b>
+                <b label>Email</b>
+            </plex-heading>
+            <ng-container *ngFor="let user of users">
+                <plex-item class="hover" [selected]="user.selected">
+                    <plex-label>{{ user.apellido }}, {{ user.nombre }}</plex-label>
+                    <plex-label>{{ user.documento }}</plex-label>
+                    <plex-label>{{ user.email }}</plex-label>
+                    <plex-badge *ngIf="user.active" type="success">Habilitado</plex-badge>
+                    <plex-badge *ngIf="!user.active" type="danger">Deshabilitado</plex-badge>
+                    <plex-button type="info" icon="key" size="sm" (click)="verPermisos(user)" title="Asignar permisos">
+                    </plex-button>
+                </plex-item>
+            </ng-container>
+        </plex-list>
+    </plex-layout-main>
+</plex-layout>
+<modal-permisos [show]="showModalPermisos" [selectedUser]="usuarioPermisos" (closeModal)="resetModals()" #modalPermisos>
+</modal-permisos>

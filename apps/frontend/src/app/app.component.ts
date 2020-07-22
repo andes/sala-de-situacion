@@ -62,6 +62,9 @@ export class AppComponent implements OnInit {
         if (this.auth.checkPermisos('importer:write')) {
             this.menuList.push({ label: 'Visualizar datos', icon: 'folder-upload', route: '/imports' });
         }
+        if (this.auth.checkPermisos('admin:true')) {
+            this.menuList.push({ label: 'Gestor de usuarios', icon: 'account', route: '/auth/users' });
+        }
         this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/auth/logout' });
         this.plex.updateMenu(this.menuList);
     }
