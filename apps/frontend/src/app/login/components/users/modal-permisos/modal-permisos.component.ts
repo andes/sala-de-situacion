@@ -46,10 +46,6 @@ export class ModalPermisosComponent implements OnInit {
         this.loadEventos();
     }
 
-    ngAfterViewInit() {
-        console.log("me abri");
-    }
-
     loadEventos() {
         this.eventsService.search({}).subscribe(resultado => {
             this.eventos = resultado.map(event => {
@@ -82,7 +78,9 @@ export class ModalPermisosComponent implements OnInit {
     deleteEventFromUser(permiso) {
         var index = this.user.permisos.indexOf(permiso);
         this.user.permisos.splice(index, 1);
-        this.loadEventosUsuario();
+        this.usuarioService.save(this.user).subscribe(() => {
+            this.loadEventosUsuario();
+        });
     }
 
 }

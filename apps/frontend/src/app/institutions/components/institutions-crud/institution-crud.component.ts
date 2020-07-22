@@ -6,7 +6,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../login/services/auth.services';
 import { GeoreferenciaService } from '../../service/georeferencia.service';
 import { Utils } from './../../../shared/utils';
-import { EventsService } from '../../../events/service/events.service';
 
 @Component({
     selector: 'institution-crud',
@@ -33,7 +32,6 @@ export class AppInstitutionCrudComponent implements OnInit {
         codigo: {
             sisa: ''
         },
-        events: [],
         referente: {
             nombre: '',
             apellido: '',
@@ -52,8 +50,6 @@ export class AppInstitutionCrudComponent implements OnInit {
     provincias = [];
     localidades = [];
     barrios = [];
-    eventos = [];
-    public selectedEvent: any = {};
     institutionParam = null;
     geoReferenciaAux = []; // Coordenadas para la vista del mapa.
     infoMarcador: String = null;
@@ -69,8 +65,7 @@ export class AppInstitutionCrudComponent implements OnInit {
         private institutionService: InstitutionService,
         private router: Router,
         private auth: AuthService,
-        private georeferenciaService: GeoreferenciaService,
-        private eventsService: EventsService
+        private georeferenciaService: GeoreferenciaService
     ) { }
 
     ngOnInit() {
@@ -95,7 +90,6 @@ export class AppInstitutionCrudComponent implements OnInit {
             this.provincias = rta;
         });
         this.loadInstituciones();
-        this.loadEventos();
     }
 
     loadInstitution(institucion) {
@@ -112,7 +106,6 @@ export class AppInstitutionCrudComponent implements OnInit {
         this.institution.representante.telefono = institucion.representante ? institucion.representante.telefono : '';
         this.institution.institutions = institucion.institutions;
         this.institution.users = institucion.users;
-        this.institution.events = institucion.events;
         this.institution.location.direccion = institucion.direccion ? institucion.direccion : '';
         this.institution.location.barrio = institucion.barrio
             ? this.locationService.getBarrios({ nombre: institucion.barrio }).subscribe(barrios => {
@@ -196,8 +189,7 @@ export class AppInstitutionCrudComponent implements OnInit {
                     localidad: this.institution.location.localidad.nombre,
                     provincia: this.institution.location.provincia.nombre,
                     activo: this.institution.activo,
-                    coordenadas: [],
-                    events: this.institution.events
+                    coordenadas: []
                 };
                 if (this.institution.location.provincia && this.institution.location.localidad && this.institution.location.direccion) {
                     let direccionCompleta = this.institution.location.direccion + ', ' + this.institution.location.localidad.nombre
@@ -249,26 +241,6 @@ export class AppInstitutionCrudComponent implements OnInit {
     changeCoordenadas(coordenadas) {
         this.geoReferenciaAux = coordenadas;    // Se actualiza vista del mapa
         this.institution.location.coordenadas = coordenadas;    // Se asigna nueva georeferencia al paciente
-    }
-
-    loadEventos() {
-        this.eventsService.search({}).subscribe(resultado => {
-            this.eventos = resultado;
-        });
-    }
-
-    addEventToInstitution() {
-        let existeRelacionado = this.institution.events.filter(item => item.id === this.selectedEvent.id).length > 0;
-        if (existeRelacionado) {
-            this.plex.toast('danger', `La institución ya poseé el evento.`);
-        } else {
-            this.institution.events.push(this.selectedEvent);
-            this.selectedEvent = {};
-        }
-    }
-    deleteEventFromInstitution(related) {
-        var index = this.institution.events.indexOf(related);
-        this.institution.events.splice(index, 1);
     }
 
     addRelatedToInstitution() {

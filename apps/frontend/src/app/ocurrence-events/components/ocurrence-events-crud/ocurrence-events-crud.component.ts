@@ -35,15 +35,11 @@ export class OccurrenceEventsCrudComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.eventsService.search({}).subscribe(rta => {
-            this.loadedEvents = rta;
-            this.events = this.loadedEvents;
-        });
+        this.loadEventos();
         this.institutionService.search({}).subscribe(rta => {
             this.institutions = rta;
             if (rta.length === 1) {
                 this.institutionSelected = rta[0];
-                this.loadEventos();
             }
         });
         const ocurrenceEvent: OcurrenceEvent = this.route.snapshot.data.ocurrenceEvent;
@@ -89,10 +85,20 @@ export class OccurrenceEventsCrudComponent implements OnInit {
     }
 
     loadEventos() {
-        if (!this.auth.checkPermisos('admin:true') && this.institutionSelected) {
-            let eventosInstitucion = this.institutionSelected.events.map(event => event.id);
-            this.events = this.loadedEvents.filter(event => eventosInstitucion.includes(event.id));
+        this.eventsService.search({}).subscribe(resultado => {
+            this.events = resultado.filter(event => {
+                return this.tienePermiso(event);
+            });
             this.eventSelected = null;
+        });
+    }
+
+    tienePermiso(event) {
+        if (!this.auth.checkPermisos('admin:true')) {
+            const permiso = `${event.categoria}:indicators:write`;
+            return this.auth.checkPermisos(permiso);
+        } else {
+            return true;
         }
     }
 

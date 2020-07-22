@@ -2,24 +2,16 @@
     <plex-layout-main>
         <plex-title main titulo="Gestor de usuarios">
         </plex-title>
-        <div class="row">
-            <div class="col-4">
-                <plex-text [(ngModel)]="documento" name="documento" (change)="filtrarResultados()" label="Documento"
-                           [required]="false">
-                </plex-text>
-            </div>
-            <div class="col-4">
-                <plex-text [(ngModel)]="email" name="email" (change)="filtrarResultados()" label="Email"
-                           [required]="false">
-                </plex-text>
-            </div>
-            <div class="col-4">
-                <plex-select [(ngModel)]="selectedInstitution" name="institucion" (change)="filtrarResultados()"
-                             label="Institucion" [data]="institutions" [required]="false">
-                </plex-select>
-            </div>
-        </div>
-        <hr>
+        <plex-wrapper>
+            <plex-text [(ngModel)]="documento" name="documento" (change)="filtrarResultados()" label="Documento"
+                       [required]="false">
+            </plex-text>
+            <plex-text [(ngModel)]="email" name="email" (change)="filtrarResultados()" label="Email" [required]="false">
+            </plex-text>
+            <plex-select [(ngModel)]="selectedInstitution" name="institucion" (change)="filtrarResultados()"
+                         label="Institucion" [data]="institutions" [required]="false">
+            </plex-select>
+        </plex-wrapper>
         <plex-list>
             <plex-heading>
                 <b label>Nombre completo</b>

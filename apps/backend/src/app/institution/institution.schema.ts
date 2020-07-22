@@ -36,13 +36,6 @@ export const InstitutionsSchema = new mongoose.Schema({
             nombre: String
         }
     ],
-    events: [
-        {
-            id: String,
-            nombre: String,
-            eventKey: String
-        }
-    ],
     users: [
         {
             id: String,
