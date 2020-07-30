@@ -8,7 +8,7 @@ export const CovidEventsSchema = new mongoose.Schema({
     nombre: String,
     apellido: String,
     tipo_DOC: String,
-    nro_DOC: Number,
+    nro_DOC: String,
     sexo: String,
     edad_ACTUAL: Number,
     edad_DIAGNOSTICO: Number,
