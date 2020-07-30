@@ -74,8 +74,8 @@ function saveCases(casos) {
                 caso.fecha_MOD_DIAG = transformDate(caso.fecha_MOD_DIAG);
                 caso.fecha_NACIMIENTO = transformDate(caso.fecha_NACIMIENTO);
                 caso.fecha_DIAGNOSTICO = transformDate(caso.fecha_DIAGNOSTICO);
-                caso.fecha_MOD_CLASIF = transformDate(caso.fecha_MOD_CLASIF);
-                caso.fecha_GRAFICO = transformDate(caso.fecha_GRAFICO);
+                caso.fecha_MOD_CLASIF = new Date(caso.fecha_MOD_CLASIF);
+                caso.fecha_GRAFICO = new Date(caso.fecha_GRAFICO);
                 await CovidEvents.updateOne({ ideventocaso: caso.ideventocaso }, caso, { upsert: true });
             }
         });
