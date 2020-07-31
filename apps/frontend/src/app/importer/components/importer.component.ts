@@ -71,9 +71,6 @@ export class ImporterComponent implements OnInit {
     private comprobarOcupacion(ocupacion, linea) {
         let mensaje = "";
 
-        if (Object.keys(ocupacion).length >= 13) {
-            mensaje += `La cantidad de campos obtenidos no corresponde. (linea ${linea}).`;
-        }
         if (!ocupacion.cama) {
             mensaje += `Debe completar el dato cama. (linea ${linea}). `;
         }
@@ -133,7 +130,7 @@ export class ImporterComponent implements OnInit {
 
         for (let i = inicio; i < lines.length - 1; i++) {
             let obj = {};
-            if (lines[i] && lines[i][0] === ';') {
+            if (lines[i] && (lines[i][0] === ';' || lines[i][0] === ',')) {
                 const current = lines[i];
                 lines[i] = ` ${lines[i]}`;
             }
