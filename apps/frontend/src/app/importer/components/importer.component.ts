@@ -71,7 +71,7 @@ export class ImporterComponent implements OnInit {
     private comprobarOcupacion(ocupacion, linea) {
         let mensaje = "";
 
-        if (Object.keys(ocupacion).length != 13) {
+        if (Object.keys(ocupacion).length >= 13) {
             mensaje += `La cantidad de campos obtenidos no corresponde. (linea ${linea}).`;
         }
         if (!ocupacion.cama) {
@@ -125,11 +125,18 @@ export class ImporterComponent implements OnInit {
             headers = headers.map(h => {
                 h = h === 'fechaingreso' ? 'fechadeingreso' : h;
                 h = h === 'horaingreso' ? 'horadeingreso' : h;
+                h = h === 'fecha_ingreso' ? 'fechadeingreso' : h;
+                h = h === 'hora_ingreso' ? 'horadeingreso' : h;
                 return h;
             });
         }
+
         for (let i = inicio; i < lines.length - 1; i++) {
             let obj = {};
+            if (lines[i] && lines[i][0] === ';') {
+                const current = lines[i];
+                lines[i] = ` ${lines[i]}`;
+            }
             let currentline = lines[i].split(/(?=[;,])/);
             for (let j = 0; j < headers.length; j++) {
                 if (currentline[j]) {
