@@ -15,7 +15,14 @@ export class SelectSearchService {
         const params = {
             search
         }
-        return this.server.get(`/resources/elements/${recurso}`, { params, showError: true });
+        return this.server.get(`/resources/elements/${0}`, { params, showError: true });
     }
 
+    getByKeys(keys): Observable<any[]> {
+        keys = Array.isArray(keys) ? keys : [keys];
+        let url = `/resources?`;
+        keys.forEach(k => url+= `key=${k}&`);
+        url = url.slice(0, -1)
+        return this.server.get(url);
+    }
 }

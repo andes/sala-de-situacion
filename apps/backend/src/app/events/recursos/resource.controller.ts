@@ -19,6 +19,24 @@ class ResourceResource extends ResourceBase {
 export const ResourceCtr = new ResourceResource();
 export const ResourcesRoutes = ResourceCtr.makeRoutes();
 
+ResourcesRoutes.get('/resources', async (req, res, next) => {
+    const connectionMongoose = await mongoose.connect(environment.mongo_host, {
+        reconnectTries: Number.MAX_VALUE,
+        reconnectInterval: 500
+    });
+    connectionMongoose.connection.db.collection(req.params.recurso, (err, collection) => {
+        if (err) {
+            return next(err);
+        }
+        collection.find({ key: req.query.search}, { projection: { nombre: 1 } }).toArray((err, data) => {
+            if (err) {
+                return next(err);
+            }
+            return res.json(data);
+        });
+    });
+});
+
 ResourcesRoutes.get('/resources/elements/:recurso', async (req, res, next) => {
     const recurso = req.params.recurso;
     let query = {};
