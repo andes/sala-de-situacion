@@ -171,9 +171,9 @@ export async function generateOcurrences(registros, key, fieldFecha, publico = t
             ocurrence.eventKey = key;
             // Se machea la institucion
             const institution = await getInstitucion(doc.Efector);
-            if (institution) {
+            if (institution && institution.id) {
                 ocurrence.institution = {
-                    id: Types.ObjectId(institution._id),
+                    id: Types.ObjectId(institution.id),
                     nombre: institution.nombre
                 };
             } else {
