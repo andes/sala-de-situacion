@@ -30,20 +30,18 @@ async function getServicio(nombreServicio) {
         if (!servicio) {
             servicio = await Servicio.findOne({ equivalencias: RegExp(nombreServicio.toLowerCase()) });
         }
-        if (servicio) {
-            return servicio._id;
-        }
+        return servicio;
     }
     return null;
 }
-function mapearIndicadores(doc, idServicio, key) {
+function mapearIndicadores(doc, servicio, key) {
     let indicadores = {};
-    if (idServicio) {
+    if (servicio) {
         switch (key) {
             case 'ocupacion_camas':
                 indicadores = {
-                    servicio_ocupa: doc.Servicio,
-                    id_servicio_ocupa: idServicio,
+                    servicio_ocupa: servicio.nombre,
+                    id_servicio_ocupa: servicio._id || null,
                     disponibles_c_respirador: doc.CamasDisponiblesconRespirador,
                     ocupadas_c_respirador: doc.CamasOcupadasconRespirador,
                     bloqueadas_c_respirador: doc.CamasBloqueadasconRespirador,
@@ -63,23 +61,24 @@ function mapearIndicadores(doc, idServicio, key) {
                 const derivados = doc['Traslado a otro establecimiento'] ? doc['Traslado a otro establecimiento'] : 0;
                 const defuncion = doc.Defuncion ? doc.Defuncion : 0;
                 indicadores = {
-                    id_servicio_egresos: idServicio,
-                    servicio_egresos: doc.Servicio,
+                    id_servicio_egresos: servicio._id || null,
+                    servicio_egresos: servicio.nombre,
                     egresos_alta_medica: alta,
                     egresos_derivados: derivados,
                     egresos_defuncion: defuncion,
                     total_egresos: alta + derivados + defuncion
                 }
             }
+
         }
     }
     return indicadores;
 }
 
-function generateOccupation(doc, idServicio) {
+function generateOccupation(doc, servicio) {
     const indicadores = {
-        servicio_ocupa: doc.Servicio,
-        id_servicio_ocupa: idServicio,
+        servicio_ocupa: servicio.nombre || null,
+        id_servicio_ocupa: servicio._id || null,
         disponibles_c_respirador: 0,
         ocupadas_c_respirador: 0,
         bloqueadas_c_respirador: 0,
@@ -132,21 +131,21 @@ function generateOccupation(doc, idServicio) {
     return indicadores;
 }
 
-function crearIndicadores(doc, idServicio, key) {
+function crearIndicadores(doc, servicio, key) {
     let indicadores = {};
 
-    if (idServicio) {
+    if (servicio) {
         switch (key) {
             case 'ocupacion_camas':
-                indicadores = generateOccupation(doc, idServicio);
+                indicadores = generateOccupation(doc, servicio);
                 break;
             case 'egresos': {
                 const alta = doc.alta ? doc.alta : 0;
                 const derivados = ((doc.traslado || 0) + (doc.derivacion || 0));
                 const defuncion = doc.defuncion ? doc.Defuncion : 0;
                 indicadores = {
-                    id_servicio_egresos: idServicio,
-                    servicio_egresos: doc.Servicio,
+                    id_servicio_egresos: servicio._id || null,
+                    servicio_egresos: servicio.nombre,
                     egresos_alta_medica: alta,
                     egresos_derivados: derivados,
                     egresos_defuncion: defuncion,
@@ -167,49 +166,66 @@ export async function generateOcurrences(registros, key, fieldFecha, publico = t
             let ocurrence: any = {};
             // Se machea la institucion
             const institution = await getInstitucion(doc.Efector);
-            if (institution && institution.id) {
-                ocurrence.institucion = {
-                    id: Types.ObjectId(institution.id),
-                    nombre: institution.nombre
-                };
-            } else {
-                ocurrence.institucion = { nombre: doc.Efector }
-            }
-            // Se busca el servicio
-            const idServicio = await getServicio(doc.Servicio);
-            // Se recupera la última ocurrencia por institución y por servicio
-            const ocurrencia_ocupacion = await OcurrenceEvent.findOne({ 'eventKey': 'ocupacion_camas', 'institucion.id': ocurrence.institucion.id, 'indicadores.id_servicio_ocupa': idServicio }).sort([['date', -1]]);
-            const fecha_ocurrencia = doc[fieldFecha] ? new Date(doc[fieldFecha]) : new Date();
-
             try {
-                if (!ocurrencia_ocupacion || (ocurrencia_ocupacion && ocurrencia_ocupacion.fecha < fecha_ocurrencia)) {
-                    // Se crea una nueva ocurrencia
-                    if (!ocurrencia_ocupacion) {
-                        ocurrence.activo = true;
-                        ocurrence.eventKey = key;
-                    } else {
-                        ocurrence = ocurrencia_ocupacion;
-                    }
-                    ocurrence.fecha = fecha_ocurrencia;
-                    const indicadores = publico ? mapearIndicadores(doc, idServicio, key) : crearIndicadores(doc, idServicio, key);
-                    ocurrence.indicadores = indicadores;
-                    ocurrence.createdAt = new Date();
-                    ocurrence.createdBy = {
-                        email: "info@andes.gob.ar",
-                        nombre: "import-indicadores",
-                        apellido: "import-indicadores",
-                        documento: "0"
-                    }
-                    const ocurrenceEvent = new OcurrenceEvent(ocurrence);
-                    const col = await mongoose.connection.db.collection('ocurrence_event');
-                    if (!ocurrenceEvent.id || !ocurrenceEvent._id) {
-                        await col.insertOne(ocurrenceEvent);
-                    } else {
-                        await col.updateOne({ _id: ocurrenceEvent._id }, ocurrenceEvent, { upsert: true });
-                    }
-                    delete ocurrence._id;
-                    await OcurrenceEventHistory.create(ocurrence);
+                if (institution && institution.id) {
+                    ocurrence.institucion = {
+                        id: Types.ObjectId(institution.id),
+                        nombre: institution.nombre
+                    };
+                } else {
+                    ocurrence.institucion = { nombre: doc.Efector }
                 }
+                // Se busca el servicio
+                const servicio = await getServicio(doc.Servicio);
+                if (servicio) {
+                    let ocurrencia_ocupacion = null;
+                    // Se recupera la última ocurrencia por institución y por servicio
+                    if (key === 'ocupacion_camas') {
+                        ocurrencia_ocupacion = await OcurrenceEvent.findOne({ 'eventKey': key, 'institucion.id': ocurrence.institucion.id, 'indicadores.id_servicio_ocupa': servicio._id }).sort([['date', -1]]);
+                    } else {
+                        ocurrencia_ocupacion = await OcurrenceEvent.findOne({ 'eventKey': key, 'institucion.id': ocurrence.institucion.id, 'indicadores.id_servicio_egresos': servicio._id }).sort([['date', -1]]);
+                    }
+
+                    const fecha_ocurrencia = doc[fieldFecha] ? new Date(doc[fieldFecha]) : new Date();
+                    if (!ocurrencia_ocupacion || (ocurrencia_ocupacion && ocurrencia_ocupacion.fecha < fecha_ocurrencia)) {
+                        // Se crea una nueva ocurrencia
+                        if (!ocurrencia_ocupacion) {
+                            ocurrence.activo = true;
+                            ocurrence.eventKey = key;
+                        } else {
+                            ocurrence = ocurrencia_ocupacion;
+                        }
+                        ocurrence.fecha = fecha_ocurrencia;
+                        const indicadores = publico ? mapearIndicadores(doc, servicio, key) : crearIndicadores(doc, servicio, key);
+                        ocurrence.indicadores = indicadores;
+                        ocurrence.createdAt = new Date();
+                        ocurrence.createdBy = {
+                            email: "info@andes.gob.ar",
+                            nombre: "import-indicadores",
+                            apellido: "import-indicadores",
+                            documento: "0"
+                        }
+                        const ocurrenceEvent = new OcurrenceEvent(ocurrence);
+                        const col = await mongoose.connection.db.collection('ocurrence_event');
+                        if (!ocurrenceEvent.id || !ocurrenceEvent._id) {
+                            await col.insertOne(ocurrenceEvent);
+                        } else {
+                            await col.updateOne({ _id: ocurrenceEvent._id }, ocurrenceEvent, { upsert: true });
+                        }
+                        const eventHistory = {
+                            eventKey: ocurrenceEvent.eventKey,
+                            activo: ocurrenceEvent.activo,
+                            fecha: ocurrenceEvent.fecha,
+                            institucion: ocurrenceEvent.institucion,
+                            indicadores: ocurrenceEvent.indicadores,
+                            originalRef: ocurrenceEvent._id,
+                            createdAt: ocurrence.createdAt,
+                            createdBy: ocurrence.createdBy
+                        };
+                        await OcurrenceEventHistory.create(eventHistory);
+                    }
+                }
+
 
             } catch (error) {
                 return error;
@@ -233,14 +249,14 @@ async function importIndicadores(done) {
     const ocupacion = await OcurrenceEvent.findOne({ 'eventKey': 'ocupacion_camas' }).sort([['date', -1]]);
     const fechaOcupacion = moment(ocupacion.fecha).format('YYYY-MM-DD');
     const egresos = await OcurrenceEvent.findOne({ 'eventKey': 'egresos' }).sort([['date', -1]]);
-    const fechaEgresos = egresos ? moment(egresos.fecha).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+    const fechaEgresos = egresos ? moment(egresos.fecha).format('YYYY-MM-DD') : moment().startOf('day').format('YYYY-MM-DD');
 
 
     const pool = await new sql.ConnectionPool(connection).connect();
     // Se obtienen los indicadores de SQL para los efectores públicos
     const query_ocupaciones = `SELECT * FROM Ocupacion_Camas where fecha > '${fechaOcupacion}'`;
     const registrosOcupacionPublicos = await getIndicadores(pool, query_ocupaciones);
-    const query_egresos = `SELECT * FROM egresos where fechaEgreso > '${fechaEgresos}'`;
+    const query_egresos = `SELECT * FROM Egresos where fechaEgreso >= '${fechaEgresos}'`;
     const registrosEgresosPublicos = await getIndicadores(pool, query_egresos);
 
     // Se recorren los registros y se crean las ocurrencia en ocurrence_events
@@ -262,7 +278,7 @@ async function importIndicadores(done) {
      WHEN LOWER(TipoEgreso) like '%derivacion%' THEN 'derivacion'
      ELSE 'otro'
      END as TipoEgreso
-     FROM Egresos_New where fechaEgreso > '${fechaEgresos}'
+     FROM Egresos_New where fechaEgreso >= '${fechaEgresos}'
      GROUP BY Efector, Servicio, fechaEgreso, TipoEgreso ) AS SourceTable PIVOT(SUM([Cantidad]) FOR [TipoEgreso] IN(
                                                           [derivacion],
                                                           [defuncion],
