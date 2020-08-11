@@ -15,7 +15,7 @@ export async function getIndicadores(pool, query) {
 
 async function getInstitucion(nombreInstitucion) {
     const regexp = `${nombreInstitucion}$`;
-    const org: any = await Institution.findOne({ nombre: { $regex: new RegExp(regexp, "i") } });
+    const org: any = await Institution.findOne({ activo: true, nombre: { $regex: new RegExp(regexp, "i") } });
     if (org) {
         return org;
     }

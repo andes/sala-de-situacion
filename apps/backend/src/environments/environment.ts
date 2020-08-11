@@ -51,6 +51,15 @@ export const jobs = [
     {
         when: '0 */2 * * *',
         action: 'jobs/import-cases-job'
-    }];
+    },
+    {
+        when: '0 */5 * * *',
+        action: 'jobs/import-indicadores-job'
+    },
+    {
+        when: '0 */6 * * *',
+        action: 'jobs/export-reports-job'
+    }
+];
 
 

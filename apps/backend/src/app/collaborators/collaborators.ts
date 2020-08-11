@@ -31,7 +31,6 @@ async function generarReport(type, institution, servicio) {
     const egreso = await OcurrenceEvent.findOne({ 'eventKey': 'egresos', 'institucion.id': Types.ObjectId(institution), 'indicadores.servicio_egresos': servicio.nombre }).sort([['date', -1]]);
     const ocupacion = await OcurrenceEvent.findOne({ 'eventKey': 'ocupacion_camas', 'institucion.id': Types.ObjectId(institution), 'indicadores.servicio_ocupa': servicio.nombre }).sort([['date', -1]]);
     const lastReport = await ReportEvent.findOne({ type: 'adults' }).sort([['date', -1]]);
-    console.log(lastReport);
 
     const ocurrenciaDotacion = dotacion ? dotacion.indicadores : null;
     const ocurrenciaEgresos = egreso ? egreso.indicadores : null;
@@ -44,7 +43,7 @@ async function generarReport(type, institution, servicio) {
     if (ocurrenciaDotacion || ocurrenciaEgresos || ocurrenciaOcupacion) {
         const totalRespiradores = ocurrenciaDotacion['camas_con_respirador'] || 0;  // cantidad total de respiradores
         const respiradoresOcupados = ocurrenciaOcupacion['ocupadas_c_respirador'] || 0;  // Cantidad de respiradores ocupados
-        if (!lastReport || (lastReport && (ocupacion.fecha > lastReport['fecha']))) {
+        if (!lastReport || (lastReport && (ocupacion && ocupacion.fecha > lastReport['fecha']))) {
             respiradoresLiberados = ocurrenciaOcupacion['disponibles_c_respirador'];  // Cantidad de respiradores liberados desde la última carga
         }
         report[`respirators_allocated_${type}`] = totalRespiradores;  // cantidad total de respiradores
@@ -53,10 +52,10 @@ async function generarReport(type, institution, servicio) {
         report[`uti_allocated_${type}`] = ocurrenciaDotacion['total_dotacion'] || 0; // Dotación: Total de camas
         report[`uti_allocated_${type}_gas`] = ocurrenciaDotacion['total_c_oxigeno'] || 0; // Dotacion: total de camas con oxígenos en la UTI
 
-        if (!lastReport || (lastReport && (egreso.fecha > lastReport['fecha']))) {
-            egresos_alta = ocurrenciaEgresos['egresos_alta_medica'] || 0;  //Cantidad de egresos por alta médica desde la última carga  UTI
-            egresos_defuncion = ocurrenciaEgresos['egresos_defuncion'] || 0; // Cantidad de Egresos por fallecimiento desde la última carga UTI
-            egresos_derivados = ocurrenciaEgresos['egresos_derivados'] || 0; // Cantidad de Egresos derivados desde la última carga UTI
+        if (!lastReport || (lastReport && (egreso && egreso.fecha > lastReport['fecha']))) {
+            egresos_alta = ocurrenciaEgresos && ocurrenciaEgresos['egresos_alta_medica'] ? ocurrenciaEgresos['egresos_alta_medica'] : 0;  // Cantidad de egresos por alta médica desde la última carga  UTI
+            egresos_defuncion = ocurrenciaEgresos && ocurrenciaEgresos['egresos_defuncion'] ? ocurrenciaEgresos['egresos_defuncion'] : 0; // Cantidad de Egresos por fallecimiento desde la última carga UTI
+            egresos_derivados = ocurrenciaEgresos && ocurrenciaEgresos['egresos_derivados'] ? ocurrenciaEgresos['egresos_derivados'] : 0; // Cantidad de Egresos derivados desde la última carga UTI
         }
         report[`uti_discharged_${type}_count`] = egresos_alta;
         report[`uti_discharged_dead_${type}_count`] = egresos_defuncion;
@@ -66,15 +65,15 @@ async function generarReport(type, institution, servicio) {
         report[`uti_gas_unavailable_${type}_count`] = ocurrenciaOcupacion['ocupadas_c_oxigeno'] || 0; // Camas ocupadas con oxígeno de UTI
         report[`uti_hospitalized_${type}_count`] = (ocurrenciaOcupacion['ocupadas_c_oxigeno'] || 0) + (ocurrenciaOcupacion['ocupadas_s_oxigeno'] || 0) + (ocurrenciaOcupacion['ocupadas_c_respirador'] || 0);  // Cantidad de Internados total en el servicio
         return report;
-    } else {
-        return null
     }
+    return null;
+
 
 }
 
 export async function exportReports(done) {
     const postReportUrl = `${environment.exportadorHost}/api/v1/reports?validation_type=`;
-    const collaborators: any[] = await Collaborator.find({});
+    const collaborators: any[] = await Collaborator.find({ activo: true });
 
     for (const collaborator of collaborators) {
         const token = await getToken(collaborator.email, collaborator.password);
@@ -82,7 +81,6 @@ export async function exportReports(done) {
             const institution = collaborator.institution.id;
             let servicio_uti = await Servicio.find({ nombre: 'UNIDAD DE TERAPIA INTENSIVA' });
             const reportAdult = await generarReport('adult', institution, servicio_uti[0]);
-            console.log('Reporte', reportAdult);
             const headers = {
                 'Authorization': `Bearer ${token}`,
                 'Content-type': 'application/json',
