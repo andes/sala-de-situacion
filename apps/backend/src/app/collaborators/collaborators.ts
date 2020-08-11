@@ -40,7 +40,7 @@ async function generarReport(type, institution, servicio) {
     let egresos_defuncion = 0;
     let egresos_derivados = 0;
 
-    if (ocurrenciaDotacion || ocurrenciaEgresos || ocurrenciaOcupacion) {
+    if (ocurrenciaDotacion && ocurrenciaOcupacion) {
         const totalRespiradores = ocurrenciaDotacion['camas_con_respirador'] || 0;  // cantidad total de respiradores
         const respiradoresOcupados = ocurrenciaOcupacion['ocupadas_c_respirador'] || 0;  // Cantidad de respiradores ocupados
         if (!lastReport || (lastReport && (ocupacion && ocupacion.fecha > lastReport['fecha']))) {
@@ -74,52 +74,55 @@ async function generarReport(type, institution, servicio) {
 export async function exportReports(done) {
     const postReportUrl = `${environment.exportadorHost}/api/v1/reports?validation_type=`;
     const collaborators: any[] = await Collaborator.find({ activo: true });
-
-    for (const collaborator of collaborators) {
-        const token = await getToken(collaborator.email, collaborator.password);
-        if (token) {
-            const institution = collaborator.institution.id;
-            let servicio_uti = await Servicio.find({ nombre: 'UNIDAD DE TERAPIA INTENSIVA' });
-            const reportAdult = await generarReport('adult', institution, servicio_uti[0]);
-            const headers = {
-                'Authorization': `Bearer ${token}`,
-                'Content-type': 'application/json',
-                'Accept': 'application/json'
-            };
-            //Start guard
-            await fetch(`${environment.exportadorHost}/api/v1/guards`, { method: 'POST', headers: headers, body: {} });
-            // Se envian los reportes de Adultos y Children
-            if (reportAdult) {
-                await fetch(`${postReportUrl}adults`, { method: 'POST', headers: headers, body: JSON.stringify(reportAdult) });
-                // se guarda el reporte enviado
-                const reporteNacionAdult = {
-                    fecha: new Date(),
-                    type: 'adults',
-                    institucion: collaborator.institution,
-                    servicio: servicio_uti,
-                    report: reportAdult
+    try {
+        for (const collaborator of collaborators) {
+            const token = await getToken(collaborator.email, collaborator.password);
+            if (token) {
+                const institution = collaborator.institution.id;
+                let servicio_uti = await Servicio.find({ nombre: 'UNIDAD DE TERAPIA INTENSIVA' });
+                const reportAdult = await generarReport('adult', institution, servicio_uti[0]);
+                const headers = {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
                 };
-                const reportEventAdult = new ReportEvent(reporteNacionAdult);
-                await reportEventAdult.save();
+                //Start guard
+                await fetch(`${environment.exportadorHost}/api/v1/guards`, { method: 'POST', headers: headers, body: {} });
+                if (reportAdult) {
+                    // Se envian los reportes de Adultos y Children
+                    await fetch(`${postReportUrl}adults`, { method: 'POST', headers: headers, body: JSON.stringify(reportAdult) });
+                    // se guarda el reporte enviado
+                    const reporteNacionAdult = {
+                        fecha: new Date(),
+                        type: 'adults',
+                        institucion: collaborator.institution,
+                        servicio: servicio_uti,
+                        report: reportAdult
+                    };
+                    const reportEventAdult = new ReportEvent(reporteNacionAdult);
+                    await reportEventAdult.save();
+                }
+                servicio_uti = await Servicio.find({ nombre: 'UNIDAD DE TERAPIA INTENSIVA PEDIATRICA' });
+                const reportChildren = await generarReport('children', institution, servicio_uti[0]);
+                if (reportChildren) {
+                    await fetch(`${postReportUrl}children`, { method: 'POST', headers: headers, body: JSON.stringify(reportChildren) });
+                    // se guarda el reporte enviado
+                    const reporteNacionChildren = {
+                        fecha: new Date(),
+                        type: 'children',
+                        institucion: collaborator.institution,
+                        servicio: servicio_uti,
+                        report: reportChildren
+                    };
+                    const reportEventChildren = new ReportEvent(reporteNacionChildren);
+                    await reportEventChildren.save();
+                }
+                //End guard
+                await fetch(`${environment.exportadorHost}/api/v1/guards`, { method: 'POST', headers: headers });
             }
-            servicio_uti = await Servicio.find({ nombre: 'UNIDAD DE TERAPIA INTENSIVA PEDIATRICA' });
-            const reportChildren = await generarReport('children', institution, servicio_uti[0]);
-            if (reportChildren) {
-                await fetch(`${postReportUrl}children`, { method: 'POST', headers: headers, body: JSON.stringify(reportChildren) });
-                // se guarda el reporte enviado
-                const reporteNacionChildren = {
-                    fecha: new Date(),
-                    type: 'children',
-                    institucion: collaborator.institution,
-                    servicio: servicio_uti,
-                    report: reportChildren
-                };
-                const reportEventChildren = new ReportEvent(reporteNacionChildren);
-                await reportEventChildren.save();
-            }
-            //End guard
-            await fetch(`${environment.exportadorHost}/api/v1/guards`, { method: 'POST', headers: headers });
         }
+    } catch (err) {
+        return err;
     }
 
 
