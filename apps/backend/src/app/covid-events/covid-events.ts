@@ -61,9 +61,10 @@ async function importCasesPerPage(token, page: string) {
     }
 }
 
-function saveCases(casos) {
+async function saveCases(casos) {
     try {
-        casos.forEach(async (caso: any) => {
+        const updatecases = [];
+        casos.forEach((caso: any) => {
             if (caso.ideventocaso) {
                 caso.min_FTM = transformDate(caso.min_FTM);
                 caso.fecha_APERTURA = transformDate(caso.fecha_APERTURA);
@@ -76,9 +77,10 @@ function saveCases(casos) {
                 caso.fecha_DIAGNOSTICO = transformDate(caso.fecha_DIAGNOSTICO);
                 caso.fecha_MOD_CLASIF = new Date(caso.fecha_MOD_CLASIF);
                 caso.fecha_GRAFICO = new Date(caso.fecha_GRAFICO);
-                await CovidEvents.updateOne({ ideventocaso: caso.ideventocaso }, caso, { upsert: true });
+                updatecases.push(CovidEvents.updateOne({ ideventocaso: caso.ideventocaso }, caso, { upsert: true }));
             }
         });
+        await Promise.all(updatecases);
     } catch (err) {
         return err;
     }
@@ -98,7 +100,7 @@ export async function importCasesCovid(done) {
             const casos = await importCasesPerPage(token, page.toString());
             if (casos.length > 0) {
                 cantidad = cantidad + casos.length;
-                saveCases(casos);
+                await saveCases(casos);
                 page++;
             } else {
                 if (casos.status === 401) {
