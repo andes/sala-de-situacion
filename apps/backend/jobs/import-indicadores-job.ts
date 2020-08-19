@@ -53,7 +53,8 @@ function mapearIndicadores(doc, servicio, key) {
                     bloqueadas_s_oxigeno: doc['CamasBloqueadassinOxigeno '],
                     total_c_respirador: doc.CamasDisponiblesconRespirador + doc.CamasOcupadasconRespirador + doc.CamasBloqueadasconRespirador,
                     total_c_oxigeno: doc.CamasDisponiblesconOxigeno + doc.CamasOcupadasconOxigeno + doc.CamasBloqueadasconOxigeno,
-                    total_s_oxigeno: doc.CamasDisponiblessinOxigeno + doc.CamasOcupadassinOxigeno + doc['CamasBloqueadassinOxigeno ']
+                    total_s_oxigeno: doc.CamasDisponiblessinOxigeno + doc.CamasOcupadassinOxigeno + doc['CamasBloqueadassinOxigeno '],
+                    total_internados: doc.CamasOcupadasconRespirador + doc.CamasOcupadasconOxigeno + doc.CamasDisponiblessinOxigeno
                 }
                 break;
             case 'egresos': {
@@ -90,44 +91,32 @@ function generateOccupation(doc, servicio) {
         bloqueadas_s_oxigeno: 0,
         total_c_respirador: 0,
         total_c_oxigeno: 0,
-        total_s_oxigeno: 0
+        total_s_oxigeno: 0,
+        total_internados: 0
     };
     if (doc.estado && doc.estado.toLowerCase() === 'disponible') {
-        if (doc.respirador.toLowerCase().includes('si')) {
-            indicadores['disponibles_c_respirador'] = doc.cantidad;
-        }
-        if (doc.tipo.toLowerCase().includes('con')) {
-            indicadores['disponibles_c_oxigeno'] = doc.cantidad;
-        } else {
-            indicadores['disponibles_s_oxigeno'] = doc.cantidad;
-        }
+        indicadores['disponibles_c_respirador'] = doc.con_respirador;
+        indicadores['disponibles_c_oxigeno'] = doc.con_oxigeno;
+        indicadores['disponibles_s_oxigeno'] = doc.sin_oxigeno;
     }
 
     if (doc.estado && doc.estado.toLowerCase() === 'ocupada') {
-        if (doc.respirador.toLowerCase().includes('si')) {
-            indicadores['ocupadas_c_respirador'] = doc.cantidad;
-        }
-        if (doc.tipo.toLowerCase().includes('con')) {
-            indicadores['ocupadas_c_oxigeno'] = doc.cantidad;
-        } else {
-            indicadores['ocupadas_s_oxigeno'] = doc.cantidad;
-        }
+        indicadores['ocupadas_c_respirador'] = doc.con_respirador;
+        indicadores['ocupadas_c_oxigeno'] = doc.con_oxigeno;
+        indicadores['ocupadas_s_oxigeno'] = doc.sin_oxigeno;
+        indicadores['total_internados'] = (doc.con_oxigeno || 0) + (doc.sin_oxigeno);
+
     }
 
     if (doc.estado && (doc.estado.toLowerCase().trim() === 'bloqueada' || doc.estado.toLowerCase().trim() === 'inactiva')) {
-        if (doc.respirador.toLowerCase().includes('si')) {
-            indicadores['bloqueadas_c_respirador'] = doc.cantidad;
-        }
-        if (doc.tipo.toLowerCase().includes('con')) {
-            indicadores['bloqueadas_c_oxigeno'] = doc.cantidad;
-        } else {
-            indicadores['bloqueadas_s_oxigeno'] = doc.cantidad;
-        }
+        indicadores['bloqueadas_c_respirador'] = doc.con_respirador;
+        indicadores['bloqueadas_c_oxigeno'] = doc.con_oxigeno;
+        indicadores['bloqueadas_s_oxigeno'] = doc.sin_oxigeno;
     }
     indicadores['total_c_respirador'] = indicadores['disponibles_c_respirador'] + indicadores['ocupadas_c_respirador'] + indicadores['bloqueadas_c_respirador'];
     indicadores['total_c_oxigeno'] = indicadores['disponibles_c_oxigeno'] + indicadores['ocupadas_c_oxigeno'] + indicadores['bloqueadas_c_oxigeno'];
     indicadores['total_s_oxigeno'] = indicadores['disponibles_s_oxigeno'] + indicadores['ocupadas_s_oxigeno'] + indicadores['bloqueadas_s_oxigeno'];
-
+    console.log(indicadores);
     return indicadores;
 }
 
@@ -264,9 +253,38 @@ async function importIndicadores(done) {
     await generateOcurrences(registrosEgresosPublicos.recordset, 'egresos', 'fechaEgreso', true);
 
     // Se obtienen los indicadores de SQL para los efectores privados
-    const query_internacion = `SELECT Efector, Servicio, estado, Tipo as tipo, respirador, count(*) as cantidad
-    FROM Internacion_New
-    GROUP BY Efector, Servicio, estado, Tipo, respirador`;
+    const query_internacion = `SELECT O.Efector, O.Servicio, O.estado, ISNULL(Con_oxigeno, 0) as con_oxigeno, 
+    ISNULL(Sin_oxigeno, 0) as sin_oxigeno, ISNULL(Con_respirador, 0) as con_respirador,
+    ISNULL(Sin_respirador, 0) as sin_respirador
+    FROM
+        (SELECT *
+         FROM
+            (Select  Efector, Servicio,estado, count(*) as Cantidad,
+             CASE
+             WHEN (Tipo like '%CON%')  THEN 'Con_oxigeno'
+             WHEN (Tipo not like '%CON%') THEN 'Sin_oxigeno'
+            END as ocupaciones
+            FROM Internacion_New
+            GROUP BY Efector, Servicio,estado, Tipo) AS
+            SourceTable PIVOT(SUM([Cantidad]) FOR [ocupaciones] IN(
+                                                            [Con_oxigeno],
+                                                            [Sin_oxigeno]
+                                                            )) AS PivotTable) as O
+    LEFT JOIN 
+            (SELECT *
+             FROM
+            (Select  Efector, Servicio,estado,count(*) as Cantidad,
+             CASE
+             WHEN (respirador like '%SI%')  THEN 'Con_respirador'
+             WHEN (respirador not like '%SI%') THEN 'Sin_respirador'
+             END as ocupaciones
+            FROM Internacion_New
+            GROUP BY Efector, Servicio,estado, respirador) AS SourceTable PIVOT(SUM([Cantidad])
+            FOR [ocupaciones] IN(
+                                                            [Con_respirador],
+                                                            [Sin_respirador]
+                                                            )) AS PivotTable) as R
+   ON (R.Efector=O.Efector AND R.Servicio=O.Servicio AND R.estado=O.estado)`;
 
     const query = `SELECT * FROM
     (Select  Efector, Servicio, fechaEgreso as FechaEgreso, count(*) as Cantidad,
