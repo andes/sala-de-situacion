@@ -63,7 +63,7 @@ async function generarReport(type, institution, servicio) {
 
         report[`uti_gas_available_${type}_count`] = ocurrenciaOcupacion['disponibles_c_oxigeno'] || 0; // Camas disponibles con oxígeno UTI
         report[`uti_gas_unavailable_${type}_count`] = ocurrenciaOcupacion['ocupadas_c_oxigeno'] || 0; // Camas ocupadas con oxígeno de UTI
-        report[`uti_hospitalized_${type}_count`] = (ocurrenciaOcupacion['ocupadas_c_oxigeno'] || 0) + (ocurrenciaOcupacion['ocupadas_s_oxigeno'] || 0) + (ocurrenciaOcupacion['ocupadas_c_respirador'] || 0);  // Cantidad de Internados total en el servicio
+        report[`uti_hospitalized_${type}_count`] = (ocurrenciaOcupacion['total_internados'] || 0);  // Cantidad de Internados total en el servicio
         return report;
     }
     return null;
