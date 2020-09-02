@@ -9,7 +9,7 @@ import * as mongoose from 'mongoose';
 import { OcurrenceEventHistory } from '../src/app/ocurrence-events-history/ocurrence-events-history.schema';
 
 
-export async function getIndicadores(pool, query) {
+export async function executeQuery(pool, query) {
     return await new sql.Request(pool).query(query);
 }
 
@@ -94,29 +94,20 @@ function generateOccupation(doc, servicio) {
         total_s_oxigeno: 0,
         total_internados: 0
     };
-    if (doc.estado && doc.estado.toLowerCase() === 'disponible') {
-        indicadores['disponibles_c_respirador'] = doc.con_respirador;
-        indicadores['disponibles_c_oxigeno'] = doc.con_oxigeno;
-        indicadores['disponibles_s_oxigeno'] = doc.sin_oxigeno;
-    }
+    indicadores['disponibles_c_respirador'] = doc.disponibles_con_respirador;
+    indicadores['disponibles_c_oxigeno'] = doc.disponibles_con_oxigeno;
+    indicadores['disponibles_s_oxigeno'] = doc.disponibles_sin_oxigeno;
+    indicadores['ocupadas_c_respirador'] = doc.ocupadadas_con_respirador;
+    indicadores['ocupadas_c_oxigeno'] = doc.ocupadadas_con_oxigeno;
+    indicadores['ocupadas_s_oxigeno'] = doc.ocupadas_sin_oxigeno;
+    indicadores['total_internados'] = (doc.ocupadadas_con_oxigeno || 0) + (doc.ocupadadas_sin_oxigeno);
+    indicadores['bloqueadas_c_respirador'] = doc.bloqueadas_con_respirador;
+    indicadores['bloqueadas_c_oxigeno'] = doc.bloqueadas_con_oxigeno;
+    indicadores['bloqueadas_s_oxigeno'] = doc.bloqueadas_sin_oxigeno;
 
-    if (doc.estado && doc.estado.toLowerCase() === 'ocupada') {
-        indicadores['ocupadas_c_respirador'] = doc.con_respirador;
-        indicadores['ocupadas_c_oxigeno'] = doc.con_oxigeno;
-        indicadores['ocupadas_s_oxigeno'] = doc.sin_oxigeno;
-        indicadores['total_internados'] = (doc.con_oxigeno || 0) + (doc.sin_oxigeno);
-
-    }
-
-    if (doc.estado && (doc.estado.toLowerCase().trim() === 'bloqueada' || doc.estado.toLowerCase().trim() === 'inactiva')) {
-        indicadores['bloqueadas_c_respirador'] = doc.con_respirador;
-        indicadores['bloqueadas_c_oxigeno'] = doc.con_oxigeno;
-        indicadores['bloqueadas_s_oxigeno'] = doc.sin_oxigeno;
-    }
     indicadores['total_c_respirador'] = indicadores['disponibles_c_respirador'] + indicadores['ocupadas_c_respirador'] + indicadores['bloqueadas_c_respirador'];
     indicadores['total_c_oxigeno'] = indicadores['disponibles_c_oxigeno'] + indicadores['ocupadas_c_oxigeno'] + indicadores['bloqueadas_c_oxigeno'];
     indicadores['total_s_oxigeno'] = indicadores['disponibles_s_oxigeno'] + indicadores['ocupadas_s_oxigeno'] + indicadores['bloqueadas_s_oxigeno'];
-    console.log(indicadores);
     return indicadores;
 }
 
@@ -144,7 +135,6 @@ function crearIndicadores(doc, servicio, key) {
         }
     }
     return indicadores;
-
 }
 
 export async function generateOcurrences(registros, key, fieldFecha, publico = true) {
@@ -223,6 +213,14 @@ export async function generateOcurrences(registros, key, fieldFecha, publico = t
     }
 }
 
+async function generarIndicadoresOcupaciones(pool) {
+    const query_internacion = `select *
+            from IndicadoresOcupaciones
+            ORDER BY Efector, Fecha`;
+    const registrosOcupacion = await executeQuery(pool, query_internacion);
+    await generateOcurrences(registrosOcupacion.recordset, 'ocupacion_camas', 'fecha', false);
+}
+
 async function importIndicadores(done) {
     const connection = {
         user: environment.conSql.auth.user,
@@ -244,47 +242,16 @@ async function importIndicadores(done) {
     const pool = await new sql.ConnectionPool(connection).connect();
     // Se obtienen los indicadores de SQL para los efectores públicos
     const query_ocupaciones = `SELECT * FROM Ocupacion_Camas where fecha > '${fechaOcupacion}'`;
-    const registrosOcupacionPublicos = await getIndicadores(pool, query_ocupaciones);
+    const registrosOcupacionPublicos = await executeQuery(pool, query_ocupaciones);
     const query_egresos = `SELECT * FROM Egresos where fechaEgreso >= '${fechaEgresos}'`;
-    const registrosEgresosPublicos = await getIndicadores(pool, query_egresos);
+    const registrosEgresosPublicos = await executeQuery(pool, query_egresos);
 
     // Se recorren los registros y se crean las ocurrencia en ocurrence_events
     await generateOcurrences(registrosOcupacionPublicos.recordset, 'ocupacion_camas', 'fecha', true);
     await generateOcurrences(registrosEgresosPublicos.recordset, 'egresos', 'fechaEgreso', true);
 
     // Se obtienen los indicadores de SQL para los efectores privados
-    const query_internacion = `SELECT O.Efector, O.Servicio, O.estado, ISNULL(Con_oxigeno, 0) as con_oxigeno, 
-    ISNULL(Sin_oxigeno, 0) as sin_oxigeno, ISNULL(Con_respirador, 0) as con_respirador,
-    ISNULL(Sin_respirador, 0) as sin_respirador
-    FROM
-        (SELECT *
-         FROM
-            (Select  Efector, Servicio,estado, count(*) as Cantidad,
-             CASE
-             WHEN (Tipo like '%CON%')  THEN 'Con_oxigeno'
-             WHEN (Tipo not like '%CON%') THEN 'Sin_oxigeno'
-            END as ocupaciones
-            FROM Internacion_New
-            GROUP BY Efector, Servicio,estado, Tipo) AS
-            SourceTable PIVOT(SUM([Cantidad]) FOR [ocupaciones] IN(
-                                                            [Con_oxigeno],
-                                                            [Sin_oxigeno]
-                                                            )) AS PivotTable) as O
-    LEFT JOIN 
-            (SELECT *
-             FROM
-            (Select  Efector, Servicio,estado,count(*) as Cantidad,
-             CASE
-             WHEN (respirador like '%SI%')  THEN 'Con_respirador'
-             WHEN (respirador not like '%SI%') THEN 'Sin_respirador'
-             END as ocupaciones
-            FROM Internacion_New
-            GROUP BY Efector, Servicio,estado, respirador) AS SourceTable PIVOT(SUM([Cantidad])
-            FOR [ocupaciones] IN(
-                                                            [Con_respirador],
-                                                            [Sin_respirador]
-                                                            )) AS PivotTable) as R
-   ON (R.Efector=O.Efector AND R.Servicio=O.Servicio AND R.estado=O.estado)`;
+    await generarIndicadoresOcupaciones(pool);
 
     const query = `SELECT * FROM
     (Select  Efector, Servicio, fechaEgreso as FechaEgreso, count(*) as Cantidad,
@@ -306,11 +273,9 @@ async function importIndicadores(done) {
                                                           [otro]
                                                           )) AS PivotTable`;
 
-    const registrosOcupacion = await getIndicadores(pool, query_internacion);
-    const registrosEgresos = await getIndicadores(pool, query);
+    const registrosEgresos = await executeQuery(pool, query);
 
     // Se recorren los registros y se crean las ocurrencia en ocurrence_events
-    await generateOcurrences(registrosOcupacion.recordset, 'ocupacion_camas', 'fecha', false);
     await generateOcurrences(registrosEgresos.recordset, 'egresos', 'fechaEgreso', false);
 
 
