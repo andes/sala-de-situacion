@@ -97,10 +97,10 @@ function generateOccupation(doc, servicio) {
     indicadores['disponibles_c_respirador'] = doc.disponibles_con_respirador;
     indicadores['disponibles_c_oxigeno'] = doc.disponibles_con_oxigeno;
     indicadores['disponibles_s_oxigeno'] = doc.disponibles_sin_oxigeno;
-    indicadores['ocupadas_c_respirador'] = doc.ocupadadas_con_respirador;
-    indicadores['ocupadas_c_oxigeno'] = doc.ocupadadas_con_oxigeno;
+    indicadores['ocupadas_c_respirador'] = doc.ocupadas_con_respirador;
+    indicadores['ocupadas_c_oxigeno'] = doc.ocupadas_con_oxigeno;
     indicadores['ocupadas_s_oxigeno'] = doc.ocupadas_sin_oxigeno;
-    indicadores['total_internados'] = (doc.ocupadadas_con_oxigeno || 0) + (doc.ocupadadas_sin_oxigeno);
+    indicadores['total_internados'] = (doc.ocupadas_con_oxigeno || 0) + (doc.ocupadas_sin_oxigeno);
     indicadores['bloqueadas_c_respirador'] = doc.bloqueadas_con_respirador;
     indicadores['bloqueadas_c_oxigeno'] = doc.bloqueadas_con_oxigeno;
     indicadores['bloqueadas_s_oxigeno'] = doc.bloqueadas_sin_oxigeno;

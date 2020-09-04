@@ -41,7 +41,7 @@ async function generarReport(type, institution, servicio) {
     let egresos_derivados = 0;
 
     if (ocurrenciaDotacion || ocurrenciaEgresos || ocurrenciaOcupacion) {
-        const totalRespiradores = ocurrenciaDotacion['camas_con_respirador'] || 0;  // cantidad total de respiradores
+        const totalRespiradores = ocurrenciaDotacion ? ocurrenciaDotacion['camas_con_respirador'] : 0;  // cantidad total de respiradores
         const respiradoresOcupados = ocurrenciaOcupacion['ocupadas_c_respirador'] || 0;  // Cantidad de respiradores ocupados
         if (!lastReport || (lastReport && (ocupacion && ocupacion.fecha > lastReport['fecha']))) {
             respiradoresLiberados = ocurrenciaOcupacion['disponibles_c_respirador'];  // Cantidad de respiradores liberados desde la última carga
