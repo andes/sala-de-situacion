@@ -54,7 +54,7 @@ function mapearIndicadores(doc, servicio, key) {
                     total_c_respirador: doc.CamasDisponiblesconRespirador + doc.CamasOcupadasconRespirador + doc.CamasBloqueadasconRespirador,
                     total_c_oxigeno: doc.CamasDisponiblesconOxigeno + doc.CamasOcupadasconOxigeno + doc.CamasBloqueadasconOxigeno,
                     total_s_oxigeno: doc.CamasDisponiblessinOxigeno + doc.CamasOcupadassinOxigeno + doc['CamasBloqueadassinOxigeno '],
-                    total_internados: doc.CamasOcupadasconRespirador + doc.CamasOcupadasconOxigeno + doc.CamasDisponiblessinOxigeno
+                    total_internados: doc.CamasOcupadasconOxigeno + doc.CamasDisponiblessinOxigeno
                 }
                 break;
             case 'egresos': {
@@ -215,7 +215,7 @@ export async function generateOcurrences(registros, key, fieldFecha, publico = t
 
 async function generarIndicadoresOcupaciones(pool) {
     const query_internacion = `select *
-            from IndicadoresOcupaciones
+            from OcupacionesPorEfector
             ORDER BY Efector, Fecha`;
     const registrosOcupacion = await executeQuery(pool, query_internacion);
     await generateOcurrences(registrosOcupacion.recordset, 'ocupacion_camas', 'fecha', false);
