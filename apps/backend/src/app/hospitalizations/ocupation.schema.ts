@@ -33,4 +33,9 @@ const OcupationSchema = new mongoose.Schema({
     nroArchivo: Number
 });
 OcupationSchema.plugin(AuditPlugin);
+OcupationSchema.index({
+    createdAt: 1,
+    'institution.id': 1
+
+});
 export const Ocupation = mongoose.model('ocupation', OcupationSchema, 'ocupations');
