@@ -46,8 +46,17 @@ class CheckoutResource extends ResourceBase {
             const headers = {
                 'Content-Type': 'application/json'
             };
-            await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(data) });
-            return res.json({ status: 'ok' });
+            const response = await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(data) });
+            if (response.status == 400) {
+                // Realiza un nuevo intento
+                const urlDelete = `${environment.bi_query_host}/queries/sala-checkouts/delete`;
+                await fetch(urlDelete, { method: 'POST', headers: headers, body: JSON.stringify(data) });
+                await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(data) });
+
+            } else {
+                return res.json({ status: 'ok' });
+            }
+
         } catch (err) {
             throw new ResourceNotFound();
         }
