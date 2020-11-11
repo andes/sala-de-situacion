@@ -4,6 +4,7 @@ import { authenticate } from '../application';
 import { Ocupation } from './ocupation.schema';
 import { environment } from '../../environments/environment';
 import { Request, Response } from '@andes/api-tool';
+import { Types } from 'mongoose';
 const fetch = require('node-fetch');
 
 class OcupationResource extends ResourceBase {
@@ -18,7 +19,16 @@ class OcupationResource extends ResourceBase {
         respirador: MongoQuery.equalMatch,
         covid: MongoQuery.equalMatch,
         tipo: MongoQuery.equalMatch,
-        nroArchivo: MongoQuery.equalMatch
+        nroArchivo: MongoQuery.equalMatch,
+        institution: {
+            field: 'institution.id',
+            fn: (value) => value
+        },
+        fecha: {
+            field: 'createdAt',
+            fn: (value) => (MongoQuery.matchDate(value))
+        },
+        search: ['institution', 'fecha']
     };
 
     extrasRoutes = [

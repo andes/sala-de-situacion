@@ -16,7 +16,16 @@ class CheckoutResource extends ResourceBase {
         nombre: MongoQuery.partialString,
         dni: MongoQuery.partialString,
         tipo: MongoQuery.equalMatch,
-        nroArchivo: MongoQuery.equalMatch
+        nroArchivo: MongoQuery.equalMatch,
+        institution: {
+            field: 'institution.id',
+            fn: (value) => value
+        },
+        fecha: {
+            field: 'createdAt',
+            fn: (value) => (MongoQuery.matchDate(value))
+        },
+        search: ['institution', 'fecha']
     };
     extrasRoutes = [
         {

@@ -4,97 +4,102 @@
         </plex-title>
         <div class="row mb-2">
             <div class="col-3">
-                <plex-datetime type="date" [(ngModel)]="fechaDesde" name="fechaDesde" (change)="filtrarResultados()"
-                               label="Fecha Desde" [required]="false">
-                </plex-datetime>
+                <plex-datetime label="Fecha Desde" type="date" skipBy="day" name="desde" [ngModel]="fechaDesde$ | async"
+                (change)="onChangeDesde($event)" [debounce]="500"></plex-datetime>
             </div>
             <div class="col-3">
-                <plex-datetime type="date" [(ngModel)]="fechaHasta" name="fechaHasta" (change)="filtrarResultados()"
-                               label="Fecha Hasta" [required]="false">
-                </plex-datetime>
+                <plex-datetime label="Fecha Hasta" type="date" skipBy="day" name="hasta" [ngModel]="fechaHasta$ | async"
+                (change)="onChangeHasta($event)" [debounce]="500"></plex-datetime>
             </div>
             <div class="col-6">
-                <plex-select [(ngModel)]="selectedInstitution" name="institucion" (change)="filtrarResultados()"
-                             label="Institucion" [data]="institutions" [required]="false">
-                </plex-select>
+                <plex-select label="Institución" name="institucion" [(ngModel)]="selectedInstitution" idField="id"
+                placeholder="Seleccione una institución"
+                labelField="nombre" (change)="onChangeInstitucion($event)" [data]="institutions$ | async"></plex-select>
             </div>
             <br>
         </div>
-        <plex-tabs *ngIf="institutions.length > 0" [activeIndex]="0">
-            <plex-tab label="Ocupaciones">
-                <div class="row">
-                    <div *ngIf="ocupaciones.length === 0" class="alert alert-default w-100">
-                        No hay datos para mostrar.
-                    </div>
-                </div>
-                <plex-list *ngIf="ocupaciones.length > 0">
-                    <plex-heading>
-                        <b label>Fecha de carga</b>
-                        <b label>Ingreso</b>
-                        <b label>Paciente</b>
-                        <b label>Habitacion</b>
-                        <b label>Servicio</b>
-                        <b label>Cama</b>
-                        <b label>Oxigeno</b>
-                        <b label>Covid</b>
-                        <b label>Estado</b>
-                        <b></b>
-                    </plex-heading>
-                    <plex-item *ngFor="let ocupacion of ocupaciones;" class="mb-4 mb-0-md">
-                        <plex-label>{{ ocupacion.createdAt | date: 'dd/MM/yyyy' }}
-                            {{ ocupacion.createdAt | date: 'HH:mm' }} hs
-                        </plex-label>
-                        <plex-label>{{ ocupacion.fechaIngreso | date: 'dd/MM/yyyy' }} {{ ocupacion.horaIngreso }} hs
-                        </plex-label>
-                        <plex-label>{{ ocupacion.apellido }}, {{ ocupacion.nombre }}<br><b>DNI: {{ ocupacion.dni }}</b>
-                        </plex-label>
-                        <plex-label>{{ ocupacion.habitacion }}<br><b>{{ ocupacion.piso }}</b></plex-label>
-                        <plex-label>{{ ocupacion.servicio }}</plex-label>
-                        <plex-label>{{ ocupacion.cama }}</plex-label>
-                        <plex-label>Oxígeno: {{ ocupacion.oxigeno }}<br><small>Respirador:
-                                {{ ocupacion.respirador? ocupacion.respirador : 'No indica' }}</small>
-                        </plex-label>
-                        <plex-label>{{ ocupacion.covid }}</plex-label>
-                        <plex-label>
-                            {{ ocupacion.estado ? ocupacion.estado : 'No se indica o el dato no es válido' }}
-                        </plex-label>
-                    </plex-item>
-                </plex-list>
-            </plex-tab>
-            <plex-tab label="Egresos">
-                <div class="row">
-                    <div *ngIf="egresos.length === 0" class="alert alert-default w-100">
-                        No hay datos para mostrar.
-                    </div>
-                </div>
-                <plex-list *ngIf="egresos.length > 0">
-                    <plex-heading>
-                        <b label>Fecha de carga</b>
-                        <b label>Ingreso</b>
-                        <b label>Paciente</b>
-                        <b label>Fecha de egreso</b>
-                        <b label>Hora de egreso</b>
-                        <b label>Tipo de egreso</b>
-                    </plex-heading>
-                    <ng-container *ngFor="let egreso of egresos">
-
-                        <plex-item class="hover">
-                            <plex-label>{{ egreso.createdAt | date: 'dd/MM/yyyy' }}
-                                {{ egreso.createdAt | date: 'HH:mm' }} hs
-                            </plex-label>
-                            <plex-label>{{ egreso.fechaIngreso | date: 'dd/MM/yyyy' }} {{ egreso.horaIngreso }} hs
-                            </plex-label>
-                            <plex-label>{{ egreso.apellido }}, {{ egreso.nombre }}<br><b>DNI: {{ egreso.dni }}</b>
-                            </plex-label>
-                            <plex-label>{{ egreso.fechaEgreso | date: 'dd/MM/yyyy' }} {{ egreso.horaEgreso }} hs
-                            </plex-label>
-                            <plex-label>
-                                {{ egreso.tipo ? egreso.tipo : 'No se indica o el dato no es válido' }}
-                            </plex-label>
-                        </plex-item>
+        <ng-container *ngIf="institutions$ | async as instituciones">
+            <plex-tabs *ngIf="instituciones.length >0" [activeIndex]="0">
+                <plex-tab label="Ocupaciones">
+                    <ng-container *ngIf="ocupaciones$ | async as ocupaciones">
+                        <div class="row">
+                            <div *ngIf="ocupaciones.length === 0" class="alert alert-default w-100">
+                                No hay datos para mostrar
+                            </div>
+                        </div>
+                        <plex-list *ngIf="ocupaciones.length > 0">
+                            <plex-heading>
+                                <b label>Fecha de carga</b>
+                                <b label>Ingreso</b>
+                                <b label>Paciente</b>
+                                <b label>Habitacion</b>
+                                <b label>Servicio</b>
+                                <b label>Cama</b>
+                                <b label>Oxigeno</b>
+                                <b label>Covid</b>
+                                <b label>Estado</b>
+                                <b></b>
+                            </plex-heading>
+                            <plex-item *ngFor="let ocupacion of ocupaciones$ | async" class="mb-4 mb-0-md">
+                                <plex-label>{{ ocupacion.createdAt | date: 'dd/MM/yyyy' }}
+                                    {{ ocupacion.createdAt | date: 'HH:mm' }} hs
+                                </plex-label>
+                                <plex-label>{{ ocupacion.fechaIngreso | date: 'dd/MM/yyyy' }} {{ ocupacion.horaIngreso }} hs
+                                </plex-label>
+                                <plex-label>{{ ocupacion.apellido }}, {{ ocupacion.nombre }}<br><b>DNI: {{ ocupacion.dni }}</b>
+                                </plex-label>
+                                <plex-label>{{ ocupacion.habitacion }}<br><b>{{ ocupacion.piso }}</b></plex-label>
+                                <plex-label>{{ ocupacion.servicio }}</plex-label>
+                                <plex-label>{{ ocupacion.cama }}</plex-label>
+                                <plex-label>Oxígeno: {{ ocupacion.oxigeno }}<br><small>Respirador:
+                                        {{ ocupacion.respirador? ocupacion.respirador : 'No indica' }}</small>
+                                </plex-label>
+                                <plex-label>{{ ocupacion.covid }}</plex-label>
+                                <plex-label>
+                                    {{ ocupacion.estado ? ocupacion.estado : 'No se indica o el dato no es válido' }}
+                                </plex-label>
+                            </plex-item>
+                        </plex-list>
                     </ng-container>
-                </plex-list>
-            </plex-tab>
-        </plex-tabs>
+                </plex-tab>
+                <plex-tab label="Egresos">
+                    <ng-container *ngIf="egresos$ | async as egresos">
+                    <div class="row">
+                        <div *ngIf="egresos.length === 0" class="alert alert-default w-100">
+                            No hay datos para mostrar.
+                        </div>
+                    </div>
+                    <plex-list *ngIf="egresos.length > 0">
+                        <plex-heading>
+                            <b label>Fecha de carga</b>
+                            <b label>Ingreso</b>
+                            <b label>Paciente</b>
+                            <b label>Fecha de egreso</b>
+                            <b label>Hora de egreso</b>
+                            <b label>Tipo de egreso</b>
+                        </plex-heading>
+                        <ng-container *ngFor="let egreso of egresos">
+    
+                            <plex-item class="hover">
+                                <plex-label>{{ egreso.createdAt | date: 'dd/MM/yyyy' }}
+                                    {{ egreso.createdAt | date: 'HH:mm' }} hs
+                                </plex-label>
+                                <plex-label>{{ egreso.fechaIngreso | date: 'dd/MM/yyyy' }} {{ egreso.horaIngreso }} hs
+                                </plex-label>
+                                <plex-label>{{ egreso.apellido }}, {{ egreso.nombre }}<br><b>DNI: {{ egreso.dni }}</b>
+                                </plex-label>
+                                <plex-label>{{ egreso.fechaEgreso | date: 'dd/MM/yyyy' }} {{ egreso.horaEgreso }} hs
+                                </plex-label>
+                                <plex-label>
+                                    {{ egreso.tipo ? egreso.tipo : 'No se indica o el dato no es válido' }}
+                                </plex-label>
+                            </plex-item>
+                        </ng-container>
+                    </plex-list>
+                </ng-container>
+                </plex-tab>
+            </plex-tabs>
+        </ng-container>
+        
     </plex-layout-main>
 </plex-layout>

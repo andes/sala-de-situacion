@@ -19,5 +19,10 @@ const CheckoutSchema = new mongoose.Schema({
     nroArchivo: Number
 });
 CheckoutSchema.plugin(AuditPlugin);
+CheckoutSchema.index({
+    createdAt: 1,
+    'institution.id': 1
+
+});
 export const Checkout = mongoose.model('checkout', CheckoutSchema, 'checkouts');
 

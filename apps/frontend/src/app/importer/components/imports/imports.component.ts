@@ -1,103 +1,75 @@
 import { Component, OnInit } from '@angular/core';
-import { Plex } from '@andes/plex';
-import * as moment from 'moment';
-import { OcupationsService, Ocupation } from '../../services/ocupation.service';
-import { CheckoutsService, Checkout } from '../../services/checkout.service';
+import { OcupationsService } from '../../services/ocupation.service';
+import { ImportsListService } from '../../services/importListService';
+import { CheckoutsService } from '../../services/checkout.service';
 import { InstitutionService } from '../../../institutions/service/institution.service';
+import { AuthService } from '../../../login/services/auth.services';
 import { cache } from '@andes/shared';
+import { Plex } from '@andes/plex';
 import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'imports',
-    templateUrl: './imports.component.html'
+    templateUrl: './imports.component.html',
+    providers: [ImportsListService]
 })
 export class ImportsComponent implements OnInit {
-    egresos$: Observable<Checkout[]>;
-    public egresos = [];
-    ocupaciones$: Observable<Ocupation[]>;
-    public ocupaciones = [];
-    public institutions = [];
+    public institutions$: Observable<any>;
     // Filtros
-    public fechaDesde;
-    public fechaHasta;
+    public fechaDesde$ = this.ocupationsListService.fechaDesde.asObservable();
+    public fechaHasta$ = this.ocupationsListService.fechaHasta.asObservable();
     public selectedInstitution;
+    public ocupaciones$ = this.ocupationsListService.ocupaciones$;
+    public egresos$ = this.ocupationsListService.egresos$;
+
 
     constructor(
         public plex: Plex,
         public ocupationsService: OcupationsService,
         public checkoutsService: CheckoutsService,
-        private institutionService: InstitutionService
+        private institutionService: InstitutionService,
+        private ocupationsListService: ImportsListService,
+        private auth: AuthService
     ) { }
 
     ngOnInit() {
-        this.ocupaciones$ = this.ocupationsService.search({ sort: 'createdAt' }).pipe(cache());
-        this.egresos$ = this.checkoutsService.search({ sort: 'createdAt' }).pipe(cache());
         this.loadInstitutions();
     }
 
     loadInstitutions() {
-        this.institutionService.search({}).subscribe(rtaInstitutions => {
-            //toma la primer institucion del usuario
-            this.institutions = rtaInstitutions;
-            this.selectedInstitution = rtaInstitutions[0];
-            this.fechaDesde = new Date();
-            this.fechaHasta = new Date();
-            this.filtrarResultados();
-        });
+        let search = { fields: '-permisos' };
+        if (!this.auth.checkPermisos('admin:true')) {
+            search['user'] = this.auth.user_id
+        }
+        this.institutions$ = this.institutionService
+            .search(search)
+            .pipe(
+                tap((efectores) => {
+                    if (efectores.length > 0) {
+                        this.selectedInstitution = efectores[0];
+                        this.ocupationsListService.setInstitucion(efectores[0]);
+                    }
+                }),
+                map(efectores => {
+                    return efectores;
+                }),
+                cache());
     }
 
-    filtrarResultados() {
-        this.ocupaciones$.subscribe(ocupaciones => {
-            if (this.selectedInstitution) {
-                ocupaciones = ocupaciones.filter(e => e.institution && e.institution.id === this.selectedInstitution.id);
-                if (this.fechaDesde) {
-                    ocupaciones = ocupaciones.filter(
-                        e =>
-                            e.createdAt >=
-                            moment(this.fechaDesde)
-                                .startOf('day')
-                                .toDate()
-                    );
-                }
-                if (this.fechaHasta) {
-                    ocupaciones = ocupaciones.filter(
-                        e =>
-                            e.createdAt <=
-                            moment(this.fechaHasta)
-                                .endOf('day')
-                                .toDate()
-                    );
-                }
-                this.ocupaciones = ocupaciones;
-            } else {
-                this.ocupaciones = [];
-            }
-        });
-        this.egresos$.subscribe(egresos => {
-            if (this.selectedInstitution) {
-                egresos = egresos.filter(e => e.institution && e.institution.id === this.selectedInstitution.id);
-                if (this.fechaDesde) {
-                    egresos = egresos.filter(
-                        e =>
-                            e.createdAt >=
-                            moment(this.fechaDesde)
-                                .startOf('day')
-                                .toDate()
-                    );
-                }
-                if (this.fechaHasta) {
-                    egresos = egresos.filter(
-                        e =>
-                            e.createdAt <=
-                            moment(this.fechaHasta)
-                                .endOf('day')
-                                .toDate()
-                    );
-                }
-                this.egresos = egresos;
-            } else {
-                this.egresos = [];
-            }
-        });
+    onChangeDesde($event) {
+        const { value } = $event;
+        this.ocupationsListService.setDesde(value);
     }
+
+    onChangeHasta($event) {
+        const { value } = $event;
+        this.ocupationsListService.setHasta(value);
+    }
+
+    onChangeInstitucion($event) {
+        const { value } = $event;
+        this.ocupationsListService.setInstitucion(value);
+    }
+
 }
