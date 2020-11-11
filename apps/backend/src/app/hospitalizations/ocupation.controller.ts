@@ -54,19 +54,22 @@ class OcupationResource extends ResourceBase {
             const urlDelete = `${environment.bi_query_host}/queries/sala-checkouts/delete`;
             await fetch(urlDelete, { method: 'POST', headers: headers, body: JSON.stringify(data) });
             // Exporta los archivos
-            const response = await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(data) });
+            let response = await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(data) });
             if (response.status == 400) {
                 // Realiza un nuevo intento
                 await fetch(urlDelete, { method: 'POST', headers: headers, body: JSON.stringify(data) });
-                await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(data) });
-            } else {
-                const ocupaciones = await OcupationCtr.search({ nroArchivo: archivo });
-                ocupaciones.forEach(async ocupacion => {
-                    ocupacion.exportado = true;
-                    await ocupacion.save();
-                });
-                return res.json({ status: 'ok' });
+                response = await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(data) });
             }
+            if (response.status !== 400) {
+                const ocupaciones = await Ocupation.find({ nroArchivo: archivo });
+                ocupaciones.forEach(async ocupacion => {
+                    const ocupation = new Ocupation(ocupacion);
+                    ocupation['exportado'] = true;
+                    await ocupation.save();
+                });
+            }
+            return res.json({ status: 'ok' });
+
         }
         catch (err) {
             throw new ResourceNotFound();
