@@ -8,6 +8,7 @@ import { PlexModule } from '@andes/plex';
 import { ImporterComponent } from './components/importer.component';
 import { OcupationsService } from './services/ocupation.service';
 import { ImportsComponent } from './components/imports/imports.component';
+import { CheckImportComponent } from './components/checkimport.component';
 
 @NgModule({
     imports: [
@@ -19,11 +20,13 @@ import { ImportsComponent } from './components/imports/imports.component';
     ],
     exports: [
         ImporterComponent,
-        ImportsComponent
+        ImportsComponent,
+        CheckImportComponent
     ],
     declarations: [
         ImporterComponent,
-        ImportsComponent
+        ImportsComponent,
+        CheckImportComponent
     ],
     providers: [
         OcupationsService,

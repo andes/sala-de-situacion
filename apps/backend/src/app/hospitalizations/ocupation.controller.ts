@@ -4,7 +4,6 @@ import { authenticate } from '../application';
 import { Ocupation } from './ocupation.schema';
 import { environment } from '../../environments/environment';
 import { Request, Response } from '@andes/api-tool';
-import { Types } from 'mongoose';
 const fetch = require('node-fetch');
 
 class OcupationResource extends ResourceBase {
@@ -28,7 +27,8 @@ class OcupationResource extends ResourceBase {
             field: 'createdAt',
             fn: (value) => (MongoQuery.matchDate(value))
         },
-        search: ['institution', 'fecha']
+        exportado: MongoQuery.equalMatch,
+        search: ['institution', 'fecha', 'exportado']
     };
 
     extrasRoutes = [
@@ -50,8 +50,23 @@ class OcupationResource extends ResourceBase {
             const headers = {
                 'Content-Type': 'application/json'
             };
-            await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(data) });
-            return res.json({ status: 'ok' });
+            // Elimina el archivo en el sql
+            const urlDelete = `${environment.bi_query_host}/queries/sala-checkouts/delete`;
+            await fetch(urlDelete, { method: 'POST', headers: headers, body: JSON.stringify(data) });
+            // Exporta los archivos
+            const response = await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(data) });
+            if (response.status == 400) {
+                // Realiza un nuevo intento
+                await fetch(urlDelete, { method: 'POST', headers: headers, body: JSON.stringify(data) });
+                await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(data) });
+            } else {
+                const ocupaciones = await OcupationCtr.search({ nroArchivo: archivo });
+                ocupaciones.forEach(async ocupacion => {
+                    ocupacion.exportado = true;
+                    await ocupacion.save();
+                });
+                return res.json({ status: 'ok' });
+            }
         }
         catch (err) {
             throw new ResourceNotFound();

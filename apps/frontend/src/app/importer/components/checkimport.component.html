@@ -1,0 +1,23 @@
+<plex-layout>
+    <plex-layout-main>
+        <plex-title titulo="Verificar exportaciones de archivos">
+            <plex-button label="Exportar" type="success" class="ml-2"
+            (click)="exportarArchivo()"></plex-button>
+        </plex-title>
+        <div class="row mb-2">
+            <div class="col-6">
+                <plex-select label="Institución" name="institucion" [(ngModel)]="selectedInstitution" idField="id"
+                placeholder="Seleccione una institución" labelField="nombre" (change)="onChangeInstitucion($event)" [data]="institutions$ | async">
+                </plex-select>
+            </div>
+            <div class="col-3">
+                <plex-select label="Archivo" name="archivo" [(ngModel)]="selectedFile" 
+                placeholder="Seleccione un archivo" labelField="nroArchivo" [data]="ocupaciones$ | async">
+                </plex-select>
+            </div>
+            <div class="col-3">
+            </div>
+            <br>
+        </div>
+    </plex-layout-main>
+</plex-layout>
