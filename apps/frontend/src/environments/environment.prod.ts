@@ -1,5 +1,29 @@
 export const environment = {
   production: true,
   API: '/api',
-  charts_embedding_base_url: 'http://localhost/mongodb-charts-zypoq'
+  charts_embedding_base_url: 'http://localhost/mongodb-charts-zypoq',
+  TRANSLATIONS: {
+    respirators_allocated_adult: 'Dotación respiradores',
+    respirators_available_adult_count:'Respiradores disponibles',
+    respirators_unavailable_adult_count:'Respiradores ocupados',
+    uti_allocated_adult:'Dotación camas',
+    uti_allocated_adult_gas:'Dotación camas con oxigeno',
+    uti_discharged_adult_count:'Egresos por alta médica',
+    uti_discharged_dead_adult_count:'Egresos por deceso ',
+    uti_discharged_derivative_adult_count:'Egresos por derivación',
+    uti_gas_available_adult_count:'Oxigeno disponible',
+    uti_gas_unavailable_adult_count:'Oxigeno ocupado',
+    uti_hospitalized_adult_count:'Total internaciones',
+    respirators_allocated_children: 'Dotación respiradores',
+    respirators_available_children_count:'Respiradores disponibles',
+    respirators_unavailable_children_count:'Respiradores ocupados',
+    uti_allocated_children:'Dotación camas',
+    uti_allocated_children_gas:'Dotación camas con oxigeno',
+    uti_discharged_children_count:'Egresos por alta médica',
+    uti_discharged_dead_children_count:'Egresos por deceso ',
+    uti_discharged_derivative_children_count:'Egresos por derivación',
+    uti_gas_available_children_count:'Oxigeno disponible',
+    uti_gas_unavailable_children_count:'Oxigeno ocupado',
+    uti_hospitalized_children_count:'Total internaciones',
+  }
 };

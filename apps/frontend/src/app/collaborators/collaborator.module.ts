@@ -6,10 +6,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PlexModule } from '@andes/plex';
 import { CollaboratorRouting } from './collaborator.routing';
+import { ReportEventsComponent } from './components/report-events/report-events.component';
+import { ReportEventsService } from './service/report-events.service';
 
 @NgModule({
     imports: [CommonModule, FormsModule, HttpClientModule, PlexModule, CollaboratorRouting],
-    declarations: [AppCollaboratorCrudComponent, AppCollaboratorListComponent],
-    providers: []
+    declarations: [AppCollaboratorCrudComponent, AppCollaboratorListComponent, ReportEventsComponent],
+    providers: [ReportEventsService]
 })
 export class CollaboratorModule { }
