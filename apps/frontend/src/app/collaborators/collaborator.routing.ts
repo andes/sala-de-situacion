@@ -2,6 +2,7 @@ import { AppCollaboratorListComponent } from './components/collaborators-list/co
 import { AppCollaboratorCrudComponent } from './components/collaborators-crud/collaborator-crud.component';
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
+import { ReportEventsComponent } from './components/report-events/report-events.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,10 @@ const routes: Routes = [
     {
         path: 'list',
         component: AppCollaboratorListComponent
+    },
+    { 
+        path: 'report-events',
+        component: ReportEventsComponent 
     }
 ];
 

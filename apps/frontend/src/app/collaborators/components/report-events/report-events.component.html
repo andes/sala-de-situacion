@@ -1,0 +1,33 @@
+<plex-layout>
+    <plex-layout-main>
+        <plex-title titulo="Exportar datos">
+            <plex-button label='Cancelar' type='danger' (click)='clear()' *ngIf='reportEvent'></plex-button>
+            <plex-button label='Exportar' type='success' (click)='submitReport()' [disabled]='!reportEvent'></plex-button>
+        </plex-title>
+        <div class="row mb-2">
+            <div class="col">
+                <plex-select [(ngModel)]="institution" name="institucion" label="Institución" [data]="institutions" placeholder="Seleccione una institución" [required]="false" (change)="searchReport()">
+                </plex-select>
+            </div>
+            <div class="col">
+                <plex-select [(ngModel)]="tipoReporte" name="Tipo" label="Tipo de reportes" [data]="tipoReportes" [required]="false" placeholder="Seleccione un tipo de Reporte"  (change)="searchReport()">
+                </plex-select>
+            </div>
+            <br>
+        </div>
+        <hr>
+        <form *ngIf="reportEvent">
+            <div *ngFor='let field of reportFields'>
+                <plex-int [label]="field.label" type="int" [(ngModel)]="reportEvent.report[field.key]"
+                    [name]="field.label" [required]="true">
+                </plex-int>  
+            </div>
+        </form>
+        <div class="row">
+            <div *ngIf="!reportEvent" class="alert alert-default w-100">
+                No hay datos para mostrar
+            </div>
+        </div>
+       
+    </plex-layout-main>
+</plex-layout>

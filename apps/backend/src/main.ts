@@ -12,6 +12,7 @@ const EventsRouter = require('./app/events/event.controller').EventsRouter;
 const OcurrenceEventRoutes = require('./app/ocurrence-events/ocurrence-events.controller').OcurrenceEventRoutes;
 const OcurrenceEventHistoryRoutes = require('./app/ocurrence-events-history/ocurrence-events-history.controller')
     .OcurrenceEventHistoryRoutes;
+const ReportEventRouter = require('./app/report-events/report-events.controller').ReportEventRouter;
 const ProvinciaRouter = require('./app/location/provincia.controller').ProvinciaRouter;
 const LocalidadRouter = require('./app/location/localidad.controller').LocalidadRouter;
 const BarrioRouter = require('./app/location/barrio.controller').BarrioRouter;
@@ -32,6 +33,7 @@ application.add({ path: '/api', router: InstitutionsRouter });
 application.add({ path: '/api', router: EventsRouter });
 application.add({ path: '/api', router: OcurrenceEventRoutes });
 application.add({ path: '/api', router: OcurrenceEventHistoryRoutes });
+application.add({ path: '/api', router: ReportEventRouter });
 application.add({ path: '/api', router: ProvinciaRouter });
 application.add({ path: '/api', router: LocalidadRouter });
 application.add({ path: '/api', router: BarrioRouter });
