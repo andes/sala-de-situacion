@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
         }
         if (this.auth.checkPermisos('admin:true')) {
             this.menuList.push({ label: 'Colaboradores', icon: 'account-circle', route: '/collaborator/list' });
-            this.menuList.push({ label: 'Informes Ocupaciones', icon: 'folder-upload', route: '/collaborator/report-events' });
+            this.menuList.push({ label: 'Exportar datos', icon: 'check-circle', route: '/collaborator/report-events' });
         }
         this.accessList.forEach(element => {
             this.menuList.push(element);
