@@ -4,7 +4,6 @@ import { authenticate } from '../application';
 import { Ocupation } from './ocupation.schema';
 import { environment } from '../../environments/environment';
 import { Request, Response } from '@andes/api-tool';
-import { Types } from 'mongoose';
 const fetch = require('node-fetch');
 
 class OcupationResource extends ResourceBase {

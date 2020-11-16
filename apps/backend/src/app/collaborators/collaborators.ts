@@ -26,7 +26,7 @@ export async function getToken(email, password) {
 }
 
 export async function getTokenByInstitucion(institutionId) {
-    const collaborator: any =  await Collaborator.find({ 'institution.id': institutionId});
+    const collaborator: any = await Collaborator.find({ 'institution.id': institutionId });
     return await getToken(collaborator.email, collaborator.password);
 }
 
@@ -78,7 +78,6 @@ async function generarReport(type, institution, servicio) {
 }
 
 export async function exportReports(done) {
-    const postReportUrl = `${environment.exportadorHost}/api/v1/reports?validation_type=`;
     const collaborators: any[] = await Collaborator.find({ activo: true });
 
     for (const collaborator of collaborators) {
@@ -87,11 +86,6 @@ export async function exportReports(done) {
             const institution = collaborator.institution.id;
             let servicio_uti = await Servicio.find({ nombre: 'UNIDAD DE TERAPIA INTENSIVA' });
             const reportAdult = await generarReport('adult', institution, servicio_uti[0]);
-            const headers = {
-                'Authorization': `Bearer ${token}`,
-                'Content-type': 'application/json',
-                'Accept': 'application/json'
-            };
             // Se envian los reportes de Adultos y Children
             if (reportAdult) {
                 await postNacion(reportAdult, token);
