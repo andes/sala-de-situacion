@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { InstitutionService } from '../../../institutions/service/institution.service';
 import { ReportEventsService } from '../../service/report-events.service';
-
+import { Observable, of } from 'rxjs';
+import { OcupationsService } from '../../../importer/services/ocupation.service';
+import { cache } from '@andes/shared';
+import { debug } from 'util';
 
 
 @Component({
@@ -18,7 +21,13 @@ export class ReportEventsComponent implements OnInit {
         { id: 'adults', nombre: 'Adulto' },
         { id: 'children', nombre: 'Niño' }
     ];
+    public opciones = [
+        { id: 1, label: 'Exportar a Nación' },
+        { id: 2, label: 'Exportar Archivos' }
+    ];
+    public tipoExportacion = 1;
     public tipoReporte = null;
+    public ocupaciones$: Observable<any>;
     private TRANSLATIONS = {
         respirators_allocated_adult: 'Dotación de respiradores',
         respirators_available_adult_count: 'Cantidad de respiradores disponibles',
@@ -47,15 +56,17 @@ export class ReportEventsComponent implements OnInit {
     constructor(
         public plex: Plex,
         private institutionService: InstitutionService,
-        private reportEventsService: ReportEventsService
+        private reportEventsService: ReportEventsService,
+        public ocupationsService: OcupationsService
     ) { }
 
     ngOnInit() {
         this.loadInstitutions();
+        this.ocupaciones$ = of([]);
     }
 
     loadInstitutions() {
-        this.institutionService.search({}).subscribe(rtaInstitutions => {
+        this.institutionService.search({ activo: true }).subscribe(rtaInstitutions => {
             this.institutions = rtaInstitutions;
         });
     }
@@ -64,12 +75,23 @@ export class ReportEventsComponent implements OnInit {
         if (this.institution && this.tipoReporte) {
             this.reportEventsService.search({ instituciones: [this.institution.id], type: this.tipoReporte.id, sort: '-fecha', limit: 1 }).subscribe(res => {
                 this.reportEvent = res[0];
-                const report = this.reportEvent.report;
-                this.reportFields = Object.keys(report).map(e => ({ label: (this.TRANSLATIONS[e] ? this.TRANSLATIONS[e] : e), key: e }));
+                if (this.reportEvent && this.reportEvent.report) {
+                    const report = this.reportEvent.report;
+                    this.reportFields = Object.keys(report).map(e => ({ label: (this.TRANSLATIONS[e] ? this.TRANSLATIONS[e] : e), key: e }));
+
+                }
             });
         } else {
-            this.reportEvent = null;
-            this.reportFields = null
+            if (this.institution && this.tipoExportacion == 2) {
+                this.ocupaciones$ = this.ocupationsService
+                    .search({ institution: this.institution.id, exportado: false, sort: '-nroArchivo', limit: '1' })
+                    .pipe(cache());
+
+            } else {
+                this.reportEvent = null;
+                this.reportFields = null;
+                this.ocupaciones$ = of([]);
+            }
         }
     }
 
@@ -85,4 +107,11 @@ export class ReportEventsComponent implements OnInit {
         this.reportFields = null
         this.institution = null;
     }
+
+    exportarArchivo(ocupacion) {
+        if (ocupacion.nroArchivo !== null) {
+            this.ocupationsService.export(ocupacion.nroArchivo).subscribe();
+        }
+    }
+
 }

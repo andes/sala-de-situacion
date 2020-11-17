@@ -1,25 +1,31 @@
 <plex-layout>
     <plex-layout-main>
-        <plex-title titulo="Exportar datos">
+        <plex-title titulo="Exportar información">
             <plex-button label='Cancelar' type='danger' (click)='clear()' *ngIf='reportEvent'></plex-button>
-            <plex-button label='Exportar' type='success' (click)='submitReport()' [disabled]='!reportEvent'></plex-button>
+            <plex-button *ngIf= 'tipoExportacion === 1' label='Exportar' type='success' (click)='submitReport()' [disabled]='!reportEvent' ></plex-button>
+        </plex-title>
+        <plex-title justify titulo="Tipo de exportación" size="sm">
+            <plex-radio class="form-check-inline" [(ngModel)]="tipoExportacion" [data]="opciones" name="exportacion"
+                        type="horizontal">
+            </plex-radio>
         </plex-title>
         <div class="row mb-2">
             <div class="col">
                 <plex-select [(ngModel)]="institution" name="institucion" label="Institución" [data]="institutions" placeholder="Seleccione una institución" [required]="false" (change)="searchReport()">
                 </plex-select>
             </div>
-            <div class="col">
+            <div class="col" *ngIf='tipoExportacion && tipoExportacion === 1'>
                 <plex-select [(ngModel)]="tipoReporte" name="Tipo" label="Tipo de reportes" [data]="tipoReportes" [required]="false" placeholder="Seleccione un tipo de Reporte"  (change)="searchReport()">
                 </plex-select>
             </div>
             <br>
         </div>
         <hr>
+        <ng-container *ngIf='tipoExportacion && tipoExportacion === 1'>
         <form *ngIf="reportEvent">
             <div *ngFor='let field of reportFields'>
                 <plex-int [label]="field.label" type="int" [(ngModel)]="reportEvent.report[field.key]"
-                    [name]="field.label" [required]="true">
+                    [name]="field.label" [required]="true" (change)="searchReport()">
                 </plex-int>  
             </div>
         </form>
@@ -28,6 +34,30 @@
                 No hay datos para mostrar
             </div>
         </div>
+    </ng-container>
+    <ng-container *ngIf="tipoExportacion && tipoExportacion === 2 && ocupaciones$ | async as ocupaciones">
+            <div class="row">
+                <div *ngIf="ocupaciones.length === 0" class="alert alert-default w-100">
+                    No hay datos para mostrar
+                </div>
+            </div>
+            <plex-list *ngIf="ocupaciones.length > 0">
+                <plex-heading>
+                    <b label>Fecha de Archivo</b>
+                    <b label>Usuario</b>
+                    <b label>Nro Archivo</b>
+                    <b></b>
+                </plex-heading>
+                <plex-item *ngFor="let ocupacion of ocupaciones$ | async" class="mb-4 mb-0-md">
+                    <plex-label>{{ ocupacion.createdAt | date: 'dd/MM/yyyy' }}
+                        {{ ocupacion.createdAt | date: 'HH:mm' }} hs
+                    </plex-label>
+                    <plex-label>{{ ocupacion.createdBy.nombre }} {{ ocupacion.createdBy.apellido }}</plex-label>
+                    <plex-label>{{ ocupacion.nroArchivo }}</plex-label>
+                    <plex-button label= "Exportar Archivo" type="success" size="sm" (click)="exportarArchivo(ocupacion)"></plex-button>
+                </plex-item>
+            </plex-list>
+    </ng-container>
        
     </plex-layout-main>
 </plex-layout>
