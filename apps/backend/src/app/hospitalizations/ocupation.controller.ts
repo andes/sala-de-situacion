@@ -27,7 +27,8 @@ class OcupationResource extends ResourceBase {
             field: 'createdAt',
             fn: (value) => (MongoQuery.matchDate(value))
         },
-        search: ['institution', 'fecha']
+        exportado: MongoQuery.equalMatch,
+        search: ['institution', 'fecha', 'exportado']
     };
 
     extrasRoutes = [
@@ -49,7 +50,23 @@ class OcupationResource extends ResourceBase {
             const headers = {
                 'Content-Type': 'application/json'
             };
-            await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(data) });
+            // Elimina el archivo en el sql
+            const urlDelete = `${environment.bi_query_host}/queries/sala-checkouts/delete`;
+            await fetch(urlDelete, { method: 'POST', headers: headers, body: JSON.stringify(data) });
+            // Exporta los archivos
+            let response = await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(data) });
+            if (response.status == 400) {
+                // Realiza un nuevo intento
+                await fetch(urlDelete, { method: 'POST', headers: headers, body: JSON.stringify(data) });
+                response = await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(data) });
+            } else {
+                const ocupaciones = await Ocupation.find({ nroArchivo: archivo });
+                ocupaciones.forEach(async ocupacion => {
+                    const ocupation = new Ocupation(ocupacion);
+                    ocupation['exportado'] = true;
+                    await ocupation.save();
+                });
+            }
             return res.json({ status: 'ok' });
         }
         catch (err) {

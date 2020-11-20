@@ -6,8 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PlexModule } from '@andes/plex';
 import { CollaboratorRouting } from './collaborator.routing';
-import { ReportEventsComponent } from './components/report-events/report-events.component';
 import { ReportEventsService } from './service/report-events.service';
+import { ReportEventsComponent } from './components/report-events/report-events.component';
 
 @NgModule({
     imports: [CommonModule, FormsModule, HttpClientModule, PlexModule, CollaboratorRouting],
