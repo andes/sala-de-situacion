@@ -25,7 +25,7 @@
         <form *ngIf="reportEvent">
             <div *ngFor='let field of reportFields'>
                 <plex-int [label]="field.label" type="int" [(ngModel)]="reportEvent.report[field.key]"
-                    [name]="field.label" [required]="true" (change)="searchReport()">
+                    [name]="field.label" [required]="true" >
                 </plex-int>  
             </div>
         </form>
