@@ -10,13 +10,12 @@ export class SelectSearchService {
     get(recurso, texto): Observable<any[]> {
         let search = null;
         if (texto) {
-            search = `^${texto}`;
+            search = texto;
         }
         const params = {
-            search,
-            fields: 'nombre'
+            search
         }
-        return this.server.get(`/${recurso}`, { params, showError: true });
+        return this.server.get(`/resources/elements/${recurso}`, { params, showError: true });
     }
 
 }
