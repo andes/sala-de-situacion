@@ -1,3 +1,4 @@
+import { UsersComponent } from './components/users/users.component';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { RoutingGuard } from './routing-guard';
@@ -18,7 +19,8 @@ const routes = [
     { path: 'register-user', component: RegisterUserComponent },
     { path: 'verify-email/:email', component: VerifyEmailComponent },
     { path: 'activacion-cuenta/:token', component: ActivacionCuentaComponent },
-    { path: 'user-profile', component: UserProfileComponent }
+    { path: 'user-profile', component: UserProfileComponent },
+    { path: 'users', component: UsersComponent }
 ];
 
 @NgModule({

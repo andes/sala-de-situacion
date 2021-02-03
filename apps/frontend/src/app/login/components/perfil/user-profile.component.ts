@@ -40,17 +40,17 @@ export class UserProfileComponent implements OnInit {
     ngOnInit(): void {
         this.auth.getSession().subscribe((sessionUser) => {
             this.user = sessionUser;
+            let paramsInstitutions: any = {};
+            paramsInstitutions.user = this.user.id;
+            this.institutionService.search(paramsInstitutions).subscribe(
+                registros => {
+                    this.institutions = registros;
+                },
+                (err) => {
+                    this.plex.info('danger', 'Error al cargar las instituciones');
+                }
+            );
         });
-        let paramsInstitutions: any = {};
-        paramsInstitutions.user = this.user.id;
-        this.institutionService.search(paramsInstitutions).subscribe(
-            registros => {
-                this.institutions = registros;
-            },
-            (err) => {
-                this.plex.info('danger', 'Error al cargar las instituciones');
-            }
-        );
     }
 
     toggleResetForm() {
@@ -104,5 +104,4 @@ export class UserProfileComponent implements OnInit {
             this.plex.toast('success', `El usuario fue desvinculado correctamente de la institución ${rta.nombre}.`);
         });
     }
-
 }

@@ -51,8 +51,8 @@
                                                     tituloPrincipal="{{ unEvento.indicadores[subfiltro] }}">
                                             <plex-title size="sm"
                                                         titulo="{{indicadores[unEvento.eventKey].evento.nombre}}: {{ unEvento.fecha | date: 'dd/MM/yyyy  HH:mm' }}">
-                                                <plex-button size="sm" icon="pencil" type="info"
-                                                             [routerLink]="[unEvento.id]">
+                                                <plex-button size="sm" *ngIf="unEvento.canEdit" icon="pencil"
+                                                             type="info" [routerLink]="[unEvento.id]">
                                                 </plex-button>
                                             </plex-title>
                                             <ng-container *ngFor="let item of unEvento.indicadores | keyvalue">
@@ -69,7 +69,7 @@
                                     <plex-panel *ngIf="indicadores[unEvento.eventKey] && indicadores[unEvento.eventKey].subfiltros.length === 0"
                                                 tituloPrincipal="{{indicadores[unEvento.eventKey].evento.nombre}}">
                                         <plex-title size="sm" titulo="{{ unEvento.fecha | date: 'dd/MM/yyyy  HH:mm' }}">
-                                            <plex-button size="sm" icon="pencil" type="info"
+                                            <plex-button *ngIf="unEvento.canEdit" size="sm" icon="pencil" type="info"
                                                          [routerLink]="[unEvento.id]">
                                             </plex-button>
                                         </plex-title>
