@@ -22,6 +22,11 @@ export class VaccinationConsultComponent {
 
     seleccionarSexo($event) {
         this.sexo = $event.value;
+        this.limpiarRespuesta();
+    }
+
+    limpiarRespuesta() {
+        this.resultado = null;
     }
 
     buscar() {
