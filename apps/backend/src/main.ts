@@ -22,8 +22,8 @@ const CollaboratorsRouter = require('./app/collaborators/collaborator.controller
 const ServiciosRouter = require('./app/servicios/servicios.routes').ServiciosRouter;
 const CheckoutsRouter = require('./app/hospitalizations/checkout.controller').CheckoutsRouter;
 const ResourcesRouter = require('./app/events/recursos/resource.controller').ResourcesRoutes;
+const InscripcionVacunasRouter = require('./app/inscripcion-vacunas/inscripcion-vacunas.routes').InscripcionVacunasRouter;
 const OcupationsRouter = require('./app/hospitalizations/ocupation.controller').OcupationsRouter;
-
 
 // Rutas
 application.add({ path: '/api', router: UsersRouter });
@@ -44,5 +44,6 @@ application.add({ path: '/api', router: ServiciosRouter });
 application.add({ path: '/api', router: CheckoutsRouter });
 application.add({ path: '/api', router: OcupationsRouter });
 application.add({ path: '/api', router: ResourcesRouter });
+application.add({ path: '/api', router: InscripcionVacunasRouter });
 
 application.start();
