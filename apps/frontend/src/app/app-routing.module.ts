@@ -4,7 +4,6 @@ import { AppHomeComponent } from './home/home.component';
 import { RoutingNavBar, RoutingGuard } from './login/routing-guard';
 
 const appRoutes: Routes = [
-
     {
         path: '',
         component: AppHomeComponent,
@@ -38,7 +37,11 @@ const appRoutes: Routes = [
         loadChildren: './collaborators/collaborator.module#CollaboratorModule',
         canActivate: [RoutingNavBar, RoutingGuard]
     },
-
+    {
+        path: 'vacunacion',
+        loadChildren: './vaccination/vaccination.module#VaccinationModule',
+        canActivate: []
+    },
     { path: '**', redirectTo: '/' }
 ];
 
