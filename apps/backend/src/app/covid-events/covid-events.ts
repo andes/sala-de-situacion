@@ -1,6 +1,6 @@
 import { environment } from '../../../src/environments/environment';
 import * as moment from 'moment';
-import { CovidEvents } from './covid-events.schema';
+import { CovidEventsTemp } from './covid-events.schema';
 const fetch = require('node-fetch');
 
 export async function getToken(user: string, pass: string) {
@@ -63,7 +63,7 @@ async function importCasesPerPage(token, page: string) {
 
 async function saveCases(casos) {
     try {
-        const updatecases = [];
+        const createCases = [];
         casos.forEach((caso: any) => {
             if (caso.ideventocaso) {
                 caso.min_FTM = transformDate(caso.min_FTM);
@@ -77,10 +77,14 @@ async function saveCases(casos) {
                 caso.fecha_DIAGNOSTICO = transformDate(caso.fecha_DIAGNOSTICO);
                 caso.fecha_MOD_CLASIF = new Date(caso.fecha_MOD_CLASIF);
                 caso.fecha_GRAFICO = new Date(caso.fecha_GRAFICO);
-                updatecases.push(CovidEvents.updateOne({ ideventocaso: caso.ideventocaso }, caso, { upsert: true }));
+
+                const newCaso = new CovidEventsTemp(caso);
+                createCases.push(newCaso.save());
             }
         });
-        await Promise.all(updatecases);
+        await Promise.all(createCases);
+        await CovidEventsTemp.db.dropCollection('covid_events');
+        return await CovidEventsTemp.db.collection('covid_events_temp').rename('covid_events');
     } catch (err) {
         return err;
     }

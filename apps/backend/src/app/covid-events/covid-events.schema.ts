@@ -122,3 +122,4 @@ export const CovidEventsSchema = new mongoose.Schema({
 
 
 export const CovidEvents = mongoose.model('covid_events', CovidEventsSchema, 'covid_events');
+export const CovidEventsTemp = mongoose.model('covid_events_temp', CovidEventsSchema, 'covid_events_temp');
