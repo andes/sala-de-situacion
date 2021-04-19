@@ -49,9 +49,15 @@ class ReportEvenResource extends ResourceBase {
     public async export(this: ReportEvenResource, req: Request, res: Response) {
         try {
             const re = req.body.reportEvent;
+            re.fecha = new Date();
+            delete re._id;
             const token = await getTokenByInstitucion(re.institucion.id);
-            await postNacion(re.report, token, (re.report.type === 'children'));
-            res.json(await this.update(re.id, { report: re.report }, req));
+            const response = await postNacion(re.report, token, (re.report.type === 'children'));
+            // se guarda el reporte enviado
+            if (response && response.status === 200) {
+                const reportEventAdult = new ReportEvent(re);
+                await reportEventAdult.save();
+            }
         } catch (err) {
             throw new ResourceNotFound();
         }

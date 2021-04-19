@@ -26,7 +26,7 @@ export async function getToken(email, password) {
 }
 
 export async function getTokenByInstitucion(institutionId) {
-    const collaborator: any = await Collaborator.find({ 'institution.id': institutionId });
+    const collaborator: any = await Collaborator.findOne({ 'institution.id': institutionId });
     return await getToken(collaborator.email, collaborator.password);
 }
 
