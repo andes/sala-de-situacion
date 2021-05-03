@@ -8,6 +8,7 @@ import { OcurrenceEventsRouting } from './ocurrence-events.routing';
 import { OcurrenceEventsService } from './services/ocurrence-events.service';
 import { RouterModule } from '@angular/router';
 import { OccurrenceEventsCrudComponent } from './components/ocurrence-events-crud/ocurrence-events-crud.component';
+import { OccurrenceEventsImportComponent } from './components/ocurrence-events-import/ocurrence-events-import.component';
 import { OcurrenceEventsListComponent } from './components/ocurrence-events-list/ocurrence-events-list.component';
 import { OcurrenceEventsResolver } from './resolver/ocurrence-events.resolver';
 import { SelectSearchDirective } from '../shared/directives/select-search.directive';
@@ -17,6 +18,7 @@ import { ModalDisclaimerComponent } from '../login/components/disclaimer/modal-d
     // prettier-ignore
     declarations: [
         OccurrenceEventsCrudComponent,
+        OccurrenceEventsImportComponent,
         OcurrenceEventsListComponent,
         SelectSearchDirective,
         ModalDisclaimerComponent

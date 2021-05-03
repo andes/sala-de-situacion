@@ -10,13 +10,19 @@ export class SelectSearchService {
     get(recurso, texto): Observable<any[]> {
         let search = null;
         if (texto) {
-            search = `^${texto}`;
+            search = texto;
         }
         const params = {
-            search,
-            fields: 'nombre'
+            search
         }
-        return this.server.get(`/${recurso}`, { params, showError: true });
+        return this.server.get(`/resources/elements/${0}`, { params, showError: true });
     }
 
+    getByKeys(keys): Observable<any[]> {
+        keys = Array.isArray(keys) ? keys : [keys];
+        let url = `/resources?`;
+        keys.forEach(k => url+= `key=${k}&`);
+        url = url.slice(0, -1)
+        return this.server.get(url);
+    }
 }
