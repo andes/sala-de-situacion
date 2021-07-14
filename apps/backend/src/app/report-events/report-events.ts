@@ -18,7 +18,6 @@ export async function postNacion(report, token, children?) {
         const response = await fetch(`${postReportUrl}${children ? 'children' : 'adults'}`, { method: 'POST', headers: headers, body: JSON.stringify(report) });
         //End guard
         await fetch(`${environment.exportadorHost}/api/v1/guards`, { method: 'POST', headers: headers });
-        console.log(response);
         return response;
     } catch (err) {
         return err;
