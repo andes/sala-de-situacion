@@ -109,7 +109,6 @@ export const CovidEventsSchema = new mongoose.Schema({
     fumador: Number,
     barrio_POPULAR: String,
     tratamiento_FECHA_RESULTADO: String,
-    ULTIMA_ACTUALIZACION: Date,
     id_PROVINCIA_INDEC: String,
     id_PROVINCIA_METRICAS: Number,
     estab_DIAG_NO_MALBRAN: String,
@@ -120,5 +119,8 @@ export const CovidEventsSchema = new mongoose.Schema({
     vigilancia_ACTIVA: String
 });
 
-
+CovidEventsSchema.index({
+    fecha_MOD_EVENTO: 1
+});
 export const CovidEvents = mongoose.model('covid_events', CovidEventsSchema, 'covid_events');
+export const CovidEventsTemp = mongoose.model('covid_events_temp', CovidEventsSchema, 'covid_events_temp');
