@@ -192,10 +192,9 @@ export async function updateCasesCovid(done, date) {
     try {
         if (token !== null) {
             // eliminar los casos de una fecha específica
-            await deleteCovidEventsByDate(date);
+            // await deleteCovidEventsByDate(date);
             const casos = await getCasesByDate(token, date)
             for (const caso of casos) {
-                console.log('casos',)
                 let retry = true;
                 while (retry) {
                     const datosCaso = await importCase(token, caso);
