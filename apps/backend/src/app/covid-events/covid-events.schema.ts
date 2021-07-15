@@ -123,4 +123,3 @@ CovidEventsSchema.index({
     fecha_MOD_EVENTO: 1
 });
 export const CovidEvents = mongoose.model('covid_events', CovidEventsSchema, 'covid_events');
-export const CovidEventsTemp = mongoose.model('covid_events_temp', CovidEventsSchema, 'covid_events_temp');
