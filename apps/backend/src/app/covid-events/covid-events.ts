@@ -61,6 +61,27 @@ async function importCasesPerPage(token, page: string) {
     }
 }
 
+async function importCasesDate(token, fecha) {
+    const url = `${environment.snvs.host}/snvs/covid19/casos/15?fecha=${fecha}`;
+
+    const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
+    };
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: headers
+        });
+        const body = await response.json();
+        return body;
+
+    } catch (err) {
+        return [];
+    }
+}
+
 async function saveCases(casos) {
     try {
         for (const caso of casos) {
@@ -133,7 +154,7 @@ export async function importCasesCovid(done) {
     let token = await getToken(user, pass);
 
     let retry = true;
-    let page = 18;
+    let page = 0;
     let cantidad = 0;
     while (retry) {
         try {
@@ -153,6 +174,26 @@ export async function importCasesCovid(done) {
         } catch (err) {
             return err;
         }
+    }
+    done();
+
+}
+
+export async function importCasesCovidDate(done, days) {
+    const user = environment.snvs.user;
+    const pass = environment.snvs.pass;
+    const token = await getToken(user, pass);
+    try {
+        //Actualiza los casos de los últimos días definidos por days
+        for (let i = 0; i < days; i++) {
+            const strDate = moment().startOf('day').add(i * (-1)).format('DD/MM/YYYY');
+            const casos = await importCasesDate(token, strDate);
+            if (casos.length > 0) {
+                await saveCases(casos);
+            }
+        }
+    } catch (err) {
+        return err;
     }
     done();
 
