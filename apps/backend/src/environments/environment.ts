@@ -49,7 +49,7 @@ export const environment = {
 
 export const jobs = [
     {
-        when: '0 */2 * * *',
+        when: '0 06,18 * * *',
         action: 'jobs/import-cases-job'
     },
     {

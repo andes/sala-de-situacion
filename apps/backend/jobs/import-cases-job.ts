@@ -1,7 +1,7 @@
-import { importCasesCovid } from '../src/app/covid-events/covid-events';
+import { importCasesCovidDate } from '../src/app/covid-events/covid-events';
 
 async function run(done) {
-    await importCasesCovid(done);
+    await importCasesCovidDate(done, 2);
 }
 
 export default run;
