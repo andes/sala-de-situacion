@@ -1,33 +1,9 @@
 import { environment } from '../../../src/environments/environment';
-import * as moment from 'moment';
 import { CovidEvents } from './covid-events.schema';
-const fetch = require('node-fetch');
+import { transformEvento } from './transform-event';
+import * as moment from 'moment';
 
-export async function getToken(user: string, pass: string) {
-    const url = `${environment.snvs.host}/auth/realms/sisa/protocol/openid-connect/token`;
-    const formData = new URLSearchParams();
-    formData.append('grant_type', 'password');
-    formData.append('client_id', 'snvs-token');
-    formData.append('username', user);
-    formData.append('password', pass);
-    const options = {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: formData.toString(),
-        json: true,
-    }
-    const response = await fetch(
-        url,
-        options
-    );
-    const responseJson = await response.json();
-    if (responseJson.access_token) {
-        return responseJson.access_token
-    }
-    return null;
-}
+const fetch = require('node-fetch');
 
 async function generateCDAAndes(caso) {
     try {
@@ -51,74 +27,11 @@ async function generateCDAAndes(caso) {
     }
 }
 
-function transformDate(fecha: string) {
-    if (moment(fecha, 'DD/MM/YYYY', true).isValid()) {
-        const [day, month, year] = fecha.split("/");
-        return new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
-    }
-    return null;
-}
-
-async function importCasesPerPage(token, page: string) {
-    const url = `${environment.snvs.host}/snvs/covid19/casos?`;
-    const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-type': 'application/json',
-        'Accept': 'application/json'
-    };
-    const params = new URLSearchParams({
-        offset: page,
-        fullView: 'true'
-    });
-    try {
-        const response = await fetch(url + params, {
-            method: 'GET',
-            headers: headers
-        });
-        const body = await response.json();
-        return body;
-
-    } catch (err) {
-        return [];
-    }
-}
-
-async function importCasesDate(token, fecha) {
-    const url = `${environment.snvs.host}/snvs/covid19/casos/15?fecha=${fecha}`;
-
-    const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-type': 'application/json',
-        'Accept': 'application/json'
-    };
-    try {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: headers
-        });
-        const body = await response.json();
-        return body;
-
-    } catch (err) {
-        return [];
-    }
-}
-
 async function saveCases(casos) {
     try {
-        for (const caso of casos) {
-            if (caso.ideventocaso) {
-                caso.min_FTM = transformDate(caso.min_FTM);
-                caso.fecha_APERTURA = transformDate(caso.fecha_APERTURA);
-                caso.fecha_INTERNACION = transformDate(caso.fecha_INTERNACION);
-                caso.fecha_CUI_INTENSIVOS = transformDate(caso.fecha_CUI_INTENSIVOS);
-                caso.fecha_ALTA_MEDICA = transformDate(caso.fecha_ALTA_MEDICA);
-                caso.fecha_MOD_EVENTO = transformDate(caso.fecha_MOD_EVENTO);
-                caso.fecha_MOD_DIAG = transformDate(caso.fecha_MOD_DIAG);
-                caso.fecha_NACIMIENTO = transformDate(caso.fecha_NACIMIENTO);
-                caso.fecha_DIAGNOSTICO = transformDate(caso.fecha_DIAGNOSTICO);
-                caso.fecha_MOD_CLASIF = new Date(caso.fecha_MOD_CLASIF);
-                caso.fecha_GRAFICO = new Date(caso.fecha_GRAFICO);
+        for (const _caso of casos) {
+            if (_caso.idEventoCaso) {
+                const caso = transformEvento(_caso)
                 await CovidEvents.updateOne({ ideventocaso: caso.ideventocaso }, caso, { upsert: true });
                 if (caso.clasif_RESUMEN) {
                     generateCDAAndes(caso)
@@ -130,16 +43,17 @@ async function saveCases(casos) {
     }
 }
 
-async function importCase(token, ideventocaso) {
+async function importCase(ideventocaso) {
     try {
-        const url = `${environment.snvs.host}/snvs/covid19/casos/idCaso/15?`;
+        const url = `${environment.snvs.host}/snvs-api68/v1/covidNominal/SnvsNominalCoronavirus?`;
         const headers = {
-            'Authorization': `Bearer ${token}`,
+            'APP_ID': environment.snvs.appId,
+            'APP_KEY': environment.snvs.appKey,
             'Content-type': 'application/json',
             'Accept': 'application/json'
         };
         const params = new URLSearchParams({
-            ideventocaso: ideventocaso
+            id: ideventocaso
         });
         try {
             const response = await fetch(url + params, {
@@ -173,61 +87,11 @@ async function deleteCovidEventsByDate(date) {
     }
 }
 
-export async function importCasesCovid(done) {
-    const user = environment.snvs.user;
-    const pass = environment.snvs.pass;
-    let token = await getToken(user, pass);
-
-    let retry = true;
-    let page = 0;
-    let cantidad = 0;
-    while (retry) {
-        try {
-            const casos = await importCasesPerPage(token, page.toString());
-            if (casos.length > 0) {
-                cantidad = cantidad + casos.length;
-                await saveCases(casos);
-                page++;
-            } else {
-                if (casos.status === 401) {
-                    //Se refresca el token
-                    token = await getToken(user, pass);
-                } else {
-                    retry = false;
-                }
-            }
-        } catch (err) {
-            return err;
-        }
-    }
-    done();
-
-}
-
-export async function importCasesCovidDate(done, days) {
-    const user = environment.snvs.user;
-    const pass = environment.snvs.pass;
-    const token = await getToken(user, pass);
-    try {
-        //Actualiza los casos de los últimos días definidos por days
-        for (let i = 0; i < days; i++) {
-            const strDate = moment().startOf('day').add(i * (-1)).format('DD/MM/YYYY');
-            const casos = await importCasesDate(token, strDate);
-            if (casos.length > 0) {
-                await saveCases(casos);
-            }
-        }
-    } catch (err) {
-        return err;
-    }
-    done();
-
-}
-
-async function getCasesByDate(token, date) {
-    const url = `${environment.snvs.host}/snvs/covid19/casos/mod/15?`;
+async function getCasesByDate(date) {
+    const url = `${environment.snvs.host}/snvs-api68/v1/covidNominal/novedades?`;
     const headers = {
-        'Authorization': `Bearer ${token}`,
+        'APP_ID': environment.snvs.appId,
+        'APP_KEY': environment.snvs.appKey,
         'Content-type': 'application/json',
         'Accept': 'application/json'
     };
@@ -246,26 +110,14 @@ async function getCasesByDate(token, date) {
     }
 }
 
-export async function updateCasesCovid(done, date) {
-    const user = environment.snvs.user;
-    const pass = environment.snvs.pass;
-    let token = await getToken(user, pass);
+export async function importCasesCovidDate(done, days) {
     try {
-        if (token !== null) {
-            // eliminar los casos de una fecha específica
-            await deleteCovidEventsByDate(date);
-            const casos = await getCasesByDate(token, date)
-            for (const caso of casos) {
-                let retry = true;
-                while (retry) {
-                    const datosCaso = await importCase(token, caso);
-                    if (datosCaso.status === 401) {
-                        //Se refresca el token
-                        token = await getToken(user, pass);
-                    } else {
-                        retry = false;
-                    }
-                }
+        //Actualiza los casos de los últimos días definidos por days
+        for (let i = 0; i < days; i++) {
+            const strDate = moment().startOf('day').add(i * (-1)).format('DD/MM/YYYY');
+            const casos = await getCasesByDate(strDate);
+            if (casos.length > 0) {
+                await saveCases(casos);
             }
         }
     } catch (err) {
@@ -274,5 +126,16 @@ export async function updateCasesCovid(done, date) {
     done();
 }
 
-
-
+export async function updateCasesCovid(done, date) {
+    try {
+        // eliminar los casos de una fecha específica
+        await deleteCovidEventsByDate(date);
+        const { eventos } = await getCasesByDate(date)
+        for (const evento of eventos) {
+            await importCase(evento);
+        }
+    } catch (err) {
+        return err;
+    }
+    done();
+}
