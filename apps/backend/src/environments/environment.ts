@@ -26,9 +26,9 @@ export const environment = {
         }
     },
     snvs: {
+        appKey: process.env.HOST_APP_KEY || 'unaKey',
+        appId: process.env.HOST_APP_ID || 'unId',
         host: process.env.HOST_SNVS || 'prueba',
-        user: process.env.USER_SNVS || 'user',
-        pass: process.env.PASS_SNVS || 'unapass'
     },
     exportadorHost: process.env.HOST_EXPORTADOR || '',
     bi_query_host: process.env.BI_QUERY_HOST || 'http://localhost:4000',
