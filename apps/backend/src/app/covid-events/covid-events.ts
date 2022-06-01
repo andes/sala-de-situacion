@@ -29,6 +29,28 @@ export async function getToken(user: string, pass: string) {
     return null;
 }
 
+async function generateCDAAndes(caso) {
+    try {
+        const url = `${environment.cda_sisa_host}/cda/sisa`;
+        const headers = {
+            'Content-type': 'application/json',
+            'Accept': 'application/json'
+        };
+
+        try {
+            return await fetch(url, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({ data: { caso } })
+            });
+        } catch (err) {
+            return {};
+        }
+    } catch (err) {
+        return err;
+    }
+}
+
 function transformDate(fecha: string) {
     if (moment(fecha, 'DD/MM/YYYY', true).isValid()) {
         const [day, month, year] = fecha.split("/");
@@ -98,6 +120,9 @@ async function saveCases(casos) {
                 caso.fecha_MOD_CLASIF = new Date(caso.fecha_MOD_CLASIF);
                 caso.fecha_GRAFICO = new Date(caso.fecha_GRAFICO);
                 await CovidEvents.updateOne({ ideventocaso: caso.ideventocaso }, caso, { upsert: true });
+                if (caso.clasif_RESUMEN) {
+                    generateCDAAndes(caso)
+                }
             }
         };
     } catch (err) {

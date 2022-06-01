@@ -32,6 +32,7 @@ export const environment = {
     },
     exportadorHost: process.env.HOST_EXPORTADOR || '',
     bi_query_host: process.env.BI_QUERY_HOST || 'http://localhost:4000',
+    cda_sisa_host: process.env.CDA_SISA_HOST || 'http://localhost:4000',
     conSql: {
         auth: {
             user: process.env.USER_SQL || 'prueba',
