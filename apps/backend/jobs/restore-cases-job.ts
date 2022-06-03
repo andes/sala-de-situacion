@@ -5,10 +5,11 @@ async function run(done) {
     const desde = process.argv[3];
     const date = moment(desde).startOf('day');
 
-    while (moment().diff(date, 'days') <= 0) {
-        await updateCasesCovid(done, date);
+    while (moment().diff(date, 'days') > 0) {
+        await updateCasesCovid(date);
         date.add(1, 'days');
     }
+    done();
 }
 
 export default run;
