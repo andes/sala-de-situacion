@@ -3,12 +3,13 @@ import * as moment from 'moment';
 
 async function run(done) {
     const desde = process.argv[3];
-    const date = moment(desde).startOf('day');
+    let date = moment(desde).startOf('day');
 
-    while (moment().diff(date, 'days') <= 0) {
-        await updateCasesCovid(done, date);
-        date.add(1, 'days');
+    while (moment().diff(date, 'days') > 0) {
+        await updateCasesCovid(date);
+        date = date.add(1, 'days');
     }
+    done();
 }
 
 export default run;
