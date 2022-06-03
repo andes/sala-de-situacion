@@ -126,7 +126,7 @@ export async function importCasesCovidDate(done, days) {
     done();
 }
 
-export async function updateCasesCovid(done, date) {
+export async function updateCasesCovid(date) {
     try {
         // eliminar los casos de una fecha específica
         await deleteCovidEventsByDate(date);
@@ -137,5 +137,4 @@ export async function updateCasesCovid(done, date) {
     } catch (err) {
         return err;
     }
-    done();
 }
