@@ -114,8 +114,8 @@ export async function importCasesCovidDate(done, days) {
     try {
         //Actualiza los casos de los últimos días definidos por days
         for (let i = 0; i < days; i++) {
-            const strDate = moment().startOf('day').add(i * (-1)).format('DD/MM/YYYY');
-            const casos = await getCasesByDate(strDate);
+            const date = moment().startOf('day').add(i * (-1)).toDate();
+            const casos = await getCasesByDate(date);
             if (casos.length > 0) {
                 await saveCases(casos);
             }
