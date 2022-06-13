@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { EventsService, Event } from '../../../events/service/events.service';
 import { InstitutionService } from '../../../institutions/service/institution.service';
-import { Unsubscribe } from '@andes/shared';
 import { OcurrenceEvent, OcurrenceEventsService } from '../../services/ocurrence-events.service';
 import { Plex } from '@andes/plex';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { SelectSearchService } from '../../../shared/select-search.service';
+import { AuthService } from '../../../login/services/auth.services';
 
 @Component({
     selector: 'occurrence-events-crud',
@@ -16,6 +15,7 @@ export class OccurrenceEventsCrudComponent implements OnInit {
     public institutionSelected: any;
     public institutions = [];
     public eventSelected: Event;
+    public loadedEvents = [];
     public events = [];
     public tiposList;
     public eventDate: Date;
@@ -30,18 +30,17 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         private institutionService: InstitutionService,
         private plex: Plex,
         private location: Location,
-        private route: ActivatedRoute
-    ) {}
+        private route: ActivatedRoute,
+        private auth: AuthService
+    ) { }
 
     ngOnInit() {
+        this.loadEventos();
         this.institutionService.search({}).subscribe(rta => {
             this.institutions = rta;
             if (rta.length === 1) {
                 this.institutionSelected = rta[0];
             }
-        });
-        this.eventsService.search({}).subscribe(rta => {
-            this.events = rta;
         });
         const ocurrenceEvent: OcurrenceEvent = this.route.snapshot.data.ocurrenceEvent;
         this.eventDate = new Date();
@@ -65,7 +64,7 @@ export class OccurrenceEventsCrudComponent implements OnInit {
         }
     }
 
-    loadMinDate() {
+    updateMinDate() {
         this.minDate = null;
         if (this.institutionSelected) {
             if (this.eventSelected) {
@@ -82,6 +81,24 @@ export class OccurrenceEventsCrudComponent implements OnInit {
                         }
                     });
             }
+        }
+    }
+
+    loadEventos() {
+        this.eventsService.search({}).subscribe(resultado => {
+            this.events = resultado.filter(event => {
+                return this.tienePermiso(event);
+            });
+            this.eventSelected = null;
+        });
+    }
+
+    tienePermiso(event) {
+        if (!this.auth.checkPermisos('admin:true')) {
+            const permiso = `${event.categoria}:indicators:write`;
+            return this.auth.checkPermisos(permiso);
+        } else {
+            return true;
         }
     }
 

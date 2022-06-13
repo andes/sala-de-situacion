@@ -25,7 +25,7 @@
                 <b label></b>
             </plex-heading>
             <ng-container *ngFor="let collaborator of collaborators">
-                <plex-item class="hover" [botonera]="true" [selected]="collaborator.selected">
+                <plex-item class="hover" [selected]="collaborator.selected">
                     <plex-label>{{ collaborator.email }}</plex-label>
                     <plex-label>{{ collaborator.codigoNacion }}</plex-label>
                     <plex-label>{{ collaborator.user }}</plex-label>

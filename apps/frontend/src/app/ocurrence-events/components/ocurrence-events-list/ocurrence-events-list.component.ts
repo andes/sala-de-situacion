@@ -80,6 +80,15 @@ export class OcurrenceEventsListComponent implements OnInit {
         });
     }
 
+    tienePermiso(event) {
+        if (!this.auth.checkPermisos('admin:true')) {
+            const permiso = `${event.categoria}:indicators:write`;
+            return this.auth.checkPermisos(permiso);
+        } else {
+            return true;
+        }
+    }
+
     filtrarResultados() {
         this.arrayInstituciones = [];
         this.arrayPorEvento = [];
@@ -128,6 +137,9 @@ export class OcurrenceEventsListComponent implements OnInit {
                 this.subfiltros = [];
                 this.selectedSubfiltros = [];
             }
+            ocurrenceEvents.forEach(event => {
+                event['canEdit'] = this.tienePermiso(this.indicadores[event.eventKey].evento);
+            });
             from(ocurrenceEvents)
                 .pipe(
                     groupBy(occurrence => occurrence.institucion.id),
