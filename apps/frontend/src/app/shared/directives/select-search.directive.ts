@@ -24,7 +24,7 @@ export class SelectSearchDirective implements OnDestroy, AfterContentInit {
         private _viewContainerRef: ViewContainerRef
     ) {
         const plexSelect: PlexSelectComponent = this._viewContainerRef['_data'].componentView.component;
-        plexSelect.idField = 'id';
+        plexSelect.idField = '_id';
         plexSelect.labelField = 'nombre';
     }
 

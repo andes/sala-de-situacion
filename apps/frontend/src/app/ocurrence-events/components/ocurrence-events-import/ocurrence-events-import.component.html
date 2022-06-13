@@ -1,0 +1,62 @@
+<plex-layout>
+    <plex-layout-main>
+        <plex-title titulo="Importar evento">
+            <plex-button size="sm" type="info" class="mr-1" (click)="mostrarAyuda()" icon="help-circle">
+            </plex-button>
+            <plex-button size="sm" type="success" (click)="onSave()" 
+                [validateForm]="formulario" [disabled]="!occurrenceEvents.length">
+                GUARDAR
+            </plex-button>
+        </plex-title>
+        <form #formulario="ngForm">
+            <plex-wrapper>
+                <plex-select label="Institucion" grow="full" [(ngModel)]="institution" name="institution-selected"
+                    [data]="institutions$ | async" ></plex-select>
+                <plex-datetime label="Fecha y hora" required [(ngModel)]="eventDate" name="event-date" >
+                </plex-datetime>
+                <plex-select label="Evento" required [(ngModel)]="event" name="event-selected" [data]="events$ | async"></plex-select>
+                <div>
+                    <label class="form-control-label">Archivo evento (.csv)</label>
+                    <input #inputFile type="file" class="upload form-control"
+                        [disabled]="!institution || !eventDate || !event" (change)="changeListener($event.target.files)"
+                        accept=".csv">
+                </div>
+            </plex-wrapper>
+        </form>
+        <ng-container *ngIf="occurrenceEvents.length">
+            <plex-title titulo="Eventos Importados"></plex-title>
+            <ng-container *ngFor="let occurrenceEvent of occurrenceEvents">
+                <plex-accordion>
+                    <plex-panel tituloPrincipal="{{event.nombre}}">
+                        <plex-title size="sm" titulo="{{ occurrenceEvent.fecha | date: 'dd/MM/yyyy  HH:mm' }}"></plex-title>
+                        <ng-container *ngFor="let item of occurrenceEvent.indicadores | keyvalue">
+                            <plex-detail size="sm">
+                                <div title [innerHTML]="item.key"></div>
+                                <div subtitle>{{ item.value }}</div>
+                            </plex-detail>
+                        </ng-container>
+                    </plex-panel>
+                </plex-accordion>
+            </ng-container>
+        </ng-container>
+    </plex-layout-main> 
+</plex-layout>
+
+<plex-modal *ngIf="verAyuda" [allowClose]="true" [allowEscClose]="false" #modal [startOpen]="true"
+    (closed)="ocultarAyuda(false)">
+    <plex-icon name="help-circle" type="info"></plex-icon>
+    <plex-modal-title type="info">¿Cómo deben ser los archivos?</plex-modal-title>
+    <main>
+        <div class="pr-5 pl-5">
+            <plex-title size="sm" titulo="Importar indicadores"></plex-title>
+            El archivo debe poseer:<br><br>
+            <ul>
+                <li>Encabezado</li>
+                <li>Cantidad de columnas igual a la cantidad de indicadores del evento</li>
+                <li>Los valores deben corresponderse con el tipo de dato del indicadores. En caso de ser numérico, debe estar
+                    dentro de los valores límites.
+                    Si es de selección, debe corresponderse con una opción válida.</li>
+            </ul>
+        </div>
+    </main>
+</plex-modal>
